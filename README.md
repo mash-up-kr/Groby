@@ -35,12 +35,13 @@ Mashup 09 backend
 - reg_date
 - like_num  
 - location
+- current_step
 
 
 # tab1
 - item_id(PK, FK)
 - reg_Date(FK)
-- img_path`( !ios )`
+- img_path
 - amount
 - contents
 - end_date_1
@@ -63,7 +64,7 @@ Mashup 09 backend
 # tab4 
 - item_id(PK, FK)
 - contents
-- receipt_img_path `(!ios)`
+- receipt_img_path 
 
 # tab5
 - item_id(PK, FK)
@@ -72,7 +73,7 @@ Mashup 09 backend
 
 # listOfParticipantForItem
 - item_id(PK, FK)
-- step_num 
+- likeOrParticipant 
     - 1 : 수요조사
     - 2 : 참여자
 - userid(PK , FK)
