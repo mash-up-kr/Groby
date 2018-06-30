@@ -1,8 +1,8 @@
 # 09-Back
 Mashup 09 backend
 
-
-# user
+# DataBase
+## user
 - user_num(PK)
 - user_id
 - user_pw 
@@ -11,23 +11,21 @@ Mashup 09 backend
 - account_num
 - account_bank
 - account_holder
-<!--- list_of_Owner ( 총대 한 목록)-->
-<!--- list_of_Part ( 참여 한 목록 )-->
 
-# listOfParticipantForUser (개인참여리스트)
+## listOfParticipantForUser (개인참여리스트)
 - user_id(PK, FK)
 - item_id(PK, FK)
 - owner
     - T : 총대
     - F : 참여자
 
-# setting
+## setting
 - category
     - food
     - clothes
     - entertainments
 
-# item
+## item
 - item_id(PK)
 - user_id(FK)
 - category
@@ -38,7 +36,7 @@ Mashup 09 backend
 - current_step
 
 
-# tab1
+## tab1
 - item_id(PK, FK)
 - reg_Date(FK)
 - img_path
@@ -46,7 +44,7 @@ Mashup 09 backend
 - contents
 - end_date_1
 
-# tab2
+## tab2
 - item_id(PK, FK)
 - tab2_id(PK)
 - reg_date
@@ -55,23 +53,23 @@ Mashup 09 backend
 - account_bank 
 - end_date_2
 
-# tab2_option
+## tab2_option
 - tab2_id(PK, FK)
 - option_id(PK)
 - option_name
 - option_val 
 
-# tab4 
+## tab4 
 - item_id(PK, FK)
 - contents
 - receipt_img_path 
 
-# tab5
+## tab5
 - item_id(PK, FK)
 - contents
 - location
 
-# listOfParticipantForItem
+## listOfParticipantForItem
 - item_id(PK, FK)
 - likeOrParticipant 
     - 1 : 수요조사
@@ -84,3 +82,76 @@ Mashup 09 backend
 - amount
 - price
 
+# REST
+
+—— Setting 
+
+GET /category
+-> @[category]
+
+POST /category
+-> Body : category
+-> @status(200,40x)
+
+DELETE /category
+-> Body : category
+-> @status(200,40x)
+
+
+—— USER 
+
+GET /user?id=1234
+-> id가 1234인 @user
+
+POST /user
+<- Body : user_num 을 제외한 값
+->  해당 값을 가진 user 생성
+-> @status ( 200 , 40x ) 
+
+—— ITEM 
+
+GET /item
+-> @ [ item ] limit 5
+
+GET /item?item_id=1234
+-> 없는 부분들은 null
+-> @ item + tab 1~5
+
+POST /item
+<- Body : ITEM< item_id 를 제외한 값 ( FK : user_id )  > + TAB1< item_id 를 제외한 값 > 
+-> 해당 값을 가진 item , tab1 생성 
+-> listOfParticipantForUser< owner : true ( FK : item_id, user_id )  > 생성
+-> listOfparticipantForItem< likeOrParticipant : 1  ( FK : item_id, user_id )  > 생성
+-> tab 2~5 더미 데이터 생성 
+-> @status ( 200, 40x )
+
+POST /item/tab/2
+<- Body : TAB2< tab2_id를 제외한 값 ( FK : item_id ) > + TAB2_OPTION< option_id 제외한 값 ( FK : tab2_id ) >
+<- update dummy
+<- ITEM -> current_step update : 2
+-> @status ( 200, 40x )
+
+POST /item/tab/3~5
+<- Body : ( FK : item_id )
+<- update dummy
+<- ITEM -> current_step update : 3~5
+-> @status ( 200, 40x )
+
+GET /item/participant_list?item_id=1234&user_id=6789
+-> @해당 테이블 인스턴스
+
+POST /item/participant/1
+<- Body : item_id, user_id
+-> @status ( 200, 40x )
+
+POST /item/participant/2
+<- Body : listOfparticipantForItem 정보
+-> listOfparticipantForItem< likeOrParticipant : 2  > 수정
+-> listOfParticipantForUser< owner : false ( FK : item_id, user_id )  > 생성
+-> permission : 0 ( default ) 
+-> @status ( 200, 40x )
+
+POST /item/permission
+<- Body : user_id , item_id , permission 
+->  permission 수정
+-> @status ( 200, 40x )
