@@ -5,6 +5,24 @@ Mashup 09 backend
 
 [img here](https://github.com/mash-up-kr/09-Back/tree/master/ERDiagram_img)
 
+# Architecture
+- main
+    - controller
+        - user
+            - UserController
+        - item
+        - setting  
+    - domain
+        - user
+            - User
+            - UserRepository
+        - item
+        - setting 
+   - service
+       - user
+           - UserService
+       - item
+       - setting
 # REST
 
 - Setting 
@@ -22,10 +40,12 @@ Mashup 09 backend
     - GET /user?id=1234
         - re ) id가 1234인 User Entity
     - POST /user
-    - Body : PK 을 제외한 값
+        - Body : PK 을 제외한 값
         - 해당 값을 가진 user 생성 
         - re ) status ( 200 , 40x ) 
-
+    - PATCH /user?user_id=1234
+        - body : 변경될 user 의 정보들 ex) current_account 등등...
+        - re ) status ( 200 , 40x )
 - ITEM 
     - GET /item
     - re )  [ item ] limit 5 ( 최대 5개 ? )
