@@ -15,7 +15,11 @@ import java.util.Date;
 @Data
 public class ItemTab1 {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long tab1Id;
+
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     private Item item;
 
     private Date regDate; // item에도 regDate가 있는데 여기에 있는 이유를 잘 모르겠음...

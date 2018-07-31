@@ -15,7 +15,11 @@ import java.util.Date;
 @Entity
 public class ItemTab2 {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long tab2Id;
+
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     private Item item;
 
     private Date regDate; // 글 등록 시점
@@ -23,7 +27,4 @@ public class ItemTab2 {
     private Integer amount; // 참여자의 수 (?)
     private String contents; // 총대의 메시지
     private Date endDate2; // 공구 종료시점
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long tab2Id; // 이게 primary가 되어야하는 게 아닌가..?
 }

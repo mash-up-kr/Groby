@@ -14,7 +14,11 @@ import javax.persistence.*;
 @Entity
 public class ItemTab4 {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long tab4Id;
+
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     private Item item;
 
     private String contents; // 총대의 메시지

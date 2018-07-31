@@ -60,5 +60,8 @@ public class ItemRepositoryTests {
     // item의 특정칼럼 삭제
     @Test
     public void testDeleteItem() {
+//       Item item = itemRepository.findOne(8L);
+
+       itemRepository.delete(3L);
     }
 }
