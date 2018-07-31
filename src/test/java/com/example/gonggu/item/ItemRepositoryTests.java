@@ -64,4 +64,14 @@ public class ItemRepositoryTests {
 
        itemRepository.delete(3L);
     }
+
+    // item의 날짜순으로 읽기
+    @Test
+    public void testReadItems() {
+       List<Item> items = itemRepository.findByOrderByRegDateDesc();
+
+       items.forEach(item -> {
+           System.out.println(item);
+       });
+    }
 }
