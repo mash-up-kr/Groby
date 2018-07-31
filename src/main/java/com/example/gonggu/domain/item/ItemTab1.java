@@ -1,0 +1,26 @@
+package com.example.gonggu.domain.item;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Getter
+@Setter
+@ToString(exclude = "item")
+@Data
+public class ItemTab1 {
+    @Id
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private Item item;
+
+    private Date regDate; // item에도 regDate가 있는데 여기에 있는 이유를 잘 모르겠음...
+    private String imgPath; // 이미지 주소
+    private Integer amountLimit; // 공구 오픈 최소 수량
+    private Date endDate1; // 좋아요 받는 마지막 날
+    private String contents; // 총대의 메시지
+}

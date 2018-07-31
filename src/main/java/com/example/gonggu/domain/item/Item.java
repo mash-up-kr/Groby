@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "user")
+@ToString(exclude = {"user", "itemTab1", "itemTab2", "itemTab4", "itemTab5"})
 @Data
 public class Item {
     @Id
@@ -20,7 +20,7 @@ public class Item {
     private Long itemId;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String category;
@@ -29,4 +29,16 @@ public class Item {
     private int likeNum;
     private int totalNum;
     private String location;
+
+    @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)
+    private ItemTab1 itemTab1;
+
+    @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)
+    private ItemTab2 itemTab2;
+
+    @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)
+    private ItemTab4 itemTab4;
+
+    @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)
+    private ItemTab5 itemTab5;
 }
