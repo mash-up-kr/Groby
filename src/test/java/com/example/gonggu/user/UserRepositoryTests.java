@@ -17,15 +17,8 @@ public class UserRepositoryTests {
 
     @Test
     public void testInsert(){
-        UserService user= new UserService(userRepository);
-        user.testInsert();
-    }
-
-    @Test
-    public void testRead(){
         UserService user = new UserService(userRepository);
-        user.testRead();
-
+//        user.testInsert();
     }
 
     @Test

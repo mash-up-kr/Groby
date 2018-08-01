@@ -3,8 +3,12 @@ package com.example.gonggu.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -39,9 +43,16 @@ public class User {
     private String accountHolder;
 
     @Column(name = "reg_date")
-    private String regDate;
+    @CreationTimestamp
+//    private LocalDateTime regDate;
+    private Timestamp regDate;
 
     @Column(name = "update_date")
-    private String updateDate;
+    @UpdateTimestamp
+//    private LocalDateTime updateDate;
+    private Timestamp updateDate;
+
+
+
 
 }
