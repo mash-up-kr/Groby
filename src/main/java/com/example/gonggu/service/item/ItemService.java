@@ -5,10 +5,7 @@ import com.example.gonggu.persistence.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 public class ItemService {
@@ -41,36 +38,38 @@ public class ItemService {
     }
 
     // 최신글과 관련한 서비스
-    public List<Map<String,Object>> getRecentBoard () {
+    public Map<String, Object> getRecentBoard() {
         List<Item> items = itemRepository.findAll();
+        Map<String, Object> result = new HashMap<>();
+        RecentItemList recentItemList;
 
-        List<Map<String, Object>> results = new ArrayList<>();
-        Map<String, Object> itemDetail = new HashMap<>();
+        for(int i = 0; i<NUMOFRECENT; i++) {
+            recentItemList = new RecentItemList();
+            recentItemList.setItemId(items.get(i).getItemId());
+            recentItemList.setTitle(items.get(i).getTitle());
+            recentItemList.setCurrentTap(items.get(i).getNowTab());
 
-
-        // 클래스 만들기 - service에 클래스 생성
-
-        for (int i = 0; i < NUMOFRECENT; i++) {
-            itemDetail.put("itemId", items.get(i).getItemId());
-            itemDetail.put("title", items.get(i).getTitle());
-
-            if (items.get(i).getTitle() == "[수량조사]") {
-                itemDetail.put("likeNum", items.get(i).getLikeNum());
-                itemDetail.put("img", items.get(i).getItemTab1().getImgPath());
-                itemDetail.put("dueDate", items.get(i).getItemTab1().getEndDate1());
+            switch (recentItemList.getCurrentTap()) {
+                case 1:  // Tab1인 경우
+                    recentItemList.setDueDate(items.get(i).getItemTab1().getEndDate1());
+                    recentItemList.setLikeNum(items.get(i).getLikeNum());
+                    recentItemList.setImgPath(items.get(i).getItemTab1().getImgPath());
+                    break;
+                case 2:  // Tab2인 경우
+                    recentItemList.setDueDate(items.get(i).getItemTab2().getEndDate2());
+                    recentItemList.setParticipantNum(items.get(i).getItemTab2().getAmountLimit()); // Tab2에서 보여지는 amount limit이 현재까지 참여한 수인가?
+                    recentItemList.setAmountLimit(items.get(i).getTotalNum()); // 이게 참여한 사람의 수가 아닌가?
+                    recentItemList.setImgPath(items.get(i).getItemTab2().getImgPath()); // 메인화면에 보여지는 이미지는 항상 첫번째 공구때 올린 사진...? 아님 총대가 바꿀때 마다 체인지?
+                    break;
+                case 4:  // Tab4인 경우
+                    recentItemList.setImgPath(items.get(i).getItemTab4().getReceiptImgPath());
+                    break;
+                default: // Tab5인 경우
+                    break;
             }
-            else {
-                itemDetail.put("img", items.get(i).getItemTab1().getImgPath());
-                itemDetail.put("dueDate", items.get(i).getItemTab2().getEndDate2());
-                itemDetail.put("particiNum", items.get(i).getItemTab2().getAmountLimit());
-                itemDetail.put("amountLimit", items.get(i).getTotalNum());
-            }
 
-            itemDetail.put("dueDate", "마감날짜");
-            results.add(itemDetail);
+            result.put(String.valueOf(i), recentItemList);
         }
-//        return results;
-        System.out.println(results);
-        return results;
+        return result;
     }
 }

@@ -35,10 +35,10 @@ public class ItemRepositoryTests {
             item.setCategory("음식");
             item.setLikeNum(0);
             item.setLocation("location"+i);
-            Date date = new Date();
-            item.setRegDate(date);
             item.setTitle("title"+i);
             item.setUser(user);
+            item.setNowTab(1);
+            item.setTotalNum(100);
 
             itemRepository.save(item);
         }
