@@ -39,7 +39,7 @@ public class ItemService {
 
     // 최신글과 관련한 서비스
     public Map<String, Object> getRecentBoard() {
-        List<Item> items = itemRepository.findAll();
+        List<Item> items = itemRepository.findByOrderByRegDateDesc();
         Map<String, Object> result = new HashMap<>();
         RecentItemList recentItemList;
 
