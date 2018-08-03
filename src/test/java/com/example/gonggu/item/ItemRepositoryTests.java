@@ -1,9 +1,9 @@
 package com.example.gonggu.item;
 
 import com.example.gonggu.domain.item.Item;
-import com.example.gonggu.domain.item.ItemRepository;
+import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.domain.user.User;
-import com.example.gonggu.domain.user.UserRepository;
+import com.example.gonggu.persistence.user.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

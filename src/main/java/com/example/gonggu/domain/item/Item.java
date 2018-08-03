@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -20,15 +22,17 @@ public class Item {
     private Long itemId;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_num")
     private User user;
 
-    private String category;
-    private String title;
-    private Date regDate;
-    private int likeNum;
-    private int totalNum;
-    private String location;
+    private String category;    // 카테고리
+    private String title;       // 공구 제목
+    @CreationTimestamp
+    private Timestamp regDate;  // 아이템 등록 시간
+    private Integer likeNum;        // 좋아요 수
+    private Integer totalNum;                           // 뭘까...?
+    private String location;                            // 위치..?
+    private Integer nowTab;         // 현재 공구 진행 상황
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)
     private ItemTab1 itemTab1;

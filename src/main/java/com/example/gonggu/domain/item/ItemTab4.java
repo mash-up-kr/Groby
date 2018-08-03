@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @ToString(exclude = "item")
@@ -21,6 +22,8 @@ public class ItemTab4 {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private String contents; // 총대의 메시지
+    private String contents;       // 총대의 메시지
     private String receiptImgPath; // 영수증 사진 주소
+    private Date arrivedTime;      // 도착예정시간
+
 }

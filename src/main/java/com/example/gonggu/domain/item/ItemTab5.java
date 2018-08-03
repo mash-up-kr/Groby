@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @ToString(exclude = "item")
@@ -21,7 +22,7 @@ public class ItemTab5 {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private String contents; // 총대의 메시지
-    private String location; // 공구물품 배부장소
-    // 공구물품 배부시간
+    private String contents;        // 총대의 메시지
+    private String location;        // 공구물품 배부장소
+    private Date distributionTime;  // 공구물품 배부시간
 }
