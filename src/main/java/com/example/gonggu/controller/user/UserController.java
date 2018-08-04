@@ -42,7 +42,7 @@ public class UserController {
         UserResponse returnResponse = new UserResponse();
         HttpStatus status = HttpStatus.OK;
 
-        User test = new User(Long.valueOf(userNum));
+        User test = new User();
 
 
         returnResponse.setStatus(status);

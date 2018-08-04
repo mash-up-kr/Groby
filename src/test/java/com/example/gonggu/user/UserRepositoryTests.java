@@ -1,8 +1,8 @@
 package com.example.gonggu.user;
 
-import com.example.gonggu.domain.User;
-import com.example.gonggu.domain.UserRepository;
-import com.example.gonggu.service.UserService;
+import com.example.gonggu.domain.user.User;
+import com.example.gonggu.persistence.user.UserRepository;
+import com.example.gonggu.service.user.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,15 @@ public class UserRepositoryTests {
     @Test
     public void testInsert(){
 //        UserService user = new UserService(userRepository, bCryptPasswordEncoder);
-//        usrserv.testInsert();
+        User user = new User();
+        user.setUserId("1");
+        user.setUserPW(bCryptPasswordEncoder.encode("123"));
+        user.setUserName("4");
+        user.setAccounBank("5");
+        user.setAccountHolder("5");
+        user.setAccountNum("6");
+
+        userRepository.save(user);
     }
 
     @Test

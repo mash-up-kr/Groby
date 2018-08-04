@@ -1,27 +1,36 @@
 package com.example.gonggu.domain.user;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-// Dummy data
+import javax.persistence.*;
+import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
 
+@Entity
 public class User {
 
-    public Long id;
-    public String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
+    private Long userNum;
+    private String userId;
+    private String userPW;
+    private String userName;
 
+    private String accountNum;
+    private String accounBank;
+    private String accountHolder;
 
-
-    public User(String name){
-        this.name = name;
-        this.id = 123L;
-    }
-
-    public User(long usernum){
-        this.id = usernum;
-        this.name = "onemoon";
-    }
-
+    @CreationTimestamp
+    private Timestamp regDate;
+    @UpdateTimestamp
+    private Timestamp updateDate;
 }

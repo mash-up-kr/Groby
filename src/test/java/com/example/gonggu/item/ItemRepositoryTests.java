@@ -24,25 +24,25 @@ public class ItemRepositoryTests {
 
 
     // item테이블에 아이템 값을 입력하는 테스트
-   @Test
-    public void testInsertItem() {
-        User user = userRepository.findByUserId("user2").get(0);
-//        User user = userRepository.findOne(1L);
-
-        for (int i = 1; i < 5; i++) {
-            Item item = new Item();
-
-            item.setCategory("음식");
-            item.setLikeNum(0);
-            item.setLocation("location"+i);
-            item.setTitle("title"+i);
-            item.setUser(user);
-            item.setNowTab(1);
-            item.setTotalNum(100);
-
-            itemRepository.save(item);
-        }
-    }
+//   @Test
+//    public void testInsertItem() {
+//        User user = userRepository.findByUserId("user2").get(0);
+////        User user = userRepository.findOne(1L);
+//
+//        for (int i = 1; i < 5; i++) {
+//            Item item = new Item();
+//
+//            item.setCategory("음식");
+//            item.setLikeNum(0);
+//            item.setLocation("location"+i);
+//            item.setTitle("title"+i);
+//            item.setUser(user);
+//            item.setNowTab(1);
+//            item.setTotalNum(100);
+//
+//            itemRepository.save(item);
+//        }
+//    }
 
     // item의 특정칼럼 전체를 업데이트테스트
     @Test

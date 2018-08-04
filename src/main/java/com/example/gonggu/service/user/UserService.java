@@ -1,30 +1,38 @@
-package com.example.gonggu.service;
+package com.example.gonggu.service.user;
 
-import com.example.gonggu.domain.User;
-import com.example.gonggu.domain.UserRepository;
+import com.example.gonggu.domain.user.User;
+import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class UserService {
-
+    @Autowired
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+
+//    public void createUser(Map<String, String> info) {
+//        User user = new User();
+//        user.setUserId(info.get("userId"));
+//        user.setUserPW(info.get("userPw"));
+//        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPW")));
+//        user.setUserName(info.get("userName"));
+//        user.setAccounBank(info.get("accountBank"));
+//        user.setAccountHolder(info.get("accoutnHolder"));
+//        user.setAccountNum(info.get("accountNum"));
+//
+//        userRepository.save(user);
+//    }
 
     public void createUser(Map<String, String> info) {
         User user = new User();
@@ -45,6 +53,7 @@ public class UserService {
 //        }catch (Exception e ){
 //
 //        }
+//        User user = userRepository.findByUserId(info.get("userId"));
         User user = userRepository.findByUserId(info.get("userId"));
         user.setUserName(info.get("userName"));
         user.setAccounBank(info.get("userAccountBank"));
