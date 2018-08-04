@@ -1,4 +1,4 @@
-package com.example.gonggu.Controller.User;
+package com.example.gonggu.controller.user;
 
 import lombok.Getter;
 import lombok.Setter;
