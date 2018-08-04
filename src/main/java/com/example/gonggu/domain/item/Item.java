@@ -29,9 +29,9 @@ public class Item {
     private String title;       // 공구 제목
     @CreationTimestamp
     private Timestamp regDate;  // 아이템 등록 시간
-    private Integer likeNum;        // 좋아요 수
-    private Integer totalNum;                           // 뭘까...?
-    private String location;                            // 위치..?
+    private Integer likeNum;    // 좋아요 수
+    private Integer totalNum;   // 현재까지 구매한 수량
+    private String location;    // 대략적 위치
     private Integer nowTab;         // 현재 공구 진행 상황
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)

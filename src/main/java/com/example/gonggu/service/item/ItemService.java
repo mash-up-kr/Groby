@@ -57,9 +57,9 @@ public class ItemService {
                     break;
                 case 2:  // Tab2인 경우
                     recentItemList.setDueDate(items.get(i).getItemTab2().getEndDate2());
-                    recentItemList.setParticipantNum(items.get(i).getItemTab2().getAmountLimit()); // Tab2에서 보여지는 amount limit이 현재까지 참여한 수인가?
-                    recentItemList.setAmountLimit(items.get(i).getTotalNum()); // 이게 참여한 사람의 수가 아닌가?
-                    recentItemList.setImgPath(items.get(i).getItemTab2().getImgPath()); // 메인화면에 보여지는 이미지는 항상 첫번째 공구때 올린 사진...? 아님 총대가 바꿀때 마다 체인지?
+                    recentItemList.setAmountLimit(items.get(i).getItemTab2().getAmountLimit()); // 공구까지 최소수량
+                    recentItemList.setParticipantNum(items.get(i).getTotalNum()); // 지금까지 구매된 수량
+                    recentItemList.setImgPath(items.get(i).getItemTab1().getImgPath()); // 메인화면에 보여지는 이미지는 항상 첫번째 공구때 올린 사진
                     break;
                 case 4:  // Tab4인 경우
                     recentItemList.setImgPath(items.get(i).getItemTab4().getReceiptImgPath());
