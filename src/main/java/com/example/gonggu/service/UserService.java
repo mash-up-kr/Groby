@@ -17,18 +17,20 @@ import java.util.Map;
 public class UserService {
 
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public void createUser(Map<String,String> info){
+    public void createUser(Map<String, String> info) {
         User user = new User();
         user.setUserId(info.get("userId"));
         user.setUserPW(info.get("userPw"));
-//        user.setUserPW(passwordEncoder.encode(info.get("userPW")));
+        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPW")));
         user.setUserName(info.get("userName"));
         user.setAccounBank(info.get("accountBank"));
         user.setAccountHolder(info.get("accoutnHolder"));
@@ -37,27 +39,42 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateUser(Map<String,String> info){
-        User user = new User();
-
-    }
-
-    public void testUpdate(String userId){
-        User user =  userRepository.findByUserId(userId);
-        user.setUserName("수정");
-//        user.setUpdateDate(LocalDateTime.now());
+    public void userUpdate(Map<String, String> info) {
+//        try {
+//
+//        }catch (Exception e ){
+//
+//        }
+        User user = userRepository.findByUserId(info.get("userId"));
+        user.setUserName(info.get("userName"));
+        user.setAccounBank(info.get("userAccountBank"));
+        user.setAccountHolder(info.get("userAccountHolder"));
+        user.setAccountNum(info.get("userAccountNum"));
         userRepository.save(user);
-
     }
 
-    public boolean loginUser(Map<String,String> info){
+//    public void userSetPassword(){
+//        User user = userRepository.findByUserId(info.get("userId"));
+//        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPW")));
+//    }
+
+
+    public boolean loginUser(Map<String, String> info) {
         User checkUser = userRepository.findByUserId(info.get("userId"));
-        // checkUser.getUserPW()
-        // info.get("userPw"); -> encrypt
-        //
-        return true;
+
+        if (checkUser.getUserPW() == bCryptPasswordEncoder.encode(info.get("userPW")))
+            return true;
+
+        else
+            return false;
     }
 
 
+    //info Map<String,Object>
+    //return 타입 map<String,String>
+    //학교 이매일 인증
+    // User <- 토큰을 저장 User.getEmailAuth
+    // /checkEmail/{id}/{EmailAuth}
+    // User.getEmailAuth == parameter EmailAuth 일치?
 
 }
