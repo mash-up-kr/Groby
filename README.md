@@ -15,12 +15,16 @@ Mashup 09 backend
     - domain
         - user
             - User
-            - UserRepository
         - item
         - setting 
    - service
        - user
            - UserService
+       - item
+       - setting
+   - persistence
+       - user
+           - UserRepository
        - item
        - setting
        
