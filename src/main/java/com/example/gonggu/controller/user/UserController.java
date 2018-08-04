@@ -1,6 +1,8 @@
 package com.example.gonggu.controller.user;
 
 import com.example.gonggu.domain.user.User;
+import com.example.gonggu.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user/*")
+@RequestMapping("/user/**")
 public class UserController {
     /*
      user 관련 API controller
@@ -17,6 +19,8 @@ public class UserController {
     */
 
 
+    @Autowired
+    UserService userService;
 
     // 유저 아이디를 통해서 유저 정보 리턴
     @GetMapping(value = "/id/{userId}")
@@ -53,7 +57,7 @@ public class UserController {
     }
 
     // Signup 관련 , 유저를 생성
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<UserResponse> apiCreateUser(
         @RequestBody Map<String,Object> acceptJson
     ){
@@ -62,10 +66,12 @@ public class UserController {
         // can communicate with empty data like this
         // System.out.println(acceptJson.get("user_id"));
 
+        userService.createUser(acceptJson);
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("get user is done");
         returnResponse.setAcceptJson(acceptJson);
+
         return new ResponseEntity<UserResponse>(returnResponse, status);
     }
 
@@ -84,7 +90,7 @@ public class UserController {
     }
 
     // 유저의 정보를 수정
-    @PatchMapping("/")
+    @PatchMapping("")
     public ResponseEntity<UserResponse> apiChangeUser(
         @RequestBody Map<String,Object> acceptJson
     ){
