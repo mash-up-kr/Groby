@@ -11,54 +11,36 @@ import java.util.Map;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-//    public void createUser(Map<String, String> info) {
-//        User user = new User();
-//        user.setUserId(info.get("userId"));
-//        user.setUserPW(info.get("userPw"));
-//        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPW")));
-//        user.setUserName(info.get("userName"));
-//        user.setAccounBank(info.get("accountBank"));
-//        user.setAccountHolder(info.get("accoutnHolder"));
-//        user.setAccountNum(info.get("accountNum"));
-//
-//        userRepository.save(user);
-//    }
-
-    public void createUser(Map<String, String> info) {
+    public void createUser(Map<String, Object> info) {
         User user = new User();
-        user.setUserId(info.get("userId"));
-        user.setUserPW(info.get("userPw"));
-        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPW")));
-        user.setUserName(info.get("userName"));
-        user.setAccounBank(info.get("accountBank"));
-        user.setAccountHolder(info.get("accoutnHolder"));
-        user.setAccountNum(info.get("accountNum"));
+        user.setUserId(info.get("userId").toString());
+        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
+        user.setUserName(info.get("userName").toString());
+
+        // signup 단계에서 계좌 정보를 받지 않음
+//        if(info.get("userAccountBank") != null){
+//            user.setAccounBank(info.get("userAccountBank").toString());
+//            user.setAccountHolder(info.get("userAccountHolder").toString());
+//            user.setAccountNum(info.get("userAccountNum").toString());
+//        }
 
         userRepository.save(user);
     }
 
-    public void userUpdate(Map<String, String> info) {
-//        try {
-//
-//        }catch (Exception e ){
-//
-//        }
-//        User user = userRepository.findByUserId(info.get("userId"));
-        User user = userRepository.findByUserId(info.get("userId"));
-        user.setUserName(info.get("userName"));
-        user.setAccounBank(info.get("userAccountBank"));
-        user.setAccountHolder(info.get("userAccountHolder"));
-        user.setAccountNum(info.get("userAccountNum"));
+    public void userUpdate(Map<String, Object> info) {
+        User user = userRepository.findByUserId(info.get("userId").toString());
+
+        user.setUserName(info.get("userName").toString());
+        user.setAccounBank(info.get("userAccountBank").toString());
+        user.setAccountHolder(info.get("userAccountHolder").toString());
+        user.setAccountNum(info.get("userAccountNum").toString());
+
         userRepository.save(user);
     }
 

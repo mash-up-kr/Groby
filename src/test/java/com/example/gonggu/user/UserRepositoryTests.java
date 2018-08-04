@@ -15,10 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserRepositoryTests {
     @Autowired
     UserRepository userRepository;
-
     @Autowired
-    UserService usrserv;
-
+    UserService usrService;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -43,10 +41,5 @@ public class UserRepositoryTests {
         System.out.println(bCryptPasswordEncoder.matches("222",usr.getUserPW()));
     }
 
-    @Test
-    public void testUpdate(){
-//        UserService user = new UserService(userRepository, bCryptPasswordEncoder);
-//        user.testUpdate("a");
-    }
 }
 
