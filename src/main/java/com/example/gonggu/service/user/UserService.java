@@ -20,7 +20,7 @@ public class UserService {
     public void createUser(Map<String, Object> info) {
         User user = new User();
         user.setUserId(info.get("userId").toString());
-        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
+        user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
         user.setUserName(info.get("userName").toString());
 
         // signup 단계에서 계좌 정보를 받지 않음
@@ -44,18 +44,19 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    public void userSetPassword(){
-//        User user = userRepository.findByUserId(info.get("userId"));
-//        user.setUserPW(bCryptPasswordEncoder.encode(info.get("userPW")));
-//    }
+    public void userSetPassword(Map<String,Object> info){
+        User user = userRepository.findByUserId(info.get("userId").toString());
+        user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
+
+        userRepository.save(user);
+    }
 
 
-    public boolean loginUser(Map<String, String> info) {
-        User checkUser = userRepository.findByUserId(info.get("userId"));
+    public boolean loginUser(Map<String, Object> info) {
+        User checkUser = userRepository.findByUserId(info.get("userId").toString());
 
-        if (checkUser.getUserPW() == bCryptPasswordEncoder.encode(info.get("userPW")))
+        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(info.get("userPW").toString()))
             return true;
-
         else
             return false;
     }
