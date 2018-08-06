@@ -17,6 +17,20 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // 해당 유저를 찾아서 리턴해준다.
+    // info 의 getUserBy Key를 통해서 메서드를 변경한다.
+    public User getUserBy(Map<String,Object> info){
+        User user;
+        if(info.get("getUserBy").toString() == "Id"){
+            user = userRepository.findByUserId(info.get("userId").toString());
+        }else{
+            // info.get("getUserBy").toString() == "userNum"
+            user = userRepository.findOne((long)info.get("userNum"));
+        }
+        user.setUserPw(null);
+        return user;
+    }
+
     public void createUser(Map<String, Object> info) {
         User user = new User();
         user.setUserId(info.get("userId").toString());
@@ -61,6 +75,19 @@ public class UserService {
             return false;
     }
 
+
+    // for Developer not for Service
+    public boolean deleteUser(String userId) {
+
+        User checkUser = userRepository.findByUserId(userId);
+
+        if(checkUser == null){
+            return false;
+        }
+
+        userRepository.delete(checkUser);
+        return true;
+    }
 
     //info Map<String,Object>
     //return 타입 map<String,String>

@@ -12,4 +12,5 @@ public class UserResponse {
     public HttpStatus status;
     public String message;
     public Object acceptJson;
+    public Object returnJson;
 }
