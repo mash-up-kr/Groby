@@ -7,15 +7,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user/**")
+@RequestMapping("/user/*")
 public class UserController {
     /*
      user 관련 API controller
      @PathVariable(GET) 과 acceptJson(!GET) 을 통해서 정보를 받아온다.
-     return : Optional<AcceptJson> && HttpStatus && UserResponse Class 를 Entity에 포함시켜 보낸다.
+     받아오는 json 이 정확해야 한다.
+     return : HttpStatus && UserResponse Class 를 Entity에 포함시켜 보낸다.
     */
 
 
@@ -30,10 +32,15 @@ public class UserController {
         UserResponse returnResponse = new UserResponse();
         HttpStatus status = HttpStatus.OK;
 
+        User user = userService.getUserBy(new HashMap<String,Object>(){{
+            put("getUserBy" , "Id");
+            put("userId" , userId);
+        }});
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("get user is done");
         returnResponse.setAcceptJson(null);
+        returnResponse.setReturnJson(user);
 
         return new ResponseEntity<UserResponse>(returnResponse, status);
     }
@@ -44,14 +51,17 @@ public class UserController {
             @PathVariable String userNum
     ){
         UserResponse returnResponse = new UserResponse();
-        HttpStatus status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.CREATED;
 
-        User test = new User();
-
+        User user = userService.getUserBy(new HashMap<String,Object>(){{
+            put("getUserBy" , "userNum");
+            put("userNum",Long.valueOf(userNum));
+        }});
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("get user is done");
-        returnResponse.setAcceptJson(test);
+        returnResponse.setMessage("Create user is done");
+        returnResponse.setAcceptJson(null);
+        returnResponse.setReturnJson(user);
 
         return new ResponseEntity<>(returnResponse, status);
     }
@@ -81,15 +91,25 @@ public class UserController {
             @RequestBody Map<String,Object> acceptJson
     ){
         UserResponse returnResponse = new UserResponse();
-        HttpStatus status = HttpStatus.OK;
+        HttpStatus status;
+
+        if(userService.loginUser(acceptJson)){
+            status = HttpStatus.OK;
+            returnResponse.setMessage("Login is done");
+        }else{
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("Login is failed");
+        }
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Login is done");
         returnResponse.setAcceptJson(acceptJson);
+
+        returnResponse.setReturnJson(null);
+        // 만약 이 부분이 없다면 어떻게 되는걸까??
         return new ResponseEntity<UserResponse>(returnResponse, status);
     }
 
-    // 유저의 정보를 수정
+    // 유저아이디를 통해서 유저의 정보를 수정
     @PatchMapping("")
     public ResponseEntity<UserResponse> apiChangeUser(
         @RequestBody Map<String,Object> acceptJson
@@ -97,23 +117,30 @@ public class UserController {
         UserResponse returnResponse = new UserResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
 
+        userService.userUpdate(acceptJson);
+
         returnResponse.setStatus(status);
         returnResponse.setMessage("Change user is done");
         returnResponse.setAcceptJson(acceptJson);
         return new ResponseEntity<UserResponse>(returnResponse, status);
     }
 
-    // 유저를 삭제
+    // 유저 아이디를 통해서 유저를 삭제
     @DeleteMapping("/id/{userId}")
     public ResponseEntity<UserResponse> apiDeleteUserById(
-        @RequestBody Map<String,Object> acceptJson
+        @PathVariable String userId
     ){
         UserResponse returnResponse = new UserResponse();
         HttpStatus status = HttpStatus.OK;
 
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("Delete user is Done");
-        returnResponse.setAcceptJson(acceptJson);
+        if(!userService.deleteUser(userId)){
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("Check User Id");
+        }else{
+            returnResponse.setStatus(status);
+            returnResponse.setMessage("Delete user is Done");
+        }
+
         return new ResponseEntity<UserResponse>(returnResponse, status);
     }
 
