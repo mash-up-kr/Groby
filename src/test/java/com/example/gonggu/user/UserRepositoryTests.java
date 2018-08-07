@@ -41,5 +41,10 @@ public class UserRepositoryTests {
         System.out.println(bCryptPasswordEncoder.matches("222",usr.getUserPw()));
     }
 
+    @Test
+    public void testEmail(){
+        usrService.sendMail("sopthfg@gmail.com");
+    }
+
 }
 
