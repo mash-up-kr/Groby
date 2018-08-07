@@ -41,9 +41,9 @@ public class ItemService {
     }
 
     // 최신글과 관련한 서비스
-    public Map<String, Object> getRecentBoard() {
+    public List<RecentItemList> getRecentBoard() {
         List<Item> items = itemRepository.findByOrderByRegDateDesc();
-        Map<String, Object> result = new HashMap<>();
+        List<RecentItemList> result = new ArrayList<>();
         RecentItemList recentItemList;
 
         for(int i = 0; i<NUMOFRECENT; i++) {
@@ -61,8 +61,8 @@ public class ItemService {
                 case 2:  // Tab2인 경우
                     recentItemList.setDueDate(items.get(i).getItemTab2().getEndDate2());
                     recentItemList.setAmountLimit(items.get(i).getItemTab2().getAmountLimit()); // 공구까지 최소수량
-                    recentItemList.setParticipantNum(items.get(i).getTotalNum()); // 지금까지 구매된 수량
-                    recentItemList.setImgPath(items.get(i).getItemTab1().getImgPath()); // 메인화면에 보여지는 이미지는 항상 첫번째 공구때 올린 사진
+                    recentItemList.setParticipantNum(items.get(i).getTotalNum());               // 지금까지 구매된 수량
+                    recentItemList.setImgPath(items.get(i).getItemTab1().getImgPath());         // 메인화면에 보여지는 이미지는 항상 첫번째 공구때 올린 사진
                     break;
                 case 4:  // Tab4인 경우
                     recentItemList.setImgPath(items.get(i).getItemTab4().getReceiptImgPath());
@@ -71,7 +71,7 @@ public class ItemService {
                     break;
             }
 
-            result.put(String.valueOf(i), recentItemList);
+            result.add(recentItemList);
         }
         return result;
     }
