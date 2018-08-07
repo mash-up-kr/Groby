@@ -20,19 +20,22 @@ public class ItemService {
 
 
     // 인기글과 관련한 서비스
-    public List<Map<String,Object>> getPopularBoard () {
+    public Map<String,Object> getPopularBoard () {
         List<Item> items = itemRepository.findByOrderByLikeNumDesc();
-
-        List<Map<String, Object>> results = new ArrayList<>();
-        Map<String, Object> itemDetail = new HashMap<>();
+        Map<String, Object> results = new HashMap<>();
+        PopularItemList popularItemList;
 
         for (int i = 0; i < NUMOFPOPULAR; i++) {
-            itemDetail.put("itemId", items.get(i).getItemId());
-            itemDetail.put("title", items.get(i).getTitle());
-            itemDetail.put("img", "이미지 주소");
-            results.add(itemDetail);
+            popularItemList = new PopularItemList();
+
+            popularItemList.setItemId(items.get(i).getItemId());
+            popularItemList.setTitle(items.get(i).getTitle());                              // 공구 title
+            popularItemList.setParticipantNum(items.get(i).getTotalNum());                  // 지금까지 구매된 수량
+            popularItemList.setAmountLimit(items.get(i).getItemTab2().getAmountLimit());    // 공구까지 최소 수량
+            popularItemList.setImgPath(items.get(i).getItemTab1().getImgPath());            // 탭 1에서 총대가 설정한 이미지
+
+            results.put(String.valueOf(i), popularItemList);
         }
-//        return results;
         System.out.println(results);
         return results;
     }
