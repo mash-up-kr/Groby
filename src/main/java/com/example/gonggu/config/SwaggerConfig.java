@@ -17,7 +17,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.gonggu.controller"))
                 .paths(PathSelectors.any())
-//                .paths(PathSelectors.regex("\\/(user|setting)\\/\\w*"))
+//                .paths(PathSelectors.regex("\\/(user|category)\\/\\w*"))
                 .build();
     }
 }

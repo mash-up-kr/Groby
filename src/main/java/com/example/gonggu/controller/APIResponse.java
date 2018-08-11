@@ -1,4 +1,4 @@
-package com.example.gonggu.controller.user;
+package com.example.gonggu.controller;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 @ToString
-public class UserResponse {
+public class APIResponse {
     public HttpStatus status;
     public String message;
     public Object acceptJson;
+    public Object returnJson;
 }

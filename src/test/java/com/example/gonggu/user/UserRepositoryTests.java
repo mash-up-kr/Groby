@@ -25,10 +25,10 @@ public class UserRepositoryTests {
     public void testInsert(){
 //        UserService user = new UserService(userRepository, bCryptPasswordEncoder);
         User user = new User();
-        user.setUserId("1");
-        user.setUserPW(bCryptPasswordEncoder.encode("123"));
+        user.setUserEmail("1");
+        user.setUserPw(bCryptPasswordEncoder.encode("123"));
         user.setUserName("4");
-        user.setAccounBank("5");
+        user.setAccountBank("5");
         user.setAccountHolder("5");
         user.setAccountNum("6");
 
@@ -38,7 +38,12 @@ public class UserRepositoryTests {
     @Test
     public void testCheck(){
         User usr = userRepository.findOne(5l);
-        System.out.println(bCryptPasswordEncoder.matches("222",usr.getUserPW()));
+        System.out.println(bCryptPasswordEncoder.matches("222",usr.getUserPw()));
+    }
+
+    @Test
+    public void testEmail(){
+        usrService.sendMail("sopthfg@gmail.com");
     }
 
 }
