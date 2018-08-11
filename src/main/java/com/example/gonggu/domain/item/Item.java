@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -50,4 +51,15 @@ public class Item {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab5_id")
     private ItemTab5 itemTab5;
+
+
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private List<ListOfParticipantForItem> participantForItemList;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private List<ListOfLikeForItem> likeForItemList;
 }
