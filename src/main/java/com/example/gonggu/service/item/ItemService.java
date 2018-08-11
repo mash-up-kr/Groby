@@ -21,7 +21,7 @@ public class ItemService {
 
     // 인기글과 관련한 서비스
     public Map<String,Object> getPopularBoard () {
-        List<Item> items = itemRepository.findByOrderByLikeNumDesc();
+        List<Item> items = itemRepository.findByOrderByNumOfLikeDesc();
         Map<String, Object> results = new HashMap<>();
         PopularItemList popularItemList;
 
@@ -30,8 +30,8 @@ public class ItemService {
 
             popularItemList.setItemId(items.get(i).getItemId());
             popularItemList.setTitle(items.get(i).getTitle());                              // 공구 title
-            popularItemList.setParticipantNum(items.get(i).getTotalNum());                  // 지금까지 구매된 수량
-            popularItemList.setAmountLimit(items.get(i).getItemTab2().getAmountLimit());    // 공구까지 최소 수량
+            popularItemList.setParticipantNum(items.get(i).getNumOfOrder());                  // 지금까지 구매된 수량
+            popularItemList.setAmountLimit(items.get(i).getAmountLimit());    // 공구까지 최소 수량
             popularItemList.setImgPath(items.get(i).getItemTab1().getImgPath());            // 탭 1에서 총대가 설정한 이미지
 
             results.put(String.valueOf(i), popularItemList);
@@ -54,14 +54,14 @@ public class ItemService {
 
             switch (recentItemList.getCurrentTap()) {
                 case 1:  // Tab1인 경우
-                    recentItemList.setDueDate(items.get(i).getItemTab1().getEndDate1());
-                    recentItemList.setLikeNum(items.get(i).getLikeNum());
+                    recentItemList.setDueDate(items.get(i).getItemTab1().getEndDate());
+                    recentItemList.setLikeNum(items.get(i).getNumOfLike());
                     recentItemList.setImgPath(items.get(i).getItemTab1().getImgPath());
                     break;
                 case 2:  // Tab2인 경우
-                    recentItemList.setDueDate(items.get(i).getItemTab2().getEndDate2());
-                    recentItemList.setAmountLimit(items.get(i).getItemTab2().getAmountLimit()); // 공구까지 최소수량
-                    recentItemList.setParticipantNum(items.get(i).getTotalNum());               // 지금까지 구매된 수량
+                    recentItemList.setDueDate(items.get(i).getItemTab2().getEndDate());
+                    recentItemList.setAmountLimit(items.get(i).getAmountLimit()); // 공구까지 최소수량
+                    recentItemList.setParticipantNum(items.get(i).getNumOfOrder());               // 지금까지 구매된 수량
                     recentItemList.setImgPath(items.get(i).getItemTab1().getImgPath());         // 메인화면에 보여지는 이미지는 항상 첫번째 공구때 올린 사진
                     break;
                 case 4:  // Tab4인 경우

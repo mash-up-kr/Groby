@@ -25,10 +25,10 @@ public class UserService {
     public User getUserBy(Map<String,Object> info){
         User user;
         if(info.get("getUserBy").toString() == "Id"){
-            user = userRepository.findByUserId(info.get("userId").toString());
+            user = userRepository.findByUserId(info.get("userEmail").toString());
         }else{
-            // info.get("getUserBy").toString() == "userNum"
-            user = userRepository.findOne((long)info.get("userNum"));
+            // info.get("getUserBy").toString() == "userId"
+            user = userRepository.findOne((long)info.get("userId"));
         }
         user.setUserPw(null);
         return user;
@@ -36,13 +36,13 @@ public class UserService {
 
     public void createUser(Map<String, Object> info) {
         User user = new User();
-        user.setUserId(info.get("userId").toString());
+        user.setUserEmail(info.get("userEmail").toString());
         user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
         user.setUserName(info.get("userName").toString());
 
         // signup 단계에서 계좌 정보를 받지 않음
 //        if(info.get("userAccountBank") != null){
-//            user.setAccounBank(info.get("userAccountBank").toString());
+//            user.setAccountBank(info.get("userAccountBank").toString());
 //            user.setAccountHolder(info.get("userAccountHolder").toString());
 //            user.setAccountNum(info.get("userAccountNum").toString());
 //        }
@@ -51,10 +51,10 @@ public class UserService {
     }
 
     public void userUpdate(Map<String, Object> info) {
-        User user = userRepository.findByUserId(info.get("userId").toString());
+        User user = userRepository.findByUserId(info.get("userEmail").toString());
 
         user.setUserName(info.get("userName").toString());
-        user.setAccounBank(info.get("userAccountBank").toString());
+        user.setAccountBank(info.get("userAccountBank").toString());
         user.setAccountHolder(info.get("userAccountHolder").toString());
         user.setAccountNum(info.get("userAccountNum").toString());
 
@@ -62,7 +62,7 @@ public class UserService {
     }
 
     public void userSetPassword(Map<String,Object> info){
-        User user = userRepository.findByUserId(info.get("userId").toString());
+        User user = userRepository.findByUserId(info.get("userEmail").toString());
         user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
 
         userRepository.save(user);
@@ -70,7 +70,7 @@ public class UserService {
 
 
     public boolean loginUser(Map<String, Object> info) {
-        User checkUser = userRepository.findByUserId(info.get("userId").toString());
+        User checkUser = userRepository.findByUserId(info.get("userEmail").toString());
 
         if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(info.get("userPW").toString()))
             return true;

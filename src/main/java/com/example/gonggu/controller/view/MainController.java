@@ -51,7 +51,7 @@ public class MainController {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
-        // acceptJson.get("userId")
+        // acceptJson.get("userEmail")
         // acceptJson.get("itemId")
 
         returnResponse.setStatus(status);
