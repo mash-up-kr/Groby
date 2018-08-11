@@ -35,7 +35,7 @@ public class UserController {
 
         User user = userService.getUserBy(new HashMap<String,Object>(){{
             put("getUserBy" , "Id");
-            put("userId" , userId);
+            put("userEmail" , userId);
         }});
 
         returnResponse.setStatus(status);
@@ -55,8 +55,8 @@ public class UserController {
         HttpStatus status = HttpStatus.CREATED;
 
         User user = userService.getUserBy(new HashMap<String,Object>(){{
-            put("getUserBy" , "userNum");
-            put("userNum",Long.valueOf(userNum));
+            put("getUserBy" , "userId");
+            put("userId",Long.valueOf(userNum));
         }});
 
         returnResponse.setStatus(status);

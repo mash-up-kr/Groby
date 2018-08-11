@@ -13,20 +13,21 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userNum;
-    private String userId;
+    private Long userId;
+    private String userEmail;
     private String userPw;
     private String userName;
 
     private String accountNum;
-    private String accounBank;
+    private String accountBank;
     private String accountHolder;
+
+    private Boolean isDeleted;
 
     @CreationTimestamp
     private Timestamp regDate;
