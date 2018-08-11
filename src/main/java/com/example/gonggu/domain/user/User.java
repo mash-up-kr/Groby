@@ -9,10 +9,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "participants")
 @Entity
 public class User {
 
@@ -33,4 +34,8 @@ public class User {
     private Timestamp regDate;
     @UpdateTimestamp
     private Timestamp updateDate;
+
+    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<ListOfParticipantForUser> participants;
 }
