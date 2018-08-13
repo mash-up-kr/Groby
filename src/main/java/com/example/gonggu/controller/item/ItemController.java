@@ -39,23 +39,71 @@ public class ItemController {
     }
 
     @PostMapping("")
-    public ResponseEntity<APIResponse> apiCreateItem(
+    public ResponseEntity<APIResponse> apiCreateItemAndTabs(
             @RequestBody Map<String,Object> acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
-        // create item , tab1
+        // create item , tabs
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Create Item");
+        returnResponse.setMessage("Create Item and Tabs");
         returnResponse.setAcceptJson(acceptJson);
 
         return new ResponseEntity<>(returnResponse,status);
     }
 
     @PostMapping("/2")
-    public ResponseEntity<APIResponse> apiCreateTab2(
+    public ResponseEntity<APIResponse> apiUpdateTab2(
+            @RequestBody Map<String,Object> acceptJson
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.OK;
+
+        //  tab2
+
+        returnResponse.setStatus(status);
+        returnResponse.setMessage("Update Tab2");
+        returnResponse.setAcceptJson(acceptJson);
+
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
+    @PostMapping("/3")
+    public ResponseEntity<APIResponse> apiUpdateTab3(
+            @RequestBody Map<String,Object> acceptJson
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.OK;
+
+        // tab3
+
+        returnResponse.setStatus(status);
+        returnResponse.setMessage("Update Tab3");
+        returnResponse.setAcceptJson(acceptJson);
+
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
+    @PostMapping("/4")
+    public ResponseEntity<APIResponse> apiUpdateTab4(
+            @RequestBody Map<String,Object> acceptJson
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.OK;
+
+        // process tab4
+
+        returnResponse.setStatus(status);
+        returnResponse.setMessage("Update Tab4");
+        returnResponse.setAcceptJson(acceptJson);
+
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
+    @PostMapping("/5")
+    public ResponseEntity<APIResponse> apiUpdateTab5(
             @RequestBody Map<String,Object> acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
@@ -64,7 +112,7 @@ public class ItemController {
         // create tab2
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Create Tab2");
+        returnResponse.setMessage("Update Tab5");
         returnResponse.setAcceptJson(acceptJson);
 
         return new ResponseEntity<>(returnResponse,status);
