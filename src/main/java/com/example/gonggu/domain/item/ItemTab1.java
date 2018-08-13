@@ -15,6 +15,7 @@ public class ItemTab1 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tabOneId;
+
     private String imgPath;      // 이미지 주소
     private Date endDate;        // 좋아요 받는 마지막 날
     private String contents;     // 총대의 메시지

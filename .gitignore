@@ -3,6 +3,8 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 application.properties
+/src/test/java/com/example/gonggu/user/*
+/src/test/java/com/example/gonggu/item/*
 
 ### STS ###
 .apt_generated
