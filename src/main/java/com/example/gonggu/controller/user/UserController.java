@@ -26,16 +26,16 @@ public class UserController {
     UserService userService;
 
     // 유저 아이디를 통해서 유저 정보 리턴
-    @GetMapping(value = "/id/{userId}")
-    public ResponseEntity<APIResponse> apiGetUserById(
-            @PathVariable String userId
+    @GetMapping(value = "/email/{userEmail}")
+    public ResponseEntity<APIResponse> apiGetUserByEmail(
+            @PathVariable String userEmail
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
         User user = userService.getUserBy(new HashMap<String,Object>(){{
-            put("getUserBy" , "Id");
-            put("userEmail" , userId);
+            put("getUserBy" , "Email");
+            put("userEmail" , userEmail);
         }});
 
         returnResponse.setStatus(status);
@@ -43,7 +43,7 @@ public class UserController {
         returnResponse.setAcceptJson(null);
         returnResponse.setReturnJson(user);
 
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
     // 유저 넘버 (PK) 를 통해서 유저 정보 리턴
@@ -68,22 +68,20 @@ public class UserController {
     }
 
     // Signup 관련 , 유저를 생성
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateUser(
         @RequestBody Map<String,Object> acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
-        // can communicate with empty data like this
-        // System.out.println(acceptJson.get("user_id"));
+        HttpStatus status = HttpStatus.CREATED;
 
         userService.createUser(acceptJson);
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("get user is done");
+        returnResponse.setMessage("create user is done");
         returnResponse.setAcceptJson(acceptJson);
 
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
     // 유저 로그인
@@ -107,11 +105,11 @@ public class UserController {
 
         returnResponse.setReturnJson(null);
         // 만약 이 부분이 없다면 어떻게 되는걸까??
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
     // 유저아이디를 통해서 유저의 정보를 수정
-    @PatchMapping("")
+    @PatchMapping("/")
     public ResponseEntity<APIResponse> apiChangeUser(
         @RequestBody Map<String,Object> acceptJson
     ){
@@ -123,26 +121,26 @@ public class UserController {
         returnResponse.setStatus(status);
         returnResponse.setMessage("Change user is done");
         returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
     // 유저 아이디를 통해서 유저를 삭제
-    @DeleteMapping("/id/{userId}")
+    @DeleteMapping("/id/{userEmail}")
     public ResponseEntity<APIResponse> apiDeleteUserById(
         @PathVariable String userId
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.ACCEPTED;
 
         if(!userService.deleteUser(userId)){
             status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Check User Id");
+            returnResponse.setMessage("Check User Email");
         }else{
             returnResponse.setStatus(status);
             returnResponse.setMessage("Delete user is Done");
         }
 
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
 
