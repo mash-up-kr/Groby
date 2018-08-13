@@ -38,7 +38,7 @@ public class ItemController {
 
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateItem(
             @RequestBody Map<String,Object> acceptJson
     ){

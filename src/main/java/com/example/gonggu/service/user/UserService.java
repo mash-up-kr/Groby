@@ -24,7 +24,7 @@ public class UserService {
     // info 의 getUserBy Key를 통해서 메서드를 변경한다.
     public User getUserBy(Map<String,Object> info){
         User user;
-        if(info.get("getUserBy").toString() == "Id"){
+        if(info.get("getUserBy").toString() == "Email"){
             user = userRepository.findByUserId(info.get("userEmail").toString());
         }else{
             // info.get("getUserBy").toString() == "userId"
