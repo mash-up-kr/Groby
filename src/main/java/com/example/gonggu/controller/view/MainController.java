@@ -44,19 +44,5 @@ public class MainController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
-    @PostMapping("/like")
-    public ResponseEntity<APIResponse> apiCheckLike(
-            @RequestBody Map<String,Object> acceptJson
-    ){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
-
-        // acceptJson.get("userEmail")
-        // acceptJson.get("itemId")
-
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("check Like");
-        return new ResponseEntity<>(returnResponse,status);
-    }
 
 }

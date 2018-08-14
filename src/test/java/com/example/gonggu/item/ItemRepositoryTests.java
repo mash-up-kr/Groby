@@ -3,20 +3,25 @@ package com.example.gonggu.item;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
 import com.example.gonggu.domain.item.ItemTab1;
+import com.example.gonggu.domain.item.ListOfLikeForItem;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
+import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Commit
 public class ItemRepositoryTests {
     @Autowired
     private ItemRepository itemRepository;
@@ -26,6 +31,9 @@ public class ItemRepositoryTests {
 
     @Autowired
     private CategoryRepository categoryRepo;
+
+    @Autowired
+    private ListOfLikeForItemRepo listLikeRepo;
 
 
    //  item테이블에 아이템 값을 입력하는 테스트
@@ -104,6 +112,31 @@ public class ItemRepositoryTests {
 //       items.forEach(item -> {
 //           System.out.println(item);
 //       });
+//    }
+
+//    @Transactional
+//    @Test
+//    public void testLike(){
+//        Item item = itemRepository.getOne(1L);
+//        ListOfLikeForItem like = new ListOfLikeForItem();
+//        like.setUserEmail("onemoon3@gmail.com");
+//
+//        boolean check = true;
+//
+//        for(ListOfLikeForItem temp :item.getLikeForItemList())
+//            if(temp.getUserEmail().equals(like.getUserEmail()) ){
+//                item.getLikeForItemList().remove(temp);
+//                listLikeRepo.delete(temp.getLikeId());
+//                check = false; break;
+//            }
+//
+//
+//        //false 면 삭제 되었음 true 면 추가해야함
+//        if(check) item.getLikeForItemList().add(like);
+//
+//
+//        item.setNumOfLike(item.getLikeForItemList().size());
+//        itemRepository.save(item);
 //    }
 
 }

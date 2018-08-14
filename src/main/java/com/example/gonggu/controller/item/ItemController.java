@@ -86,7 +86,7 @@ public class ItemController {
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
-        acceptJson.setA_itemId(OptionalLong.of(Long.valueOf(itemId)));
+        acceptJson.setA_itemId(itemId);
 
         // update tab
 
@@ -112,6 +112,30 @@ public class ItemController {
 //        returnResponse.setReturnJson(null);
         return new ResponseEntity<>(returnResponse,status);
     }
+
+    // t1 like
+    // acceptJson
+    //      A_itemId , UserLikeEmail 필수
+    @PostMapping("/{itemId}/like")
+    public ResponseEntity<APIResponse> apiAddLike(
+            @PathVariable String itemId,
+            @RequestBody ItemAcceptJson acceptJson
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        acceptJson.setA_itemId(itemId);
+
+        if(itemService.toggleLike(acceptJson))
+            returnResponse.setMessage("Add Like");
+        else
+            returnResponse.setMessage("Remove Like");
+
+
+        returnResponse.setStatus(status);
+        returnResponse.setAcceptJson(acceptJson);
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
 
     // t2 유저의 참여
     @PostMapping("/{itemId}/userlist")

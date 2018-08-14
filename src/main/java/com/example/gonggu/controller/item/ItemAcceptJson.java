@@ -12,29 +12,31 @@ import java.util.OptionalLong;
 @ToString
 public class ItemAcceptJson {
     private String a_TabNumber;
-    private OptionalLong a_itemId;
+    private String a_itemId;
+    private String a_userId;
+    private String userLikeEmail;
 
-    private Optional<String> itemUserEmail;
-    private Optional<String> itemCategory;
-    private Optional<String> itemTitle;
+    private String itemUserEmail;
+    private String itemCategory;
+    private String itemTitle;
     // tab one
-    private Optional<String> oneImgPath;      // 이미지 주소
-    private Optional<String> oneEndDate;        // 좋아요 받는 마지막 날
-    private Optional<String> oneContents;     // 총대의 메시지
-    private Optional<String> oneLocation;     // 대략적 위치
+    private String oneImgPath;      // 이미지 주소
+    private String oneEndDate;        // 좋아요 받는 마지막 날
+    private String oneContents;     // 총대의 메시지
+    private String oneLocation;     // 대략적 위치
     //tab two
-    private Optional<String> twoImgPath;          // 이미지 주소
-    private Optional<String> twoContents;         // 총대의 메시지
-    private Optional<String> twoEndDate;            // 공구 종료시점
-    private Optional<String> twoOptionString;           // 옵션값 한줄로 저장
+    private String twoImgPath;          // 이미지 주소
+    private String twoContents;         // 총대의 메시지
+    private String twoEndDate;            // 공구 종료시점
+    private String twoOptionString;           // 옵션값 한줄로 저장
     //tab four
-    private Optional<String> fourContents;       // 총대의 메시지
-    private Optional<String> fourReceiptImgPath; // 영수증 사진 주소
-    private Optional<String> fourArrivedTime;      // 도착예정시간
+    private String fourContents;       // 총대의 메시지
+    private String fourReceiptImgPath; // 영수증 사진 주소
+    private String fourArrivedTime;      // 도착예정시간
     //tab five
-    private Optional<String> fiveContents;                // 총대의 메시지
-    private Optional<String> fiveLocationDetail;          // 공구물품 배부장소
-    private Optional<String> fiveDistributionTime;        // 공구물품 배부시간 (ex. 2018-01-02-1234/2018-01-02-1534)
+    private String fiveContents;                // 총대의 메시지
+    private String fiveLocationDetail;          // 공구물품 배부장소
+    private String fiveDistributionTime;        // 공구물품 배부시간 (ex. 2018-01-02-1234/2018-01-02-1534)
 
 //    public void setA_itemId(Long check) {
 //        this.a_itemId = new Optional<Long>();

@@ -3,16 +3,21 @@ package com.example.gonggu.service.item;
 import com.example.gonggu.controller.item.ItemAcceptJson;
 import com.example.gonggu.domain.item.Item;
 import com.example.gonggu.domain.item.ItemTab2;
+import com.example.gonggu.domain.item.ListOfLikeForItem;
 import com.example.gonggu.persistence.item.ItemRepository;
+import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Configuration
 public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private ListOfLikeForItemRepo likeRepo;
 
     // 인기글 보여지는 개수
     private final int NUMOFPOPULAR = 5;
@@ -80,16 +85,16 @@ public class ItemService {
 
     public boolean patchItemTab(ItemAcceptJson acceptJson){
         Map<String, Object> results = new HashMap<>();
-        Item parentsItem = itemRepository.getOne(acceptJson.getA_itemId().getAsLong());
+        Item parentsItem = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
 
         switch (acceptJson.getA_TabNumber()){
             case "2" :
 
                 // optionString contents img_path
                 ItemTab2 tab2 = parentsItem.getItemTab2();
-                acceptJson.getTwoImgPath().ifPresent(imgP->{ tab2.setImgPath(imgP); });
-                acceptJson.getTwoContents().ifPresent(contents->{ tab2.setContents(contents); });
-                acceptJson.getTwoOptionString().ifPresent(opString->{ tab2.setOptionString(opString); });
+                if(!acceptJson.getTwoImgPath().isEmpty()) tab2.setImgPath(acceptJson.getTwoImgPath());
+                if(!acceptJson.getTwoContents().isEmpty()) tab2.setContents(acceptJson.getTwoContents());
+                if(!acceptJson.getTwoOptionString().isEmpty()) tab2.setOptionString(acceptJson.getTwoOptionString());
                 // 여기를 set 해줘야겠지?? 바로 save를 호출해도 되려나?? @Hyeontae
                 parentsItem.setItemTab2(tab2);
                 itemRepository.save(parentsItem);
@@ -108,5 +113,32 @@ public class ItemService {
         }
 
         return true;
+    }
+
+    // like 관련 service
+    // acceptJson
+    //      A_itemId , UserLikeEmail 필수
+    // return
+    //      true : like 추가
+    //      false : like 제거
+    @Transactional
+    public boolean toggleLike(ItemAcceptJson acceptJson){
+        Item item = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
+        boolean result = true;
+        for(ListOfLikeForItem temp :item.getLikeForItemList())
+            if(temp.getUserEmail().equals(acceptJson.getUserLikeEmail()) ){
+                item.getLikeForItemList().remove(temp);
+                likeRepo.delete(temp.getLikeId());
+                result = false; break;
+            }
+
+        if(result) {
+            ListOfLikeForItem newlike = new ListOfLikeForItem();
+            newlike.setUserEmail(acceptJson.getUserLikeEmail().toString());
+            item.getLikeForItemList().add(newlike);
+        }
+
+
+        return result;
     }
 }
