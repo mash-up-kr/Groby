@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString(exclude = {"user", "itemTab1", "itemTab2", "itemTab4", "itemTab5"})
+@ToString(exclude = {"user", "itemTab1", "itemTab2", "itemTab4", "itemTab5" , "category"})
 @Entity
 public class Item {
     @Id
