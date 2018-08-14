@@ -1,8 +1,10 @@
 package com.example.gonggu.item;
 
+import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
 import com.example.gonggu.domain.item.ItemTab1;
 import com.example.gonggu.domain.user.User;
+import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.junit.Test;
@@ -13,38 +15,38 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//public class ItemRepositoryTests {
-//    @Autowired
-//    private ItemRepository itemRepository;
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ItemRepositoryTests {
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepo;
+
+
+   //  item테이블에 아이템 값을 입력하는 테스트
+//   @Test
+//    public void testInsertItem() {
+//       User owner = userRepository.findByUserName("onemoon");
+//       Item newItem = new Item();
+//       newItem.setUser(owner);
+//       newItem.setTitle("제목+잡화");
+//       newItem.setCategory(categoryRepo.findOne(1L));
 //
-//    @Autowired
-//    private UserRepository userRepository;
+//       ItemTab1 newItemTab1 = new ItemTab1();
+//       newItemTab1.setContents("제목입니다");
+//       newItemTab1.setImgPath("s3URL");
 //
+//       newItem.setItemTab1(newItemTab1);
 //
-//    // item테이블에 아이템 값을 입력하는 테스트
-////   @Test
-////    public void testInsertItem() {
-////        User user = userRepository.findByUserId("user2").get(0);
-//////        User user = userRepository.findOne(1L);
-////
-////        for (int i = 1; i < 5; i++) {
-////            Item item = new Item();
-////
-////            item.setCategory("음식");
-////            item.setNumOfLike(0);
-////            item.setLocation("location"+i);
-////            item.setTitle("title"+i);
-////            item.setUser(user);
-////            item.setNowTab(1);
-////            item.setNumOfOrder(100);
-////
-////            itemRepository.save(item);
-////        }
-////    }
-//
-//
+//       itemRepository.save(newItem);
+//    }
+
+
 //    @Test
 //    public void testInsertTab1() {
 //
@@ -80,7 +82,7 @@ import java.util.List;
 //
 //        items.forEach(item -> {
 ////            System.out.println(item);
-//            item.setCategory("옷");
+////            item.setCategory("옷");
 //            itemRepository.save(item);
 //        });
 //    }
@@ -103,4 +105,5 @@ import java.util.List;
 //           System.out.println(item);
 //       });
 //    }
-//}
+
+}
