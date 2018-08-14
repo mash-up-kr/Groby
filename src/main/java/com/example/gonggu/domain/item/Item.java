@@ -1,5 +1,6 @@
 package com.example.gonggu.domain.item;
 
+import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.user.User;
 import lombok.Data;
 import lombok.Getter;
@@ -21,10 +22,12 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "writer_id")
     private User user;
-    private String category;        // 카테고리
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;        // 카테고리
     private String title;           // 공구 제목
     @CreationTimestamp
     private Timestamp regDate;      // 아이템 등록 시간
