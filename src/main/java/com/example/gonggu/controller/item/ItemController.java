@@ -186,21 +186,22 @@ public class ItemController {
     // t3 , t4 업뎃만 하면 완료
 
     // t5
-    @GetMapping("/{itemId}/userlist/{userEmail}")
-    public ResponseEntity<APIResponse> apiUserListSearch(
-            @PathVariable(name = "itemId") String itemId,
-            @PathVariable(name = "userEmail") String userEmail
-    ){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
-
-        // 유저 검색
-
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("User Search Is Done");
-        returnResponse.setReturnJson(null);
-        return new ResponseEntity<>(returnResponse,status);
-    }
+    // ios 단에서 처리 가능할 것이라고 생각해서 보류
+//    @GetMapping("/{itemId}/userlist/{userEmail}")
+//    public ResponseEntity<APIResponse> apiUserListSearch(
+//            @PathVariable(name = "itemId") String itemId,
+//            @PathVariable(name = "userEmail") String userEmail
+//    ){
+//        APIResponse returnResponse = new APIResponse();
+//        HttpStatus status = HttpStatus.OK;
+//
+//        // 유저 검색
+//
+//        returnResponse.setStatus(status);
+//        returnResponse.setMessage("User Search Is Done");
+//        returnResponse.setReturnJson(null);
+//        return new ResponseEntity<>(returnResponse,status);
+//    }
 
 
 
