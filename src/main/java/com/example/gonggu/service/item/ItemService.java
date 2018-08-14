@@ -1,6 +1,8 @@
 package com.example.gonggu.service.item;
 
+import com.example.gonggu.controller.item.ItemAcceptJson;
 import com.example.gonggu.domain.item.Item;
+import com.example.gonggu.domain.item.ItemTab2;
 import com.example.gonggu.persistence.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -74,5 +76,37 @@ public class ItemService {
             result.add(recentItemList);
         }
         return result;
+    }
+
+    public boolean patchItemTab(ItemAcceptJson acceptJson){
+        Map<String, Object> results = new HashMap<>();
+        Item parentsItem = itemRepository.getOne(acceptJson.getA_itemId().getAsLong());
+
+        switch (acceptJson.getA_TabNumber()){
+            case "2" :
+
+                // optionString contents img_path
+                ItemTab2 tab2 = parentsItem.getItemTab2();
+                acceptJson.getTwoImgPath().ifPresent(imgP->{ tab2.setImgPath(imgP); });
+                acceptJson.getTwoContents().ifPresent(contents->{ tab2.setContents(contents); });
+                acceptJson.getTwoOptionString().ifPresent(opString->{ tab2.setOptionString(opString); });
+                // 여기를 set 해줘야겠지?? 바로 save를 호출해도 되려나?? @Hyeontae
+                parentsItem.setItemTab2(tab2);
+                itemRepository.save(parentsItem);
+
+                break;
+            case "3" :
+                System.out.println("3");
+                break;
+            case "4" :
+                System.out.println("2");
+                break;
+            case "5" :
+                System.out.println("2");
+                break;
+
+        }
+
+        return true;
     }
 }

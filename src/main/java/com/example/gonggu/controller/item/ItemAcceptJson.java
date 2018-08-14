@@ -5,12 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @Getter
 @Setter
 @ToString
 public class ItemAcceptJson {
     private String a_TabNumber;
+    private OptionalLong a_itemId;
 
     private Optional<String> itemUserEmail;
     private Optional<String> itemCategory;
@@ -33,4 +35,8 @@ public class ItemAcceptJson {
     private Optional<String> fiveContents;                // 총대의 메시지
     private Optional<String> fiveLocationDetail;          // 공구물품 배부장소
     private Optional<String> fiveDistributionTime;        // 공구물품 배부시간 (ex. 2018-01-02-1234/2018-01-02-1534)
+
+//    public void setA_itemId(Long check) {
+//        this.a_itemId = new Optional<Long>();
+//    }
 }

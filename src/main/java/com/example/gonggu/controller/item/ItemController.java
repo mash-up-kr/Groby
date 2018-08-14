@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 @RestController
 @RequestMapping("/item/*")
@@ -77,29 +79,16 @@ public class ItemController {
 
     // 탭 수정
     // 다음 단계로 넘어가는 작업들이 여기서 진행이 된다.
-    @PatchMapping("/tab")
+    @PatchMapping("/{itemId}/tab")
     public ResponseEntity<APIResponse> apiUpdateTab(
+            @PathVariable String itemId,
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
+        acceptJson.setA_itemId(OptionalLong.of(Long.valueOf(itemId)));
 
         // update tab
-        switch (acceptJson.getA_TabNumber()){
-            case "2" :
-                System.out.println("2");
-                break;
-            case "3" :
-                System.out.println("3");
-                break;
-            case "4" :
-                System.out.println("2");
-                break;
-            case "5" :
-                System.out.println("2");
-                break;
-
-        }
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("Update Tab");
