@@ -10,9 +10,9 @@ import java.util.Map;
 //@RestController
 //@RequestMapping("/*")
 public class OverallController {
-    private Object message;
-    private HttpStatus status;
-
+//    private Object message;
+//    private HttpStatus status;
+//
 //
 //    @PostMapping("/")
 //    public ResponseEntity<OverallController> checkPost(
@@ -31,6 +31,6 @@ public class OverallController {
 //        checkResponse.setMessage("wowwww");
 //        return new ResponseEntity<OverallController>(checkResponse,status);
 //    }
-//
+
 
 }
