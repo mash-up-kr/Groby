@@ -1,16 +1,14 @@
 package com.example.gonggu.controller.category;
 
 import com.example.gonggu.controller.APIResponse;
-import com.example.gonggu.domain.category.Category;
-import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.service.category.CategoryService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -42,6 +40,9 @@ public class CategoryController {
 
     //카테고리 생성
     @PostMapping("/")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "category", value = "생성할카테고리", required = false, dataType = "string", paramType = "path", defaultValue = "")
+    })
     public ResponseEntity<APIResponse> apiCreateCategory(
             @RequestBody CategoryAcceptJson acceptJson
     ) {
