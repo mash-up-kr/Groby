@@ -1,30 +1,36 @@
 package com.example.gonggu.service.item;
 
 import com.example.gonggu.controller.item.ItemAcceptJson;
-import com.example.gonggu.domain.item.Item;
-import com.example.gonggu.domain.item.ItemTab2;
-import com.example.gonggu.domain.item.ListOfLikeForItem;
+import com.example.gonggu.domain.category.Category;
+import com.example.gonggu.domain.item.*;
+import com.example.gonggu.domain.user.User;
+import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
+import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Configuration
+@Service
 public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
     private ListOfLikeForItemRepo likeRepo;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     // 인기글 보여지는 개수
     private final int NUMOFPOPULAR = 5;
 
     // 최신글에 보여지는 개수
     private final int NUMOFRECENT = 10;
-
 
     // 인기글과 관련한 서비스
     public Map<String,Object> getPopularBoard () {
@@ -140,5 +146,45 @@ public class ItemService {
 
 
         return result;
+    }
+
+    // 공구 item 생성하기
+    public Map<String,Object> createItem(ItemAcceptJson acceptJson){
+        Map<String, Object> results = new HashMap<>();
+        Item item = new Item();
+        ItemTab1 itemTab1 = new ItemTab1();
+        // item Tab들 다 생성하기
+        ItemTab2 itemTab2 = new ItemTab2();
+        ItemTab4 itemTab4 = new ItemTab4();
+        ItemTab5 itemTab5 = new ItemTab5();
+
+        // 공구 item에 대한 기본 설정
+        item.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
+        Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
+        item.setCategory(getCategory);
+        item.setTitle(acceptJson.getItemTitle());
+        User getUser = userRepository.findByUserEmail(acceptJson.getItemUserEmail());
+        item.setUser(getUser);
+
+        // 공구 item tab1 설정
+        itemTab1.setContents(acceptJson.getOneContents());
+        itemTab1.setLocation(acceptJson.getOneLocation());
+        itemTab1.setImgPath(acceptJson.getOneImgPath());
+        // 프론트에서 String으로 전달하라고 할것인지.. 그렇다면 Tab1에 있는 끝나는 날짜를 Date로 해야하는거 아닌가..? -- 수지
+        // 그리고 item의 amount limit도 여기서 설정할텐데... acceptjson에서 이부분 처리해야 함  -- 수지
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date date = sdf.parse(acceptJson.getOneEndDate());
+//        itemTab1.setEndDate(date);
+//        itemTab1.setEndDate(acceptJson.getOneEndDate());
+        item.setItemTab1(itemTab1);
+
+        // 공구 item tab2,4,5 null 값으로 생성
+        item.setItemTab2(itemTab2);
+        item.setItemTab4(itemTab4);
+        item.setItemTab5(itemTab5);
+
+        itemRepository.save(item);
+
+        return results;
     }
 }

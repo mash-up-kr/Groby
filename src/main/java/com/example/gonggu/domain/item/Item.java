@@ -57,8 +57,6 @@ public class Item {
     private ItemTab5 itemTab5;
 
 
-
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private List<ListOfParticipantForItem> participantForItemList;
@@ -66,4 +64,5 @@ public class Item {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private List<ListOfLikeForItem> likeForItemList;
+
 }

@@ -4,4 +4,5 @@ import com.example.gonggu.domain.category.Category;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CategoryRepository extends CrudRepository<Category,Long> {
+    public Category findByCategory(String category);
 }
