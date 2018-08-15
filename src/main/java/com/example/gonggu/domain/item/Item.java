@@ -1,5 +1,6 @@
 package com.example.gonggu.domain.item;
 
+import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.user.User;
 import lombok.Data;
 import lombok.Getter;
@@ -9,22 +10,25 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
 @Setter
-@ToString(exclude = {"user", "itemTab1", "itemTab2", "itemTab4", "itemTab5"})
+@ToString(exclude = {"user", "itemTab1", "itemTab2", "itemTab4", "itemTab5" , "category"})
 @Entity
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "writer_id")
     private User user;
-    private String category;        // 카테고리
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;        // 카테고리
     private String title;           // 공구 제목
     @CreationTimestamp
     private Timestamp regDate;      // 아이템 등록 시간

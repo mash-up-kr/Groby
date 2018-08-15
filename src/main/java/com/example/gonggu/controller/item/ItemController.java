@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalLong;
 
 @RestController
 @RequestMapping("/item/*")
@@ -77,29 +79,16 @@ public class ItemController {
 
     // 탭 수정
     // 다음 단계로 넘어가는 작업들이 여기서 진행이 된다.
-    @PatchMapping("/tab")
+    @PatchMapping("/{itemId}/tab")
     public ResponseEntity<APIResponse> apiUpdateTab(
+            @PathVariable String itemId,
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
+        acceptJson.setA_itemId(itemId);
 
         // update tab
-        switch (acceptJson.getA_TabNumber()){
-            case "2" :
-                System.out.println("2");
-                break;
-            case "3" :
-                System.out.println("3");
-                break;
-            case "4" :
-                System.out.println("2");
-                break;
-            case "5" :
-                System.out.println("2");
-                break;
-
-        }
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("Update Tab");
@@ -123,6 +112,30 @@ public class ItemController {
 //        returnResponse.setReturnJson(null);
         return new ResponseEntity<>(returnResponse,status);
     }
+
+    // t1 like
+    // acceptJson
+    //      A_itemId , UserLikeEmail 필수
+    @PostMapping("/{itemId}/like")
+    public ResponseEntity<APIResponse> apiAddLike(
+            @PathVariable String itemId,
+            @RequestBody ItemAcceptJson acceptJson
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        acceptJson.setA_itemId(itemId);
+
+        if(itemService.toggleLike(acceptJson))
+            returnResponse.setMessage("Add Like");
+        else
+            returnResponse.setMessage("Remove Like");
+
+
+        returnResponse.setStatus(status);
+        returnResponse.setAcceptJson(acceptJson);
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
 
     // t2 유저의 참여
     @PostMapping("/{itemId}/userlist")
@@ -197,21 +210,22 @@ public class ItemController {
     // t3 , t4 업뎃만 하면 완료
 
     // t5
-    @GetMapping("/{itemId}/userlist/{userEmail}")
-    public ResponseEntity<APIResponse> apiUserListSearch(
-            @PathVariable(name = "itemId") String itemId,
-            @PathVariable(name = "userEmail") String userEmail
-    ){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
-
-        // 유저 검색
-
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("User Search Is Done");
-        returnResponse.setReturnJson(null);
-        return new ResponseEntity<>(returnResponse,status);
-    }
+    // ios 단에서 처리 가능할 것이라고 생각해서 보류
+//    @GetMapping("/{itemId}/userlist/{userEmail}")
+//    public ResponseEntity<APIResponse> apiUserListSearch(
+//            @PathVariable(name = "itemId") String itemId,
+//            @PathVariable(name = "userEmail") String userEmail
+//    ){
+//        APIResponse returnResponse = new APIResponse();
+//        HttpStatus status = HttpStatus.OK;
+//
+//        // 유저 검색
+//
+//        returnResponse.setStatus(status);
+//        returnResponse.setMessage("User Search Is Done");
+//        returnResponse.setReturnJson(null);
+//        return new ResponseEntity<>(returnResponse,status);
+//    }
 
 
 

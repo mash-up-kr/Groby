@@ -19,6 +19,6 @@ public class ListOfLikeForItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long likeId;
 
-    private Long userId;
-//    private Long itemId;
+    private String userEmail;
+
 }

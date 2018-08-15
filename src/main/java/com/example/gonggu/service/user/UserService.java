@@ -40,6 +40,8 @@ public class UserService {
         user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
         user.setUserName(info.get("userName").toString());
 
+        //
+
         // signup 단계에서 계좌 정보를 받지 않음
 //        if(info.get("userAccountBank") != null){
 //            user.setAccountBank(info.get("userAccountBank").toString());
@@ -97,10 +99,10 @@ public class UserService {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        msg.setFrom("groby@gmail.com");
+        msg.setFrom("mashupdutchmarket@gmail.com");
         msg.setTo(userEmail);
-        msg.setSubject("Groby 인증번호");
-        msg.setText("Groby 에서 인증 메일을 보냅니다. \n \""+key+ "\" 를 앱에서 입력해주세요 \n By Groby");
+        msg.setSubject("Dutch Market 인증번호");
+        msg.setText("Dutch Market 에서 인증 메일을 보냅니다. \n\""+key+ "\" 를 앱에서 입력해주세요 \n By Groby");
 
         this.sender.send(msg);
     }

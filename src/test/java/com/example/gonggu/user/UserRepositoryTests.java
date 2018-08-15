@@ -10,41 +10,35 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//public class UserRepositoryTests {
-//    @Autowired
-//    UserRepository userRepository;
-//    @Autowired
-//    UserService usrService;
-//    @Autowired
-//    BCryptPasswordEncoder bCryptPasswordEncoder;
-//
-//
-//    @Test
-//    public void testInsert(){
-////        UserService user = new UserService(userRepository, bCryptPasswordEncoder);
-//        User user = new User();
-//        user.setUserEmail("1");
-//        user.setUserPw(bCryptPasswordEncoder.encode("123"));
-//        user.setUserName("4");
-//        user.setAccountBank("5");
-//        user.setAccountHolder("5");
-//        user.setAccountNum("6");
-//
-//        userRepository.save(user);
-//    }
-//
-//    @Test
-//    public void testCheck(){
-//        User usr = userRepository.findOne(5l);
-//        System.out.println(bCryptPasswordEncoder.matches("222",usr.getUserPw()));
-//    }
-//
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class UserRepositoryTests {
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    UserService usrService;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    @Test
+    public void testInsert(){
+//        UserService user = new UserService(userRepository, bCryptPasswordEncoder);
+        User user = new User();
+        user.setUserEmail("one@gmail.com");
+        user.setUserPw(bCryptPasswordEncoder.encode("123"));
+        user.setUserName("onemoon");
+        user.setAccountBank("kakao");
+        user.setAccountHolder("onemoon");
+        user.setAccountNum("101850");
+
+        userRepository.save(user);
+    }
+
 //    @Test
 //    public void testEmail(){
 //        usrService.sendMail("sopthfg@gmail.com");
 //    }
-//
-//}
-//
+
+}
+
