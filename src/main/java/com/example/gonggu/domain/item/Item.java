@@ -34,7 +34,7 @@ public class Item {
     private String location;    // 대략적 위치
     private Integer nowTab;         // 현재 공구 진행 상황
 
-    @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)
+    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
     private ItemTab1 itemTab1;
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.MERGE)

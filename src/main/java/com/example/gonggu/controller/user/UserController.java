@@ -144,6 +144,4 @@ public class UserController {
 
         return new ResponseEntity<APIResponse>(returnResponse, status);
     }
-
-
 }

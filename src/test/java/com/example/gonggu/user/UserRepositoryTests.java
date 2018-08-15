@@ -25,7 +25,7 @@ public class UserRepositoryTests {
     public void testInsert(){
 //        UserService user = new UserService(userRepository, bCryptPasswordEncoder);
         User user = new User();
-        user.setUserId("1");
+        user.setUserId("1333");
         user.setUserPw(bCryptPasswordEncoder.encode("123"));
         user.setUserName("4");
         user.setAccounBank("5");

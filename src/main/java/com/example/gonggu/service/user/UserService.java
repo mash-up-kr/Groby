@@ -40,6 +40,8 @@ public class UserService {
         user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
         user.setUserName(info.get("userName").toString());
 
+        //
+
         // signup 단계에서 계좌 정보를 받지 않음
 //        if(info.get("userAccountBank") != null){
 //            user.setAccounBank(info.get("userAccountBank").toString());
