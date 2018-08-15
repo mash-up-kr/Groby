@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface CategoryRepository extends CrudRepository<Category,Long> {
 
-    public Category findByCategoryId(Long id);// Id 값을 통해서 category 를 검색한다.
 }

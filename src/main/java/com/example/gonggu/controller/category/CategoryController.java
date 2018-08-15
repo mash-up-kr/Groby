@@ -26,7 +26,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     //생성된 카테고리 보여주기
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<APIResponse> apiGetCategory(){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
@@ -37,31 +37,30 @@ public class CategoryController {
         returnResponse.setMessage("All Category");
         returnResponse.setReturnJson(category);
 
-        return new ResponseEntity<APIResponse>(returnResponse,status);
+        return new ResponseEntity<>(returnResponse,status);
     }
 
     //카테고리 생성
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateCategory(
-            @RequestBody Map<String,Object> acceptJson
+            @RequestBody CategoryAcceptJson acceptJson
     ) {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
-       // if(acceptJson.get("category"))
-        categoryService.createCategory(acceptJson.get("category").toString());
+        categoryService.createCategory(acceptJson.getCategory());
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("category create is done ");
         returnResponse.setAcceptJson(acceptJson);
 
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
     //카테고리 수정
-    @PatchMapping("")
+    @PatchMapping("/")
     public ResponseEntity<APIResponse> apiUpdateCategory(
-            @RequestBody Map<String,Object> acceptJson
+            @RequestBody CategoryAcceptJson acceptJson
     ) {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -69,9 +68,9 @@ public class CategoryController {
         categoryService.updatecategory(acceptJson);
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Change category is done");
+        returnResponse.setMessage("Change update is done");
         returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<APIResponse>(returnResponse, status);
+        return new ResponseEntity<>(returnResponse, status);
     }
 
 //    //카테고리 삭제

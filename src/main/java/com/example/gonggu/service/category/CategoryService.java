@@ -1,5 +1,6 @@
 package com.example.gonggu.service.category;
 
+import com.example.gonggu.controller.category.CategoryAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ public class CategoryService {
     public void createCategory(String category) {
         Category cate = new Category();
         cate.setCategory(category);
-
         categoryRepo.save(cate);
     }
 
@@ -27,15 +27,13 @@ public class CategoryService {
     public Map<Object, Object> getCategory() {
         Map<Object, Object> results = new HashMap<>();
         categoryRepo.findAll().forEach( category -> results.put(category.getCategotyId(), category.getCategory()) );
-
         return results;
     }
 
     //카테고리 변경
-    public void updatecategory(Map<String,Object> info){
-        Category category = categoryRepo.findOne(Long.valueOf((long)info.get("categoryId")));
-        category.setCategory("수정");
-
+    public void updatecategory(CategoryAcceptJson acceptJson){
+        Category category = categoryRepo.findOne(acceptJson.getCategoryId());
+        category.setCategory(acceptJson.getCategory());
         categoryRepo.save(category);
     }
 
