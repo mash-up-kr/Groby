@@ -142,6 +142,4 @@ public class UserController {
 
         return new ResponseEntity<>(returnResponse, status);
     }
-
-
 }
