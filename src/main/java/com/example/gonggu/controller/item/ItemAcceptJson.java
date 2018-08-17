@@ -19,9 +19,11 @@ public class ItemAcceptJson {
     private String itemUserEmail;
     private String itemCategory;
     private String itemTitle;
+    private String itemAmountLimit; // 공구 최소수량
+
     // tab one
     private String oneImgPath;      // 이미지 주소
-    private String oneEndDate;        // 좋아요 받는 마지막 날
+    private String oneEndDate;      // 좋아요 받는 마지막 날
     private String oneContents;     // 총대의 메시지
     private String oneLocation;     // 대략적 위치
     //tab two
