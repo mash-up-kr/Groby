@@ -219,4 +219,48 @@ public class ItemService {
 
         return result;
     }
+
+    /*
+    * 공구 item에 대한 모든 정보 반환하는 service
+    * accept
+    *   itemId
+    * return
+    *   itemInfoJson
+    * */
+    public ItemInfoJson getItemDetail(String itemId) {
+        ItemInfoJson infoJson = new ItemInfoJson();
+        Item item = itemRepository.findOne(Long.valueOf(itemId));
+
+        if(!item.getIsDeleted()) { // 삭제되지 않은 경우
+            infoJson.setItemId(item.getItemId());
+            infoJson.setWriterId(item.getUser().getUserId());
+            infoJson.setItemTitle(item.getTitle());
+            infoJson.setCategory(item.getCategory().getCategory());
+            infoJson.setNowTab(item.getNowTab());
+            infoJson.setNumOfLike(item.getNumOfLike());
+            Integer percentage = (item.getNumOfOrder()/item.getAmountLimit())*100;
+            infoJson.setPartcipantPercent(percentage); // 참여율 계산하여 전달
+            switch (item.getNowTab()) { // 현재 탭이 어디인지에 따라 전달내용 넣
+                case 5:
+                    infoJson.setFiveContents(item.getItemTab5().getContents());
+                    infoJson.setFiveLocationDetail(item.getItemTab5().getLocationDetail());
+                case 4:
+                    infoJson.setFourContents(item.getItemTab4().getContents());
+                    infoJson.setFourArrivedTime(item.getItemTab4().getArrivedTime().toString());
+                    infoJson.setFourImgPath(item.getItemTab4().getReceiptImgPath());
+                case (3 | 2): // 이게 가능할까?
+                    infoJson.setTwoContents(item.getItemTab2().getContents());
+                    infoJson.setTwoEndDate(item.getItemTab2().getEndDate().toString());
+                    infoJson.setTwoImgPath(item.getItemTab2().getImgPath());
+                default:
+                    infoJson.setOneContents(item.getItemTab1().getContents());
+                    infoJson.setOneEndDate(item.getItemTab1().getEndDate().toString());
+                    infoJson.setOneImgPath(item.getItemTab1().getImgPath());
+                    infoJson.setOneLocation(item.getItemTab1().getLocation());
+            }
+        }
+        else infoJson.setIsDeleted(item.getIsDeleted()); // item이 삭제된 경우 삭제되었다는 값만 전달
+
+        return infoJson;
+    }
 }
