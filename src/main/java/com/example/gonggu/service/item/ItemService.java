@@ -149,15 +149,16 @@ public class ItemService {
         return result;
     }
 
-    /* 공구 item 생성관련 Service
-     * acceptJson
-     *      A_TabNumber, Category, ItemTitle, ItemUserEmail, ItemAmountLimit,
-     *      OneContents, OneLocation, OneEndDate, ""OneImgPath"" <- 이미지 여러개 들어오는 것 처리해야함
-     * return
-     *      무엇을 리턴하는게 좋을까? -- 수지
-     *      true : create item success
-     *      false : create item fail
-     *  */
+    /*
+    * 공구 item 생성관련 Service
+    * acceptJson
+    *      A_TabNumber, Category, ItemTitle, ItemUserEmail, ItemAmountLimit,
+    *      OneContents, OneLocation, OneEndDate, ""OneImgPath"" <- 이미지 여러개 들어오는 것 처리해야함
+    * return
+    *      무엇을 리턴하는게 좋을까? -- 수지
+    *      true : create item success
+    *      false : create item fail
+    *  */
     public Boolean createItem(ItemAcceptJson acceptJson){
 //    public Map<String,Object> createItem(ItemAcceptJson acceptJson){
 //        Map<String, Object> results = new HashMap<>();
@@ -198,6 +199,24 @@ public class ItemService {
 
         itemRepository.save(item);
 //        return results;
+        return result;
+    }
+
+    /*
+    * 공구 tab1에서 아이템 삭제 service
+    * accept
+    *   itemId
+    * return
+    *   true : delete success
+    *   false : delete fail
+    * */
+    public Boolean deleteItem(String itemId) {
+        Boolean result = true;
+
+        Item item = itemRepository.findOne(Long.valueOf(itemId));
+        if (item.getNowTab() != 1) result = false; // 현재상태가 tab 1이 아닐 경우 삭제불가능하게 처리
+        else item.setIsDeleted(true);
+
         return result;
     }
 }
