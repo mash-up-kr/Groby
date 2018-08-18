@@ -30,6 +30,8 @@ public class User {
 
     private Boolean isDeleted;
 
+    private String userToken;
+
     @CreationTimestamp
     private Timestamp regDate;
     @UpdateTimestamp

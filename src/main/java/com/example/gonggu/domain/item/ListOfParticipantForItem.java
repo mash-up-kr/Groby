@@ -27,4 +27,5 @@ public class ListOfParticipantForItem {
     private String accountHolder;
     private Integer amount;
     private Integer price;
+    private String optionString;
 }
