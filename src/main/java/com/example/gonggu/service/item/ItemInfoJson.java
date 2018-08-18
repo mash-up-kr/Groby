@@ -29,6 +29,9 @@ public class ItemInfoJson {
     private String twoEndDate;
     private String optionString;
 
+    // tab3
+    private String threeContents;
+
     // tab4
     private String fourContents;
     private String fourArrivedTime;

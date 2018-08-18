@@ -71,6 +71,7 @@ public class ItemService {
         Item item = new Item();
         ItemTab1 itemTab1 = new ItemTab1();
         ItemTab2 itemTab2 = new ItemTab2();
+        ItemTab3 itemTab3 = new ItemTab3();
         ItemTab4 itemTab4 = new ItemTab4();
         ItemTab5 itemTab5 = new ItemTab5();
         ItemImgPath itemImgPath = new ItemImgPath();
@@ -108,8 +109,9 @@ public class ItemService {
         }
         item.setItemTab1(itemTab1);
 
-        // 공구 item tab2,4,5 null 값으로 생성
+        // 공구 item tab2,3,4,5 null 값으로 생성
         item.setItemTab2(itemTab2);
+        item.setItemTab3(itemTab3);
         item.setItemTab4(itemTab4);
         item.setItemTab5(itemTab5);
 
@@ -166,6 +168,7 @@ public class ItemService {
                     infoJson.setFourContents(item.getItemTab4().getContents());
                     infoJson.setFourArrivedTime(item.getItemTab4().getArrivedTime().toString());
                 case 3:
+                    infoJson.setThreeContents(item.getItemTab3().getContents());
                 case 2:
                     infoJson.setTwoContents(item.getItemTab2().getContents());
                     infoJson.setTwoEndDate(item.getItemTab2().getEndDate().toString());
@@ -242,6 +245,9 @@ public class ItemService {
                 if(!acceptJson.getTwoOptionString().isEmpty()) tab2.setOptionString(acceptJson.getTwoOptionString());
                 parentsItem.setItemTab2(tab2);
                 break;
+            case "3" :
+                ItemTab3 tab3 = parentsItem.getItemTab3();
+                if(!acceptJson.getThreeContents().isEmpty()) tab3.setContents(acceptJson.getThreeContents());
             case "4" :
                 ItemTab4 tab4 = parentsItem.getItemTab4();
                 if(!acceptJson.getFourArrivedTime().isEmpty()) {

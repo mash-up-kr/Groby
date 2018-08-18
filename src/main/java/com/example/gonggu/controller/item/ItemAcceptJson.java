@@ -33,6 +33,10 @@ public class ItemAcceptJson {
     private String twoContents;         // 총대의 메시지
     private String twoEndDate;            // 공구 종료시점
     private String twoOptionString;           // 옵션값 한줄로 저장
+
+    // tab3
+    private String threeContents;
+
     //tab four
     private String fourContents;       // 총대의 메시지
     private String fourReceiptImgPath; // 영수증 사진 주소
