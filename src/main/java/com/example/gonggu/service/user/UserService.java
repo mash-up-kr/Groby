@@ -93,8 +93,15 @@ public class UserService {
         return true;
     }
 
+    public Boolean checkEmail(String userEmail){
+        if(userRepository.findByUserEmail(userEmail).size() == 0){
+            return true;
+        }else
+            return false;
+    }
 
-    public void sendMail(String userEmail) {
+
+    public String sendMail(String userEmail) {
         String key = new TempKey().getKey(4, true);
 
         SimpleMailMessage msg = new SimpleMailMessage();
@@ -105,6 +112,8 @@ public class UserService {
         msg.setText("Dutch Market 에서 인증 메일을 보냅니다. \n\""+key+ "\" 를 앱에서 입력해주세요 \n By Groby");
 
         this.sender.send(msg);
+
+        return key;
     }
 
     //info Map<String,Object>

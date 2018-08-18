@@ -67,6 +67,31 @@ public class UserController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
+    //    /user/checkemail?userEail=abc@naver.com
+    @GetMapping("/checkemail")
+    public ResponseEntity<APIResponse> apiCheckEmail(
+            @RequestParam String userEmail
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.OK;
+        // 이메일 체크
+        // 인증이 되는 경우 이메일을 보내준다.
+        // 인증번호를 보내준다.
+        if(userService.checkEmail(userEmail)){
+            status = HttpStatus.OK;
+            returnResponse.setMessage(userService.sendMail(userEmail));
+        }else{
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("이메일이 중복 되었습니다.");
+        }
+
+        returnResponse.setStatus(status);
+        returnResponse.setAcceptJson(null);
+        returnResponse.setReturnJson(null);
+
+        return new ResponseEntity<>(returnResponse, status);
+    }
+
     // Signup 관련 , 유저를 생성
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateUser(
