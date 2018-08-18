@@ -17,6 +17,5 @@ public class ItemTab4 {
     private Long tabFourId;
 
     private String contents;       // 총대의 메시지
-    private String receiptImgPath; // 영수증 사진 주소
     private Date arrivedTime;      // 도착예정시간
 }

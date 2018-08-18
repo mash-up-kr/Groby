@@ -28,7 +28,6 @@ public class ItemService {
     @Autowired
     private UserRepository userRepository;
 
-
     // like 관련 service
     // acceptJson
     //      A_itemId , UserLikeEmail 필수
@@ -48,7 +47,7 @@ public class ItemService {
 
         if(result) {
             ListOfLikeForItem newlike = new ListOfLikeForItem();
-            newlike.setUserEmail(acceptJson.getUserEmail().toString());
+            newlike.setUserEmail(acceptJson.getUserEmail());
             item.getLikeForItemList().add(newlike);
         }
 
@@ -74,6 +73,8 @@ public class ItemService {
         ItemTab2 itemTab2 = new ItemTab2();
         ItemTab4 itemTab4 = new ItemTab4();
         ItemTab5 itemTab5 = new ItemTab5();
+        ItemImgPath itemImgPath = new ItemImgPath();
+        List<ItemImgPath> imgPathList = new ArrayList<>();
 
         // 공구 item에 대한 기본 설정
         item.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
@@ -84,10 +85,19 @@ public class ItemService {
         item.setUser(getUser);
         item.setAmountLimit(Integer.parseInt(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
 
+        item.setThumnail(acceptJson.getA_imgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
+
+        // 이미지 추가하기
+        for (String img : acceptJson.getA_imgPathList()) {
+            itemImgPath.setTab(1);
+            itemImgPath.setImg_path(img);
+            imgPathList.add(itemImgPath);
+        }
+        item.setImgPaths(imgPathList); // 이미지리스트 추가하기
+
         // 공구 item tab1 설정
         itemTab1.setContents(acceptJson.getOneContents());
         itemTab1.setLocation(acceptJson.getOneLocation());
-        itemTab1.setImgPath(acceptJson.getOneImgPath());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
         try {
             Date insertDate = sdf.parse(acceptJson.getOneEndDate());
@@ -138,6 +148,7 @@ public class ItemService {
         ItemInfoJson infoJson = new ItemInfoJson();
         Item item = itemRepository.findOne(Long.parseLong(itemId));
 
+
         if(!item.getIsDeleted()) { // 삭제되지 않은 경우
             infoJson.setItemId(item.getItemId());
             infoJson.setWriterId(item.getUser().getUserId());
@@ -154,6 +165,7 @@ public class ItemService {
                 case 4:
                     infoJson.setFourContents(item.getItemTab4().getContents());
                     infoJson.setFourArrivedTime(item.getItemTab4().getArrivedTime().toString());
+                    infoJson.setFourImgPathList();
                     infoJson.setFourImgPath(item.getItemTab4().getReceiptImgPath());
                 case 3:
                 case 2:
