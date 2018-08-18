@@ -1,5 +1,6 @@
 package com.example.gonggu.service.user;
 
+import com.example.gonggu.controller.user.UserAcceptJson;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,23 @@ public class UserService {
 
     // 해당 유저를 찾아서 리턴해준다.
     // info 의 getUserBy Key를 통해서 메서드를 변경한다.
-    public User getUserBy(Map<String,Object> info){
+    public User getUserBy(UserAcceptJson acceptJson){
         User user;
-        if(info.get("getUserBy").toString() == "Email"){
-            user = userRepository.findByUserEmail(info.get("userEmail").toString());
+        if(acceptJson.getGetUserBy() == "Email"){
+            user = userRepository.findByUserEmail(acceptJson.getUserEmail());
         }else{
             // info.get("getUserBy").toString() == "userId"
-            user = userRepository.findOne((long)info.get("userId"));
+            user = userRepository.findOne(Long.parseLong(acceptJson.getUserId()));
         }
         user.setUserPw(null);
         return user;
     }
 
-    public void createUser(Map<String, Object> info) {
+    public void createUser(UserAcceptJson acceptJson) {
         User user = new User();
-        user.setUserEmail(info.get("userEmail").toString());
-        user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
-        user.setUserName(info.get("userName").toString());
+        user.setUserEmail(acceptJson.getUserEmail());
+        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+        user.setUserName(acceptJson.getUserName());
 
         //
 
@@ -52,29 +53,29 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void userUpdate(Map<String, Object> info) {
-        User user = userRepository.findByUserEmail(info.get("userEmail").toString());
+    public void userUpdate(UserAcceptJson acceptJson) {
+        User user = userRepository.findByUserEmail(acceptJson.getUserEmail());
 
-        user.setUserName(info.get("userName").toString());
-        user.setAccountBank(info.get("userAccountBank").toString());
-        user.setAccountHolder(info.get("userAccountHolder").toString());
-        user.setAccountNum(info.get("userAccountNum").toString());
-
-        userRepository.save(user);
-    }
-
-    public void userSetPassword(Map<String,Object> info){
-        User user = userRepository.findByUserEmail(info.get("userEmail").toString());
-        user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
+        user.setUserName(acceptJson.getUserName());
+        user.setAccountBank(acceptJson.getUserAccountBank());
+        user.setAccountHolder(acceptJson.getUserAccountHolder());
+        user.setAccountNum(acceptJson.getUserAccountNum());
 
         userRepository.save(user);
     }
 
+    public void userSetPassword(UserAcceptJson acceptJson){
+        User user = userRepository.findByUserEmail(acceptJson.getUserEmail());
+        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
 
-    public boolean loginUser(Map<String, Object> info) {
-        User checkUser = userRepository.findByUserEmail(info.get("userEmail").toString());
+        userRepository.save(user);
+    }
 
-        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(info.get("userPW").toString()))
+
+    public boolean loginUser(UserAcceptJson acceptJson) {
+        User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
+
+        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
             return true;
         else
             return false;
