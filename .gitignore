@@ -2,11 +2,14 @@
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
-application.properties
 src/test/java/com/example/gonggu/view/
 src/test/java/com/example/gonggu/item/
 src/test/java/com/example/gonggu/user/
 src/test/java/com/example/gonggu/category/
+
+src/main/resources/application-config.properties
+src/main/resources/application-dev.properties
+src/main/resources/application-rds.properties
 
 ### STS ###
 .apt_generated
