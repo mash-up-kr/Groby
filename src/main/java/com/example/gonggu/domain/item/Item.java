@@ -39,7 +39,6 @@ public class Item {
     private Integer nowTab;         // 현재 공구 진행 상황
     private Integer amountLimit;    // 공구 오픈 최소 수량
     private Boolean isDeleted;      // tab1에서 삭제할 경우
-    private String groupToken;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab1_id")
@@ -58,8 +57,6 @@ public class Item {
     private ItemTab5 itemTab5;
 
 
-
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private List<ListOfParticipantForItem> participantForItemList;
@@ -68,7 +65,4 @@ public class Item {
     @JoinColumn(name = "item_id")
     private List<ListOfLikeForItem> likeForItemList;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    private List<ItemImgPath> itemImgPaths;
 }

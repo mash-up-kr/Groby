@@ -115,7 +115,6 @@ public class UserController {
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
-
         userService.userUpdate(acceptJson);
 
         returnResponse.setStatus(status);

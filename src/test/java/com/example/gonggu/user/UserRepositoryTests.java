@@ -35,10 +35,10 @@ public class UserRepositoryTests {
         userRepository.save(user);
     }
 
-//    @Test
-//    public void testEmail(){
-//        usrService.sendMail("sopthfg@gmail.com");
-//    }
+    @Test
+    public void testEmail(){
+        usrService.sendMail("sopthfg@gmail.com");
+    }
 
 }
 
