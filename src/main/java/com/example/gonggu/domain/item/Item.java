@@ -50,6 +50,10 @@ public class Item {
     private ItemTab2 itemTab2;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tab3_id")
+    private ItemTab3 itemTab3;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab4_id")
     private ItemTab4 itemTab4;
 
