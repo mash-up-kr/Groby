@@ -95,7 +95,7 @@ public class UserController {
     // Signup 관련 , 유저를 생성
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateUser(
-        @RequestBody Map<String,Object> acceptJson
+        @RequestBody UserAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.CREATED;
@@ -112,7 +112,7 @@ public class UserController {
     // 유저 로그인
     @PostMapping("/login")
     public ResponseEntity<APIResponse> apiLoginUser(
-            @RequestBody Map<String,Object> acceptJson
+            @RequestBody UserAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status;
@@ -136,7 +136,7 @@ public class UserController {
     // 유저아이디를 통해서 유저의 정보를 수정
     @PatchMapping("/")
     public ResponseEntity<APIResponse> apiChangeUser(
-        @RequestBody Map<String,Object> acceptJson
+        @RequestBody UserAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;

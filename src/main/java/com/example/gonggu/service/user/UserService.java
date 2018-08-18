@@ -23,13 +23,12 @@ public class UserService {
 
     // 해당 유저를 찾아서 리턴해준다.
     // info 의 getUserBy Key를 통해서 메서드를 변경한다.
-    public User getUserBy(UserAcceptJson acceptJson){
+    public User getUserBy(Map<String,Object> acceptMap){
         User user;
-        if(acceptJson.getGetUserBy() == "Email"){
-            user = userRepository.findByUserEmail(acceptJson.getUserEmail());
+        if(acceptMap.get("getUserBy").toString().equals("Email")){
+            user = userRepository.findByUserEmail(acceptMap.get("userEmail").toString());
         }else{
-            // info.get("getUserBy").toString() == "userId"
-            user = userRepository.findOne(Long.parseLong(acceptJson.getUserId()));
+            user = userRepository.findOne(Long.parseLong(acceptMap.get("userId").toString()));
         }
         user.setUserPw(null);
         return user;
@@ -40,8 +39,6 @@ public class UserService {
         user.setUserEmail(acceptJson.getUserEmail());
         user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
         user.setUserName(acceptJson.getUserName());
-
-        //
 
         // signup 단계에서 계좌 정보를 받지 않음
 //        if(info.get("userAccountBank") != null){
