@@ -21,6 +21,7 @@ public class ItemAcceptJson {
     private String itemCategory;
     private String itemTitle;
     private String itemAmountLimit; // 공구 최소수량
+    private String numOfOrder;
 
     // tab one
     private String oneImgPath;      // 이미지 주소

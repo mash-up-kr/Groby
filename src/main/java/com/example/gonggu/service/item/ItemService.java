@@ -241,15 +241,16 @@ public class ItemService {
     *   true : item update success
     *   false : item update fail
     * */
-    public Boolean updateItem(String itemId, Map<String,Object> info) {
+    public Boolean updateItem(String itemId, ItemAcceptJson info) {
         Boolean result = true;
-        Item parentsItem = itemRepository.getOne(Long.parseLong(info.get("itemId").toString()));
+        Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId().toString()));
 
-        if(!info.get("title").toString().isEmpty()) parentsItem.setTitle(info.get("title").toString());
-        if(!info.get("numOfOrder").toString().isEmpty()) parentsItem.setNumOfOrder(Integer.parseInt(info.get("numOfOrder").toString()));
-        if(!info.get("amountLimit").toString().isEmpty()) parentsItem.setAmountLimit(Integer.parseInt(info.get("amountLimit").toString()));
+        if(!info.getItemTitle().isEmpty()) parentsItem.setTitle(info.getItemTitle());
+        if(!info.getNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.parseInt(info.getNumOfOrder()));
+        if(!info.getItemAmountLimit().isEmpty()) parentsItem.setAmountLimit(Integer.parseInt(info.getItemAmountLimit()));
 
         itemRepository.save(parentsItem);
+
         return result;
     }
 
