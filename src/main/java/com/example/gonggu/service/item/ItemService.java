@@ -245,6 +245,9 @@ public class ItemService {
         Boolean result = true;
         Item parentsItem = itemRepository.getOne(Long.parseLong(info.get("itemId").toString()));
 
+        if(!info.get("title").toString().isEmpty()) parentsItem.setTitle(info.get("title").toString());
+        if(!info.get("numOfOrder").toString().isEmpty()) parentsItem.setNumOfOrder(Integer.parseInt(info.get("numOfOrder").toString()));
+        if(!info.get("amountLimit").toString().isEmpty()) parentsItem.setAmountLimit(Integer.parseInt(info.get("amountLimit").toString()));
 
         itemRepository.save(parentsItem);
         return result;
