@@ -141,7 +141,7 @@ public class ItemService {
         Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
         item.setCategory(getCategory);
         item.setTitle(acceptJson.getItemTitle());
-        User getUser = userRepository.findByUserEmail(acceptJson.getItemUserEmail());
+        User getUser = userRepository.getOne(Long.parseLong(acceptJson.getA_userId()));
         item.setUser(getUser);
         item.setAmountLimit(Integer.parseInt(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
 

@@ -25,7 +25,7 @@ public class UserService {
     public User getUserBy(Map<String,Object> info){
         User user;
         if(info.get("getUserBy").toString() == "Email"){
-            user = userRepository.findByUserId(info.get("userEmail").toString());
+            user = userRepository.findByUserEmail(info.get("userEmail").toString());
         }else{
             // info.get("getUserBy").toString() == "userId"
             user = userRepository.findOne((long)info.get("userId"));
@@ -53,7 +53,7 @@ public class UserService {
     }
 
     public void userUpdate(Map<String, Object> info) {
-        User user = userRepository.findByUserId(info.get("userEmail").toString());
+        User user = userRepository.findByUserEmail(info.get("userEmail").toString());
 
         user.setUserName(info.get("userName").toString());
         user.setAccountBank(info.get("userAccountBank").toString());
@@ -64,7 +64,7 @@ public class UserService {
     }
 
     public void userSetPassword(Map<String,Object> info){
-        User user = userRepository.findByUserId(info.get("userEmail").toString());
+        User user = userRepository.findByUserEmail(info.get("userEmail").toString());
         user.setUserPw(bCryptPasswordEncoder.encode(info.get("userPw").toString()));
 
         userRepository.save(user);
@@ -72,7 +72,7 @@ public class UserService {
 
 
     public boolean loginUser(Map<String, Object> info) {
-        User checkUser = userRepository.findByUserId(info.get("userEmail").toString());
+        User checkUser = userRepository.findByUserEmail(info.get("userEmail").toString());
 
         if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(info.get("userPW").toString()))
             return true;
@@ -83,7 +83,7 @@ public class UserService {
 
     // for Developer not for Service
     public boolean deleteUser(String userId) {
-        User checkUser = userRepository.findByUserId(userId);
+        User checkUser = userRepository.getOne(Long.valueOf(userId));
 
         if(checkUser == null){
             return false;
@@ -94,7 +94,7 @@ public class UserService {
     }
 
     public Boolean checkEmail(String userEmail){
-        if(userRepository.findByUserEmail(userEmail).size() == 0){
+        if(userRepository.findByUserEmail(userEmail) == null){
             return true;
         }else
             return false;
