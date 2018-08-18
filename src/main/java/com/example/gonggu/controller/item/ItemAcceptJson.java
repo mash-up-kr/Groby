@@ -14,22 +14,22 @@ public class ItemAcceptJson {
     private String a_TabNumber;
     private String a_itemId;
     private String a_userId;
-    private Boolean editTab;
-    private String userLikeEmail;
+    private Boolean a_editTab;
+    private String[] a_imgPathList;
+
+    private String userEmail;
 
     private String itemUserEmail;
     private String itemCategory;
     private String itemTitle;
     private String itemAmountLimit; // 공구 최소수량
-    private String numOfOrder;
+    private String itemNumOfOrder;
 
     // tab one
-    private String oneImgPath;      // 이미지 주소
     private String oneEndDate;      // 좋아요 받는 마지막 날
     private String oneContents;     // 총대의 메시지
     private String oneLocation;     // 대략적 위치
     //tab two
-    private String twoImgPath;          // 이미지 주소
     private String twoContents;         // 총대의 메시지
     private String twoEndDate;            // 공구 종료시점
     private String twoOptionString;           // 옵션값 한줄로 저장
@@ -42,7 +42,5 @@ public class ItemAcceptJson {
     private String fiveLocationDetail;          // 공구물품 배부장소
     private String fiveDistributionTime;        // 공구물품 배부시간 (ex. 2018-01-02-1234/2018-01-02-1534)
 
-//    public void setA_itemId(Long check) {
-//        this.a_itemId = new Optional<Long>();
-//    }
+
 }

@@ -74,7 +74,7 @@ public class ItemRepositoryTests {
 //
 //        testItem.setTitle("TestTitle3333");
 //        testItem.setNumOfLike(0); // default 0 로 해야한다.
-//        testItem.setNumOfOrder(0); // default 0 로 해야한다.
+//        testItem.setItemNumOfOrder(0); // default 0 로 해야한다.
 //        testItem.setNowTab(1); // default 1
 //
 //        ItemTab1 tab1 = new ItemTab1();

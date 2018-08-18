@@ -1,6 +1,7 @@
 package com.example.gonggu.service.item;
 
 import com.example.gonggu.controller.item.ItemAcceptJson;
+import com.example.gonggu.controller.item.JoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
@@ -101,7 +102,7 @@ public class ItemService {
         Item item = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
         boolean result = true;
         for(ListOfLikeForItem temp :item.getLikeForItemList())
-            if(temp.getUserEmail().equals(acceptJson.getUserLikeEmail()) ){
+            if(temp.getUserEmail().equals(acceptJson.getUserEmail()) ){
                 item.getLikeForItemList().remove(temp);
                 likeRepo.delete(temp.getLikeId());
                 result = false; break;
@@ -109,7 +110,7 @@ public class ItemService {
 
         if(result) {
             ListOfLikeForItem newlike = new ListOfLikeForItem();
-            newlike.setUserEmail(acceptJson.getUserLikeEmail().toString());
+            newlike.setUserEmail(acceptJson.getUserEmail().toString());
             item.getLikeForItemList().add(newlike);
         }
 
@@ -246,7 +247,7 @@ public class ItemService {
         Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId().toString()));
 
         if(!info.getItemTitle().isEmpty()) parentsItem.setTitle(info.getItemTitle());
-        if(!info.getNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.parseInt(info.getNumOfOrder()));
+        if(!info.getItemNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.parseInt(info.getItemNumOfOrder()));
         if(!info.getItemAmountLimit().isEmpty()) parentsItem.setAmountLimit(Integer.parseInt(info.getItemAmountLimit()));
 
         itemRepository.save(parentsItem);
@@ -257,7 +258,7 @@ public class ItemService {
     /*
      * 공구 tab의 내용을 수정할때의 service
      * acceptJson
-     *   itemId, editTab, 변동된 tab의 내용
+     *   itemId, a_editTab, 변동된 tab의 내용
      * return
      *   true : item update success
      *   false : item update fail
@@ -269,7 +270,7 @@ public class ItemService {
         switch (acceptJson.getA_TabNumber()){
             case "1" :
                 ItemTab1 tab1 = parentsItem.getItemTab1();
-                if(acceptJson.getEditTab()) {
+                if(acceptJson.getA_editTab()) {
                     if(!acceptJson.getOneContents().isEmpty()) tab1.setContents(acceptJson.getOneContents());
                     if(!acceptJson.getOneLocation().isEmpty()) tab1.setLocation(acceptJson.getOneLocation());
                     if(!acceptJson.getOneImgPath().isEmpty()) tab1.setImgPath(acceptJson.getOneImgPath());
@@ -317,7 +318,7 @@ public class ItemService {
                 parentsItem.setItemTab5(tab5);
                 break;
         }
-        if(!acceptJson.getEditTab()) {
+        if(!acceptJson.getA_editTab()) {
             parentsItem.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
         }
         itemRepository.save(parentsItem);
@@ -336,6 +337,33 @@ public class ItemService {
         Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
 
         result = parentItem.getItemTab2().getOptionString();
+
+        return result;
+    }
+
+    /*
+     * 사용자가 공구 구매시 option에 대한 정보 전달 service
+     * parameter
+     *   acceptJson
+     * return
+     *   boolean
+     * */
+    public boolean insertParticipantUser(JoinAcceptJson acceptJson){
+        boolean result = true;
+
+        Item parentItem = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
+        ListOfParticipantForItem join = new ListOfParticipantForItem();
+        join.setUserName(acceptJson.getUserName());
+        join.setAccountBank(acceptJson.getAccountBank());
+        join.setAccountHolder(acceptJson.getAccountHolder());
+        join.setAccountNum(acceptJson.getAccountNum());
+        join.setOptionString(acceptJson.getOptionString());
+        join.setPrice(acceptJson.getPrice());
+        join.setAmount(acceptJson.getAmount());
+        List<ListOfParticipantForItem> list = parentItem.getParticipantForItemList();
+        list.add(join);
+        parentItem.setParticipantForItemList(list);
+        itemRepository.save(parentItem);
 
         return result;
     }
