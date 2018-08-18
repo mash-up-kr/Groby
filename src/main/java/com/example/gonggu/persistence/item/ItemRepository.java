@@ -1,5 +1,6 @@
 package com.example.gonggu.persistence.item;
 
+import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,9 @@ public interface ItemRepository extends JpaRepository<Item,Long> {
 
     // 인기글 (좋아요순으로 정렬)
     public List<Item> findByOrderByNumOfLikeDesc();
+
+    // 카테고리별 아이템 검색
+    public List<Item> findByCategoryOrderByDesc(Category category);
 
 //    @Query("select i ,t1 from item i , tab1 t1 fetch ")
 //    public List<Object[]> getItemWithTab();

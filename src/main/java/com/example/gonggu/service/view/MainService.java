@@ -1,6 +1,8 @@
 package com.example.gonggu.service.view;
 
+import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
+import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.service.item.PopularItemList;
 import com.example.gonggu.service.item.RecentItemList;
@@ -8,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MainService {
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     // 인기글 보여지는 개수
     private final int NUMOFPOPULAR = 5;
@@ -94,6 +96,20 @@ public class MainService {
             result.add(recentItemList);
         }
         return result;
+    }
+
+    /*
+     * 카테고리별 아이템 검색
+     * parameter
+     *   acceptJson
+     * return
+     *   List<Item>
+     * */
+    public List<Item> apiGetCategoryItem(Long categoryId){
+        Category cate = categoryRepository.findOne(categoryId);
+        List<Item> list = itemRepository.findByCategoryOrderByDesc(cate);
+
+        return list;
     }
 
 }

@@ -280,7 +280,7 @@ public class ItemService {
     }
 
     /*
-     * 사용자가 공구 구매시 option에 대한 정보 전달 service
+     * 유저의 공구 참여
      * parameter
      *   acceptJson
      * return

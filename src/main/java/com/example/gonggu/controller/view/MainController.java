@@ -56,14 +56,14 @@ public class MainController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<APIResponse> apiGetCategoryItem(){
+    public ResponseEntity<APIResponse> apiGetCategoryItem(
+            @PathVariable String categoryId
+    ){
         status = HttpStatus.OK;
-
-        // 카테고리 아이템 검색
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("return Category Item");
-        returnResponse.setReturnJson(null);
+        returnResponse.setReturnJson(mainService.apiGetCategoryItem(Long.valueOf(categoryId)));
 
         return new ResponseEntity<>(returnResponse, status);
     }
