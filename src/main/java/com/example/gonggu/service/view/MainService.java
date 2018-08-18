@@ -86,9 +86,6 @@ public class MainService {
                     Integer percentage = (items.get(i).getNumOfOrder()/items.get(i).getAmountLimit())*100;
                     recentItemList.setParticipantPercent(percentage);                              // 진행률
                     break;
-                case 4:  // Tab4인 경우
-                    recentItemList.setImgPath(items.get(i).getItemTab4().getReceiptImgPath());
-                    break;
                 default: // Tab5인 경우
                     break;
             }

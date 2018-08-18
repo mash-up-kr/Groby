@@ -165,19 +165,17 @@ public class ItemService {
                 case 4:
                     infoJson.setFourContents(item.getItemTab4().getContents());
                     infoJson.setFourArrivedTime(item.getItemTab4().getArrivedTime().toString());
-                    infoJson.setFourImgPathList();
-                    infoJson.setFourImgPath(item.getItemTab4().getReceiptImgPath());
                 case 3:
                 case 2:
                     infoJson.setTwoContents(item.getItemTab2().getContents());
                     infoJson.setTwoEndDate(item.getItemTab2().getEndDate().toString());
-                    infoJson.setTwoImgPath(item.getItemTab2().getImgPath());
                 default:
                     infoJson.setOneContents(item.getItemTab1().getContents());
                     infoJson.setOneEndDate(item.getItemTab1().getEndDate().toString());
-                    infoJson.setOneImgPath(item.getItemTab1().getImgPath());
                     infoJson.setOneLocation(item.getItemTab1().getLocation());
             }
+
+            infoJson.setImgList(item.getImgPaths());
         }
         else infoJson.setIsDeleted(item.getIsDeleted()); // item이 삭제된 경우 삭제되었다는 값만 전달
 
@@ -216,6 +214,7 @@ public class ItemService {
     public Boolean patchItemTab(ItemAcceptJson acceptJson){
         Boolean result = true;
         Item parentsItem = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
+        this.changeTabImgs(Integer.valueOf(acceptJson.getA_TabNumber()) , acceptJson.getA_imgPathList() ,parentsItem);
 
         switch (acceptJson.getA_TabNumber()){
             case "1" :
@@ -223,7 +222,6 @@ public class ItemService {
                 if(acceptJson.getA_editTab()) {
                     if(!acceptJson.getOneContents().isEmpty()) tab1.setContents(acceptJson.getOneContents());
                     if(!acceptJson.getOneLocation().isEmpty()) tab1.setLocation(acceptJson.getOneLocation());
-                    if(!acceptJson.getOneImgPath().isEmpty()) tab1.setImgPath(acceptJson.getOneImgPath());
                     if(!acceptJson.getOneEndDate().isEmpty()) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                         try {
@@ -240,7 +238,6 @@ public class ItemService {
             case "2" :
                 // optionString contents img_path
                 ItemTab2 tab2 = parentsItem.getItemTab2();
-                if(!acceptJson.getTwoImgPath().isEmpty()) tab2.setImgPath(acceptJson.getTwoImgPath());
                 if(!acceptJson.getTwoContents().isEmpty()) tab2.setContents(acceptJson.getTwoContents());
                 if(!acceptJson.getTwoOptionString().isEmpty()) tab2.setOptionString(acceptJson.getTwoOptionString());
                 parentsItem.setItemTab2(tab2);
@@ -258,7 +255,6 @@ public class ItemService {
                     }
                 }
                 if(!acceptJson.getFourContents().isEmpty()) tab4.setContents(acceptJson.getFourContents());
-                if(!acceptJson.getFourReceiptImgPath().isEmpty()) tab4.setReceiptImgPath(acceptJson.getFourReceiptImgPath());
                 parentsItem.setItemTab4(tab4);
                 break;
             case "5" :
@@ -268,11 +264,38 @@ public class ItemService {
                 parentsItem.setItemTab5(tab5);
                 break;
         }
+
         if(!acceptJson.getA_editTab()) {
             parentsItem.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
         }
         itemRepository.save(parentsItem);
         return result;
+    }
+
+    /*
+     * img list change
+     * parameter
+     *   tab , new_imgpaths , target Item
+     * return
+     *   void
+     * */
+    public void changeTabImgs(Integer tab,String[] imgpaths,Item target){
+
+        List<ItemImgPath> list =  target.getImgPaths();
+        list.forEach(img->{
+            if(img.getTab().equals(tab)){
+                list.remove(img);
+            }
+        });
+
+        for (String newImgString : imgpaths) {
+            ItemImgPath newImgPath = new ItemImgPath();
+            newImgPath.setTab(tab);
+            newImgPath.setImg_path(newImgString);
+            list.add(newImgPath);
+        }
+
+        target.setImgPaths(list);
     }
 
     /*

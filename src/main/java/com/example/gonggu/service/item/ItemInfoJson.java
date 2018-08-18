@@ -1,8 +1,11 @@
 package com.example.gonggu.service.item;
 
+import com.example.gonggu.domain.item.ItemImgPath;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,19 +20,16 @@ public class ItemInfoJson {
     private Integer partcipantPercent; // Tab2일 경우 공구 참여 퍼센트
 
     // tab1에 대한 정보
-    private String oneImgPath;
     private String oneEndDate;
     private String oneContents;
     private String oneLocation;
 
     // tab2에 대한 정보
-    private String twoImgPath;
     private String twoContents;
     private String twoEndDate;
     private String optionString;
 
     // tab4
-    private String fourImgPath;
     private String fourContents;
     private String fourArrivedTime;
 
@@ -38,4 +38,5 @@ public class ItemInfoJson {
     private String fiveLocationDetail;
 
     private Boolean isDeleted;
+    private List<ItemImgPath> imgList;
 }
