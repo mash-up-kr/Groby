@@ -77,13 +77,13 @@ public class ItemService {
         List<ItemImgPath> imgPathList = new ArrayList<>();
 
         // 공구 item에 대한 기본 설정
-        item.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
+        item.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
         Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
         item.setCategory(getCategory);
         item.setTitle(acceptJson.getItemTitle());
         User getUser = userRepository.getOne(Long.parseLong(acceptJson.getA_userId()));
         item.setUser(getUser);
-        item.setAmountLimit(Integer.parseInt(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
+        item.setAmountLimit(Integer.valueOf(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
 
         item.setThumnail(acceptJson.getA_imgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
 
@@ -195,8 +195,8 @@ public class ItemService {
         Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId().toString()));
 
         if(!info.getItemTitle().isEmpty()) parentsItem.setTitle(info.getItemTitle());
-        if(!info.getItemNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.parseInt(info.getItemNumOfOrder()));
-        if(!info.getItemAmountLimit().isEmpty()) parentsItem.setAmountLimit(Integer.parseInt(info.getItemAmountLimit()));
+        if(!info.getItemNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.valueOf(info.getItemNumOfOrder()));
+        if(!info.getItemAmountLimit().isEmpty()) parentsItem.setAmountLimit(Integer.valueOf(info.getItemAmountLimit()));
 
         itemRepository.save(parentsItem);
 
@@ -266,7 +266,7 @@ public class ItemService {
         }
 
         if(!acceptJson.getA_editTab()) {
-            parentsItem.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
+            parentsItem.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
         }
         itemRepository.save(parentsItem);
         return result;
