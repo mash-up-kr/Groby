@@ -14,6 +14,7 @@ public class ItemAcceptJson {
     private String a_TabNumber;
     private String a_itemId;
     private String a_userId;
+    private Boolean editTab;
     private String userLikeEmail;
 
     private String itemUserEmail;
