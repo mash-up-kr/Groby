@@ -12,4 +12,5 @@ public class PopularItemList {
     private Integer likeNum;        // 좋아요 수
     private Integer participantNum; // 참여한 사람의 수
     private Integer amountLimit;    // 공구 수량
+    private Integer participantPercent; // 진행률
 }

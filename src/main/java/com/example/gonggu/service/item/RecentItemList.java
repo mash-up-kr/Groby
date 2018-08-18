@@ -17,4 +17,5 @@ public class RecentItemList {
     private Integer amountLimit;    // 탭2일 경우, 공구 수량
     private String imgPath;         // 이미지 주소
     private Date dueDate;           // 마감 날짜
+    private Integer participantPercent; // 진행률
 }
