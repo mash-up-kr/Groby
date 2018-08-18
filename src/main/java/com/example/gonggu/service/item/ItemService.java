@@ -253,7 +253,14 @@ public class ItemService {
         return result;
     }
 
-
+    /*
+     * 공구 tab의 내용을 수정할때의 service
+     * acceptJson
+     *   itemId, editTab, 변동된 tab의 내용
+     * return
+     *   true : item update success
+     *   false : item update fail
+     * */
     public Boolean patchItemTab(ItemAcceptJson acceptJson){
         Boolean result = true;
         Item parentsItem = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
@@ -313,6 +320,22 @@ public class ItemService {
             parentsItem.setNowTab(Integer.parseInt(acceptJson.getA_TabNumber()));
         }
         itemRepository.save(parentsItem);
+        return result;
+    }
+
+    /*
+     * 사용자가 공구 구매시 option에 대한 정보 전달 service
+     * parameter
+     *   itemId
+     * return
+     *   String : option에 대한 값 전달
+     * */
+    public String getOptionInfo(String itemId) {
+        String result;
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
+
+        result = parentItem.getItemTab2().getOptionString();
+
         return result;
     }
 }
