@@ -16,7 +16,7 @@ public interface ItemRepository extends JpaRepository<Item,Long> {
     public List<Item> findByOrderByNumOfLikeDesc();
 
     // 카테고리별 아이템 검색
-    public List<Item> findByCategoryOrderByDesc(Category category);
+    public List<Item> findByOrderByCategoryDesc(Category category);
 
 //    @Query("select i ,t1 from item i , tab1 t1 fetch ")
 //    public List<Object[]> getItemWithTab();
