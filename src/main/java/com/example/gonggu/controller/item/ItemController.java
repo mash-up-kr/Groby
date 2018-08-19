@@ -26,16 +26,13 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @Resource
-    HttpStatus status;
-
     // item id 를 통해서 아이템을 찾는다.
     @GetMapping("/{itemId}")
     public ResponseEntity<APIResponse> apiGetItem(
             @PathVariable String itemId
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.OK;
 
         returnResponse.setReturnJson(itemService.getItemDetail(itemId));
         returnResponse.setStatus(status);
@@ -51,6 +48,7 @@ public class ItemController {
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
+        HttpStatus status;
 
         // function
         if(itemService.updateItem(itemId,acceptJson)){
@@ -73,6 +71,7 @@ public class ItemController {
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
+        HttpStatus status;
 
         if(itemService.createItem(acceptJson)){
             status = HttpStatus.CREATED;
@@ -95,6 +94,7 @@ public class ItemController {
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
+        HttpStatus status;
         acceptJson.setA_itemId(itemId);
 
         // update tab
@@ -117,7 +117,7 @@ public class ItemController {
             @PathVariable String itemId
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.ACCEPTED;
 
         itemService.deleteItem(itemId);
 
@@ -135,7 +135,7 @@ public class ItemController {
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.ACCEPTED;
         acceptJson.setA_itemId(itemId);
 
         if(itemService.toggleLike(acceptJson))
@@ -157,7 +157,7 @@ public class ItemController {
             @RequestBody Map<String,Object> acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.CREATED;
+        HttpStatus status = HttpStatus.CREATED;
 
         //
 
@@ -173,7 +173,7 @@ public class ItemController {
             @PathVariable String itemId
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.CREATED;
+        HttpStatus status = HttpStatus.CREATED;
 
         //
 
@@ -192,7 +192,7 @@ public class ItemController {
             @RequestBody Map<String,Object> acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.ACCEPTED;
 
         // action 이라는 값을 줘서 삭제 확인 보류를 나누자
 
@@ -208,7 +208,7 @@ public class ItemController {
             @PathVariable String itemId
     ){
         APIResponse returnResponse = new APIResponse();
-        status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.OK;
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("Get Option String");
