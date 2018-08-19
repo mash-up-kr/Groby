@@ -104,8 +104,7 @@ public class MainService {
      * */
     public List<Item> apiGetCategoryItem(Long categoryId){
         Category cate = categoryRepository.findOne(categoryId);
-        List<Item> list = itemRepository.findByOrderByCategoryDesc(cate);
-
+        List<Item> list = itemRepository.findByCategoryOrderByRegDateDesc(cate);
         return list;
     }
 

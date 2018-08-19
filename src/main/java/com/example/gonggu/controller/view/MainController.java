@@ -24,13 +24,11 @@ public class MainController {
     @Autowired
     MainService mainService;
     @Resource
-    HttpStatus status;
-    @Resource
     APIResponse returnResponse;
 
     @GetMapping("/home")
     public ResponseEntity<APIResponse> apiGetHome(){
-        status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.OK;
         Map<String,Object> returnJson = new HashMap<>();
 
         // 최신글 + 핫아이템
@@ -46,7 +44,7 @@ public class MainController {
 
     @GetMapping("/home/more")
     public ResponseEntity<APIResponse> apiGetHomeMore(){
-        status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.OK;
         Map<String,Object> returnJson = new HashMap<>();
         returnJson.put("recentAll",mainService.getRecentBoard(0));
         returnResponse.setStatus(status);
@@ -59,7 +57,7 @@ public class MainController {
     public ResponseEntity<APIResponse> apiGetCategoryItem(
             @PathVariable String categoryId
     ){
-        status = HttpStatus.OK;
+        HttpStatus status = HttpStatus.OK;
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("return Category Item");
