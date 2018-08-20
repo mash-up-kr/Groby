@@ -1,5 +1,6 @@
 package com.example.gonggu.service.view;
 
+import com.example.gonggu.controller.view.ItemCard;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
 import com.example.gonggu.persistence.category.CategoryRepository;
@@ -100,11 +101,29 @@ public class MainService {
      * parameter
      *   acceptJson
      * return
-     *   List<Item>
+     *   List<Item> -> List<ItemCard>
+     *   Item 으로 하면 불필요한 정보들까지 가져와서 SQL 이 늘어남 (FetchType LAZY가 의미가 없다.)
+     *   이를 해결하기 위해서 ItemCard 를 만들어 필요한 정보들만 조회할수 있도록 함
      * */
-    public List<Item> apiGetCategoryItem(Long categoryId){
+    public List<ItemCard> apiGetCategoryItem(Long categoryId){
         Category cate = categoryRepository.findOne(categoryId);
-        List<Item> list = itemRepository.findByCategoryOrderByRegDateDesc(cate);
+        List<ItemCard> list = new ArrayList<>();
+        itemRepository.findByCategoryOrderByRegDateDesc(cate).forEach(it->{
+            ItemCard card = new ItemCard();
+            card.setTitle(it.getTitle());
+            card.setNowTab(it.getNowTab());
+            card.setEndDate(it.getItemTab1().getEndDate());
+            card.setItemId(it.getItemId().toString());
+            card.setThumnailURL(it.getThumnail());
+            if(it.getNowTab() == 1)
+                card.setLikeNum(it.getNumOfLike().toString());
+            else
+                card.setProgress((it.getNumOfOrder()/it.getAmountLimit())*100);
+
+            list.add(card);
+        });
+
+
         return list;
     }
 

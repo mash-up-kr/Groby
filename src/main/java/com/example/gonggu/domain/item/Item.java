@@ -23,7 +23,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private User user;
     @ManyToOne
@@ -70,7 +70,7 @@ public class Item {
     @JoinColumn(name = "item_id")
     private List<ListOfLikeForItem> likeForItemList;
 
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id")
     private List<ItemImgPath> imgPaths;
 

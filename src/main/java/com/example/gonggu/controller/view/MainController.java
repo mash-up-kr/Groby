@@ -42,7 +42,7 @@ public class MainController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
-    @GetMapping("/home/more")
+    @GetMapping("/home/allitem")
     public ResponseEntity<APIResponse> apiGetHomeMore(){
         HttpStatus status = HttpStatus.OK;
         Map<String,Object> returnJson = new HashMap<>();
