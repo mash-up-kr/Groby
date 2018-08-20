@@ -74,7 +74,7 @@ public class ItemService {
         ItemTab3 itemTab3 = new ItemTab3();
         ItemTab4 itemTab4 = new ItemTab4();
         ItemTab5 itemTab5 = new ItemTab5();
-        ItemImgPath itemImgPath = new ItemImgPath();
+        ItemImgPath itemImgPath;
         List<ItemImgPath> imgPathList = new ArrayList<>();
 
         // 공구 item에 대한 기본 설정
@@ -85,11 +85,15 @@ public class ItemService {
         User getUser = userRepository.getOne(Long.parseLong(acceptJson.getA_userId()));
         item.setUser(getUser);
         item.setAmountLimit(Integer.valueOf(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
+        item.setNumOfLike(0);
+        item.setNumOfOrder(0);
+        item.setIsDeleted(false);
 
         item.setThumnail(acceptJson.getA_imgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
 
         // 이미지 추가하기
         for (String img : acceptJson.getA_imgPathList()) {
+            itemImgPath = new ItemImgPath();
             itemImgPath.setTab(1);
             itemImgPath.setImg_path(img);
             imgPathList.add(itemImgPath);
@@ -195,7 +199,7 @@ public class ItemService {
     * */
     public Boolean updateItem(String itemId, ItemAcceptJson info) {
         Boolean result = true;
-        Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId().toString()));
+        Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId()));
 
         if(!info.getItemTitle().isEmpty()) parentsItem.setTitle(info.getItemTitle());
         if(!info.getItemNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.valueOf(info.getItemNumOfOrder()));
