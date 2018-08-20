@@ -254,6 +254,16 @@ public class ItemService {
                 ItemTab2 tab2 = parentsItem.getItemTab2();
                 if(!acceptJson.getTwoContents().isEmpty()) tab2.setContents(acceptJson.getTwoContents());
                 if(!acceptJson.getTwoOptionString().isEmpty()) tab2.setOptionString(acceptJson.getTwoOptionString());
+                if(!acceptJson.getTwoEndDate().isEmpty()) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Date twoEndDate = format.parse(acceptJson.getTwoEndDate());
+                        tab2.setEndDate(twoEndDate);
+                    } catch (ParseException e) {
+                        result = false;
+                        e.printStackTrace();
+                    }
+                }
                 parentsItem.setItemTab2(tab2);
                 break;
             case "3" :
