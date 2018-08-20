@@ -171,8 +171,6 @@ public class ItemService {
             infoJson.setCategory(item.getCategory().getCategory());
             infoJson.setNowTab(item.getNowTab());
             infoJson.setNumOfLike(item.getNumOfLike());
-            Integer percentage = (item.getNumOfOrder()/item.getAmountLimit())*100;
-            infoJson.setPartcipantPercent(percentage); // 참여율 계산하여 전달
             switch (item.getNowTab()) { // 현재 탭이 어디인지에 따라 전달내용 넣
                 case 5:
                     infoJson.setFiveContents(item.getItemTab5().getContents());
@@ -185,6 +183,8 @@ public class ItemService {
                 case 2:
                     infoJson.setTwoContents(item.getItemTab2().getContents());
                     infoJson.setTwoEndDate(item.getItemTab2().getEndDate().toString());
+                    Integer percentage = (item.getNumOfOrder()/item.getAmountLimit())*100;
+                    infoJson.setPartcipantPercent(percentage); // 참여율 계산하여 전달
                 default:
                     infoJson.setOneContents(item.getItemTab1().getContents());
                     infoJson.setOneEndDate(item.getItemTab1().getEndDate().toString());
