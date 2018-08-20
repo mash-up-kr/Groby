@@ -67,8 +67,6 @@ public class ItemService {
     *      false : create item fail
     *  */
     public Boolean createItem(ItemAcceptJson acceptJson){
-//    public Map<String,Object> createItem(ItemAcceptJson acceptJson){
-//        Map<String, Object> results = new HashMap<>();
         Boolean result = true;
         Item item = new Item();
         ItemTab1 itemTab1 = new ItemTab1();
@@ -241,9 +239,9 @@ public class ItemService {
             case "1" :
                 ItemTab1 tab1 = parentsItem.getItemTab1();
                 if(acceptJson.getA_editTab()) {
-                    if(!acceptJson.getOneContents().isEmpty()) tab1.setContents(acceptJson.getOneContents());
-                    if(!acceptJson.getOneLocation().isEmpty()) tab1.setLocation(acceptJson.getOneLocation());
-                    if(!acceptJson.getOneEndDate().isEmpty()) {
+                    if(acceptJson.getOneContents() != null) tab1.setContents(acceptJson.getOneContents());
+                    if(acceptJson.getOneLocation() != null) tab1.setLocation(acceptJson.getOneLocation());
+                    if(acceptJson.getOneEndDate() != null) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                         try {
                             Date newEndDate = sdf.parse(acceptJson.getOneEndDate());
@@ -259,9 +257,9 @@ public class ItemService {
             case "2" :
                 // optionString contents img_path
                 ItemTab2 tab2 = parentsItem.getItemTab2();
-                if(!acceptJson.getTwoContents().isEmpty()) tab2.setContents(acceptJson.getTwoContents());
-                if(!acceptJson.getTwoOptionString().isEmpty()) tab2.setOptionString(acceptJson.getTwoOptionString());
-                if(!acceptJson.getTwoEndDate().isEmpty()) {
+                if(acceptJson.getTwoContents() != null) tab2.setContents(acceptJson.getTwoContents());
+                if(acceptJson.getTwoOptionString() != null) tab2.setOptionString(acceptJson.getTwoOptionString());
+                if(acceptJson.getTwoEndDate() != null) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     try {
                         Date twoEndDate = format.parse(acceptJson.getTwoEndDate());
@@ -275,10 +273,10 @@ public class ItemService {
                 break;
             case "3" :
                 ItemTab3 tab3 = parentsItem.getItemTab3();
-                if(!acceptJson.getThreeContents().isEmpty()) tab3.setContents(acceptJson.getThreeContents());
+                if(acceptJson.getThreeContents() != null) tab3.setContents(acceptJson.getThreeContents());
             case "4" :
                 ItemTab4 tab4 = parentsItem.getItemTab4();
-                if(!acceptJson.getFourArrivedTime().isEmpty()) {
+                if(acceptJson.getFourArrivedTime() != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                     try {
                         Date newArriveDate = sdf.parse(acceptJson.getFourArrivedTime());
@@ -288,13 +286,13 @@ public class ItemService {
                         e.printStackTrace();
                     }
                 }
-                if(!acceptJson.getFourContents().isEmpty()) tab4.setContents(acceptJson.getFourContents());
+                if(acceptJson.getFourContents() != null) tab4.setContents(acceptJson.getFourContents());
                 parentsItem.setItemTab4(tab4);
                 break;
             case "5" :
                 ItemTab5 tab5 = parentsItem.getItemTab5();
-                if(!acceptJson.getFiveLocationDetail().isEmpty()) tab5.setLocationDetail(acceptJson.getFiveLocationDetail());
-                if(!acceptJson.getFiveContents().isEmpty()) tab5.setContents(acceptJson.getFiveContents());
+                if(acceptJson.getFiveLocationDetail() != null) tab5.setLocationDetail(acceptJson.getFiveLocationDetail());
+                if(acceptJson.getFiveContents() != null) tab5.setContents(acceptJson.getFiveContents());
                 parentsItem.setItemTab5(tab5);
                 break;
         }
