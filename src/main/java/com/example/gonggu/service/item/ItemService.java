@@ -38,6 +38,7 @@ public class ItemService {
     public boolean toggleLike(ItemAcceptJson acceptJson){
         Item item = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
         boolean result = true;
+        Integer likeNum = item.getNumOfLike();
         for(ListOfLikeForItem temp :item.getLikeForItemList())
             if(temp.getUserEmail().equals(acceptJson.getUserEmail()) ){
                 item.getLikeForItemList().remove(temp);
@@ -49,6 +50,7 @@ public class ItemService {
             ListOfLikeForItem newlike = new ListOfLikeForItem();
             newlike.setUserEmail(acceptJson.getUserEmail());
             item.getLikeForItemList().add(newlike);
+            item.setNumOfLike(likeNum + 1);
         }
 
 
