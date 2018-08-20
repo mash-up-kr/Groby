@@ -39,12 +39,10 @@ public class ItemAcceptJson {
 
     //tab four
     private String fourContents;       // 총대의 메시지
-    private String fourReceiptImgPath; // 영수증 사진 주소
     private String fourArrivedTime;      // 도착예정시간
     //tab five
     private String fiveContents;                // 총대의 메시지
     private String fiveLocationDetail;          // 공구물품 배부장소
-    private String fiveDistributionTime;        // 공구물품 배부시간 (ex. 2018-01-02-1234/2018-01-02-1534)
 
 
 }
