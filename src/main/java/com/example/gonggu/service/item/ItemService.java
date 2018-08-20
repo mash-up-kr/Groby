@@ -201,9 +201,14 @@ public class ItemService {
         Boolean result = true;
         Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId()));
 
-        if(!info.getItemTitle().isEmpty()) parentsItem.setTitle(info.getItemTitle());
-        if(!info.getItemNumOfOrder().isEmpty()) parentsItem.setNumOfOrder(Integer.valueOf(info.getItemNumOfOrder()));
-        if(!info.getItemAmountLimit().isEmpty()) parentsItem.setAmountLimit(Integer.valueOf(info.getItemAmountLimit()));
+        if(info.getItemTitle() != null) parentsItem.setTitle(info.getItemTitle());
+        if(info.getItemAmountLimit() != null) parentsItem.setAmountLimit(Integer.valueOf(info.getItemAmountLimit()));
+        if(Integer.valueOf(info.getA_TabNumber()) != 1) // 탭1일 아닐 경우 수정
+            if(info.getItemNumOfOrder() != null) parentsItem.setNumOfOrder(Integer.valueOf(info.getItemNumOfOrder()));
+        if(info.getItemCategory() != null) { // 카테고리 수정
+            Category getCategory = categoryRepository.findByCategory(info.getItemCategory());
+            parentsItem.setCategory(getCategory);
+        }
 
         itemRepository.save(parentsItem);
 
