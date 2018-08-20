@@ -60,7 +60,7 @@ public class ItemService {
     /*
     * 공구 item 생성관련 Service
     * acceptJson
-    *      A_TabNumber, Category, ItemTitle, ItemUserEmail, ItemAmountLimit,
+    *      A_TabNumber, Category, ItemTitle, ItemUserEmail, ItemAmountLimit, a_imgPathList
     *      OneContents, OneLocation, OneEndDate, ""OneImgPath"" <- 이미지 여러개 들어오는 것 처리해야함
     * return
     *      true : create item success
@@ -79,50 +79,57 @@ public class ItemService {
         ItemImgPath itemImgPath;
         List<ItemImgPath> imgPathList = new ArrayList<>();
 
-        // 공구 item에 대한 기본 설정
-        item.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
-        Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
-        item.setCategory(getCategory);
-        item.setTitle(acceptJson.getItemTitle());
-        User getUser = userRepository.getOne(Long.parseLong(acceptJson.getA_userId()));
-        item.setUser(getUser);
-        item.setAmountLimit(Integer.valueOf(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
-        item.setNumOfLike(0);
-        item.setNumOfOrder(0);
-        item.setIsDeleted(false);
+        // 필수적인 내용을 다 넣어서 보낸 경우 저장
+        if((acceptJson.getA_TabNumber() != null) && (acceptJson.getItemCategory() != null) && (acceptJson.getItemTitle() != null)
+                && (acceptJson.getItemUserEmail() != null) && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getA_imgPathList() != null)
+                && (acceptJson.getOneContents() != null) && (acceptJson.getOneLocation() != null) && (acceptJson.getOneEndDate() != null)) {
+            // 공구 item에 대한 기본 설정
+            item.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
+            Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
+            item.setCategory(getCategory);
+            item.setTitle(acceptJson.getItemTitle());
+            User getUser = userRepository.getOne(Long.parseLong(acceptJson.getA_userId()));
+            item.setUser(getUser);
+            item.setAmountLimit(Integer.valueOf(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
+            item.setNumOfLike(0);
+            item.setNumOfOrder(0);
+            item.setIsDeleted(false);
 
-        item.setThumnail(acceptJson.getA_imgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
+            item.setThumnail(acceptJson.getA_imgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
 
-        // 이미지 추가하기
-        for (String img : acceptJson.getA_imgPathList()) {
-            itemImgPath = new ItemImgPath();
-            itemImgPath.setTab(1);
-            itemImgPath.setImg_path(img);
-            imgPathList.add(itemImgPath);
+            // 이미지 추가하기
+            for (String img : acceptJson.getA_imgPathList()) {
+                itemImgPath = new ItemImgPath();
+                itemImgPath.setTab(1);
+                itemImgPath.setImg_path(img);
+                imgPathList.add(itemImgPath);
+            }
+            item.setImgPaths(imgPathList); // 이미지리스트 추가하기
+
+            // 공구 item tab1 설정
+            itemTab1.setContents(acceptJson.getOneContents());
+            itemTab1.setLocation(acceptJson.getOneLocation());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
+            try {
+                Date insertDate = sdf.parse(acceptJson.getOneEndDate());
+                itemTab1.setEndDate(insertDate);
+            } catch (ParseException e) {
+                result = false;
+                e.printStackTrace();
+            }
+            item.setItemTab1(itemTab1);
+
+            // 공구 item tab2,3,4,5 null 값으로 생성
+            item.setItemTab2(itemTab2);
+            item.setItemTab3(itemTab3);
+            item.setItemTab4(itemTab4);
+            item.setItemTab5(itemTab5);
+
+            itemRepository.save(item);
         }
-        item.setImgPaths(imgPathList); // 이미지리스트 추가하기
-
-        // 공구 item tab1 설정
-        itemTab1.setContents(acceptJson.getOneContents());
-        itemTab1.setLocation(acceptJson.getOneLocation());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
-        try {
-            Date insertDate = sdf.parse(acceptJson.getOneEndDate());
-            itemTab1.setEndDate(insertDate);
-        } catch (ParseException e) {
+        else
             result = false;
-            e.printStackTrace();
-        }
-        item.setItemTab1(itemTab1);
 
-        // 공구 item tab2,3,4,5 null 값으로 생성
-        item.setItemTab2(itemTab2);
-        item.setItemTab3(itemTab3);
-        item.setItemTab4(itemTab4);
-        item.setItemTab5(itemTab5);
-
-        itemRepository.save(item);
-//        return results;
         return result;
     }
 
