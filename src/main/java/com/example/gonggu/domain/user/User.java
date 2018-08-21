@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString(exclude = "participants")
+@ToString(exclude = {"participants" ,"userPw"})
 @Entity
 public class User {
 
@@ -29,6 +29,8 @@ public class User {
     private String accountHolder;
 
     private Boolean isDeleted;
+
+    private String userToken;
 
     @CreationTimestamp
     private Timestamp regDate;

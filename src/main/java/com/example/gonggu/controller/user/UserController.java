@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Resource
+    APIResponse returnResponse;
 
     // 유저 아이디를 통해서 유저 정보 리턴
     @GetMapping(value = "/email/{userEmail}")
@@ -67,10 +70,35 @@ public class UserController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
+    //    /user/checkemail?userEail=abc@naver.com
+    @GetMapping("/checkemail")
+    public ResponseEntity<APIResponse> apiCheckEmail(
+            @RequestParam String userEmail
+    ){
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.OK;
+        // 이메일 체크
+        // 인증이 되는 경우 이메일을 보내준다.
+        // 인증번호를 보내준다.
+        if(userService.checkEmail(userEmail)){
+            status = HttpStatus.OK;
+            returnResponse.setMessage(userService.sendMail(userEmail));
+        }else{
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("이메일이 중복 되었습니다.");
+        }
+
+        returnResponse.setStatus(status);
+        returnResponse.setAcceptJson(null);
+        returnResponse.setReturnJson(null);
+
+        return new ResponseEntity<>(returnResponse, status);
+    }
+
     // Signup 관련 , 유저를 생성
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateUser(
-        @RequestBody Map<String,Object> acceptJson
+        @RequestBody UserAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.CREATED;
@@ -87,7 +115,7 @@ public class UserController {
     // 유저 로그인
     @PostMapping("/login")
     public ResponseEntity<APIResponse> apiLoginUser(
-            @RequestBody Map<String,Object> acceptJson
+            @RequestBody UserAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status;
@@ -111,11 +139,10 @@ public class UserController {
     // 유저아이디를 통해서 유저의 정보를 수정
     @PatchMapping("/")
     public ResponseEntity<APIResponse> apiChangeUser(
-        @RequestBody Map<String,Object> acceptJson
+        @RequestBody UserAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
-
         userService.userUpdate(acceptJson);
 
         returnResponse.setStatus(status);

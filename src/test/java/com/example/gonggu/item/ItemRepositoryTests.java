@@ -1,5 +1,6 @@
 package com.example.gonggu.item;
 
+import com.example.gonggu.controller.item.ItemAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
 import com.example.gonggu.domain.item.ItemTab1;
@@ -9,6 +10,7 @@ import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
+import com.example.gonggu.service.item.ItemService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class ItemRepositoryTests {
 
     @Autowired
     private ListOfLikeForItemRepo listLikeRepo;
+
+    @Autowired
+    private ItemService itemService;
 
 
    //  item테이블에 아이템 값을 입력하는 테스트
@@ -69,7 +74,7 @@ public class ItemRepositoryTests {
 //
 //        testItem.setTitle("TestTitle3333");
 //        testItem.setNumOfLike(0); // default 0 로 해야한다.
-//        testItem.setNumOfOrder(0); // default 0 로 해야한다.
+//        testItem.setItemNumOfOrder(0); // default 0 로 해야한다.
 //        testItem.setNowTab(1); // default 1
 //
 //        ItemTab1 tab1 = new ItemTab1();
@@ -139,4 +144,18 @@ public class ItemRepositoryTests {
 //        itemRepository.save(item);
 //    }
 
+/*    @Test
+    public void createItem() {
+        ItemAcceptJson itemAcceptJson = new ItemAcceptJson();
+
+        itemAcceptJson.setA_TabNumber("1");
+        itemAcceptJson.setItemTitle("들어가라아아ㅏ앗");
+        itemAcceptJson.setItemCategory("화장품");
+        itemAcceptJson.setOneContents("블라블라 아이템 집어넣귀이ㅣㅇ");
+        itemAcceptJson.setOneEndDate("2018.04.30 11:11:11");
+        itemAcceptJson.setOneImgPath("http://sddfdsd");
+        itemAcceptJson.setOneLocation("강남역이지러어엉");
+        itemAcceptJson.setItemUserEmail("1");
+        itemService.createItem(itemAcceptJson);
+    }*/
 }

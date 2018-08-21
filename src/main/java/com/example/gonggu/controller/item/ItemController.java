@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
@@ -33,28 +34,32 @@ public class ItemController {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
-        // function
-
+        returnResponse.setReturnJson(itemService.getItemDetail(itemId));
         returnResponse.setStatus(status);
         returnResponse.setMessage("Item Information");
-//        returnResponse.setReturnJson(null);
-        return new ResponseEntity<>(returnResponse,status);
 
+        return new ResponseEntity<>(returnResponse,status);
     }
 
     // 아이템을 수정
     @PatchMapping("/{itemId}")
     public ResponseEntity<APIResponse> apiChangeItem(
             @PathVariable String itemId,
-            @RequestBody Map<String,Object> acceptJson
+            @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status;
 
         // function
+        if(itemService.updateItem(itemId,acceptJson)){
+            status = HttpStatus.ACCEPTED;
+            returnResponse.setMessage("Item Changed");
+        }else{
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("Change Item is failed");
+        }
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Item Changed");
         returnResponse.setAcceptJson(acceptJson);
         return new ResponseEntity<>(returnResponse,status);
 
@@ -66,14 +71,18 @@ public class ItemController {
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.CREATED;
+        HttpStatus status;
 
-        // create item , all tabs ( empty )
+        if(itemService.createItem(acceptJson)){
+            status = HttpStatus.CREATED;
+            returnResponse.setMessage("Create Item");
+        }else{
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("Create Item Is Failed");
+        }
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Create Item");
         returnResponse.setAcceptJson(acceptJson);
-
         return new ResponseEntity<>(returnResponse,status);
     }
 
@@ -85,19 +94,24 @@ public class ItemController {
             @RequestBody ItemAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status;
         acceptJson.setA_itemId(itemId);
 
         // update tab
+        if(itemService.patchItemTab(acceptJson)){
+            status = HttpStatus.ACCEPTED;
+            returnResponse.setMessage("Update Tab Is Done");
+        }else{
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("Update Tab Is Failed");
+        }
 
         returnResponse.setStatus(status);
-        returnResponse.setMessage("Update Tab");
         returnResponse.setAcceptJson(acceptJson);
-
         return new ResponseEntity<>(returnResponse,status);
     }
 
-    // t1 지우기 ?
+    // delete
     @DeleteMapping("/{itemId}")
     public ResponseEntity<APIResponse> apiDeleteItem(
             @PathVariable String itemId
@@ -105,11 +119,10 @@ public class ItemController {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
 
-        // function
+        itemService.deleteItem(itemId);
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("Item Is Deleted");
-//        returnResponse.setReturnJson(null);
         return new ResponseEntity<>(returnResponse,status);
     }
 
@@ -197,11 +210,9 @@ public class ItemController {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
-        //
-
         returnResponse.setStatus(status);
         returnResponse.setMessage("Get Option String");
-        returnResponse.setReturnJson(null);
+        returnResponse.setReturnJson(itemService.getOptionInfo(itemId));
 
         return new ResponseEntity<>(returnResponse,status);
 

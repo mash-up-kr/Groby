@@ -1,10 +1,15 @@
 package com.example.gonggu.controller.view;
 
 import com.example.gonggu.controller.APIResponse;
+import com.example.gonggu.service.view.MainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,30 +21,47 @@ public class MainController {
      받아오는 json 이 정확해야 한다.
     */
 
+    @Autowired
+    MainService mainService;
+    @Resource
+    APIResponse returnResponse;
+
     @GetMapping("/home")
     public ResponseEntity<APIResponse> apiGetHome(){
-        APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
+        Map<String,Object> returnJson = new HashMap<>();
 
         // 최신글 + 핫아이템
+        returnJson.put("popular",mainService.getPopularBoard());
+        returnJson.put("recent",mainService.getRecentBoard(5));
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("home view Info \n recent view + a hot item");
-        returnResponse.setReturnJson(null);
+        returnResponse.setReturnJson(returnJson);
 
         return new ResponseEntity<>(returnResponse, status);
     }
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<APIResponse> apiGetCategoryItem(){
-        APIResponse returnResponse = new APIResponse();
+    @GetMapping("/home/allitem")
+    public ResponseEntity<APIResponse> apiGetHomeMore(){
         HttpStatus status = HttpStatus.OK;
+        Map<String,Object> returnJson = new HashMap<>();
+        returnJson.put("recentAll",mainService.getRecentBoard(0));
+        returnResponse.setStatus(status);
+        returnResponse.setReturnJson(returnJson);
 
-        // 카테고리 아이템 검색
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<APIResponse> apiGetCategoryItem(
+            @PathVariable String categoryId
+    ){
+        HttpStatus status = HttpStatus.OK;
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("return Category Item");
-        returnResponse.setReturnJson(null);
+        returnResponse.setReturnJson(mainService.apiGetCategoryItem(Long.valueOf(categoryId)));
 
         return new ResponseEntity<>(returnResponse, status);
     }

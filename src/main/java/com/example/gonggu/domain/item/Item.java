@@ -16,14 +16,14 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString(exclude = {"user", "itemTab1", "itemTab2", "itemTab4", "itemTab5" , "category"})
+@ToString(exclude = {"user", "category","itemTab1", "itemTab2", "itemTab3" ,"itemTab4", "itemTab5" , "category","participantForItemList","likeForItemList","imgPaths"})
 @Entity
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private User user;
     @ManyToOne
@@ -39,6 +39,7 @@ public class Item {
     private Integer nowTab;         // 현재 공구 진행 상황
     private Integer amountLimit;    // 공구 오픈 최소 수량
     private Boolean isDeleted;      // tab1에서 삭제할 경우
+    private String thumnail;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab1_id")
@@ -49,14 +50,16 @@ public class Item {
     private ItemTab2 itemTab2;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tab3_id")
+    private ItemTab3 itemTab3;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab4_id")
     private ItemTab4 itemTab4;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab5_id")
     private ItemTab5 itemTab5;
-
-
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -66,4 +69,9 @@ public class Item {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private List<ListOfLikeForItem> likeForItemList;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "item_id")
+    private List<ItemImgPath> imgPaths;
+
 }
