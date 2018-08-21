@@ -6,6 +6,7 @@ import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.persistence.category.CategoryRepository;
+import com.example.gonggu.persistence.item.ItemImgPathRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
@@ -16,6 +17,8 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -27,6 +30,8 @@ public class ItemService {
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ItemImgPathRepository itemImgRepo;
 
     // like 관련 service
     // acceptJson
@@ -230,6 +235,7 @@ public class ItemService {
      *   true : item update success
      *   false : item update fail
      * */
+    @Transactional
     public Boolean patchItemTab(ItemAcceptJson acceptJson){
         Boolean result = true;
         Item parentsItem = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
@@ -313,12 +319,13 @@ public class ItemService {
      * */
     public void changeTabImgs(Integer tab,String[] imgpaths,Item target){
 
-        List<ItemImgPath> list =  target.getImgPaths();
-        list.forEach(img->{
-            if(img.getTab().equals(tab)){
-                list.remove(img);
+        List<ItemImgPath> list = target.getImgPaths().stream().filter(img->{
+            if (img.getTab() == tab) {
+                itemImgRepo.delete(img.getItemImgPathId());
+                return false;
             }
-        });
+            return true;
+        }).collect(Collectors.toList());
 
         for (String newImgString : imgpaths) {
             ItemImgPath newImgPath = new ItemImgPath();
