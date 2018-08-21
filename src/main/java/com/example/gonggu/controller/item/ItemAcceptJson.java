@@ -19,7 +19,6 @@ public class ItemAcceptJson {
 
     private String userEmail;
 
-    private String itemUserEmail;
     private String itemCategory;
     private String itemTitle;
     private String itemAmountLimit; // 공구 최소수량

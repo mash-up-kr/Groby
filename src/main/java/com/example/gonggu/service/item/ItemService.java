@@ -84,7 +84,7 @@ public class ItemService {
 
         // 필수적인 내용을 다 넣어서 보낸 경우 저장
         if((acceptJson.getA_TabNumber() != null) && (acceptJson.getItemCategory() != null) && (acceptJson.getItemTitle() != null)
-                && (acceptJson.getItemUserEmail() != null) && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getA_imgPathList() != null)
+                && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getA_imgPathList() != null)
                 && (acceptJson.getOneContents() != null) && (acceptJson.getOneLocation() != null) && (acceptJson.getOneEndDate() != null)) {
             // 공구 item에 대한 기본 설정
             item.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
