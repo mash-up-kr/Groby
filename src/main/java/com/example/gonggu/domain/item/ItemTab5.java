@@ -15,7 +15,8 @@ public class ItemTab5 {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tabFiveId;
 
+    @Column(length = 2000)
     private String contents;                // 총대의 메시지
+    @Column(length = 1000)
     private String locationDetail;          // 공구물품 배부장소
-//    private String distributionTime;        // 공구물품 배부시간 (ex. 2018-01-02-1234/2018-01-02-1534)
 }
