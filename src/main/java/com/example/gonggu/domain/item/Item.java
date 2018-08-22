@@ -29,6 +29,7 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;        // 카테고리
+    @Column(length = 150)
     private String title;           // 공구 제목
     @CreationTimestamp
     private Timestamp regDate;      // 아이템 등록 시간
@@ -40,6 +41,9 @@ public class Item {
     private Integer amountLimit;    // 공구 오픈 최소 수량
     private Boolean isDeleted;      // tab1에서 삭제할 경우
     private String thumnail;
+    @Column(length = 500)
+    private String orderList;       // 옵션별 주문리스트 / S 빨강:1000:10 / S 노랑:1500:50 / S 파랑:1200:20
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tab1_id")
