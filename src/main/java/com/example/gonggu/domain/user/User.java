@@ -20,12 +20,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
+    @Column(length = 100)
     private String userEmail;
     private String userPw;
+    @Column(length = 50)
     private String userName;
 
+    @Column(length = 50)
     private String accountNum;
+    @Column(length = 50)
     private String accountBank;
+    @Column(length = 50)
     private String accountHolder;
 
     private Boolean isDeleted;
