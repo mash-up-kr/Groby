@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Setter
 @ToString
 @Component
-public class APIResponse {
+public class APIResponse<R> {
     public HttpStatus status;
     public String message;
     public Object acceptJson;
-    public Object returnJson;
+    public R returnJson;
 }

@@ -1,6 +1,7 @@
 package com.example.gonggu.controller.item;
 
 import com.example.gonggu.controller.APIResponse;
+import com.example.gonggu.service.item.ItemInfoJson;
 import com.example.gonggu.service.item.ItemService;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,10 @@ public class ItemController {
 
     // item id 를 통해서 아이템을 찾는다.
     @GetMapping("/{itemId}")
-    public ResponseEntity<APIResponse> apiGetItem(
+    public ResponseEntity<APIResponse<ItemInfoJson>> apiGetItem(
             @PathVariable String itemId
     ){
-        APIResponse returnResponse = new APIResponse();
+        APIResponse<ItemInfoJson> returnResponse = new APIResponse<>();
         HttpStatus status = HttpStatus.OK;
 
         returnResponse.setReturnJson(itemService.getItemDetail(itemId));
