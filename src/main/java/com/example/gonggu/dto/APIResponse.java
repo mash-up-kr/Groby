@@ -1,4 +1,4 @@
-package com.example.gonggu.controller;
+package com.example.gonggu.dto;
 
 import lombok.Getter;
 import lombok.Setter;

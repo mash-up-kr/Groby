@@ -1,18 +1,14 @@
 package com.example.gonggu.controller.item;
 
-import com.example.gonggu.controller.APIResponse;
+import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.service.item.ItemInfoJson;
 import com.example.gonggu.service.item.ItemService;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalLong;
 
 @RestController
 @RequestMapping("/item/*")

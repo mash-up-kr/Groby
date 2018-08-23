@@ -39,6 +39,7 @@ public class UserService {
         user.setUserEmail(acceptJson.getUserEmail());
         user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
         user.setUserName(acceptJson.getUserName());
+        user.setUserToken(acceptJson.getUserToken());
 
         // signup 단계에서 계좌 정보를 받지 않음
 //        if(info.get("userAccountBank") != null){

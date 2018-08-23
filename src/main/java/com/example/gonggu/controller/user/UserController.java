@@ -1,6 +1,6 @@
 package com.example.gonggu.controller.user;
 
-import com.example.gonggu.controller.APIResponse;
+import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user/*")

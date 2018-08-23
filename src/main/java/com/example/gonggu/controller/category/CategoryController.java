@@ -1,6 +1,8 @@
 package com.example.gonggu.controller.category;
 
-import com.example.gonggu.controller.APIResponse;
+import com.example.gonggu.domain.category.Category;
+import com.example.gonggu.dto.APIResponse;
+import com.example.gonggu.dto.category.CategoryAcceptJson;
 import com.example.gonggu.service.category.CategoryService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -9,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/category/*")
@@ -25,15 +27,16 @@ public class CategoryController {
 
     //생성된 카테고리 보여주기
     @GetMapping("/")
-    public ResponseEntity<APIResponse> apiGetCategory(){
+    public ResponseEntity<APIResponse<List<Category>>> apiGetCategory(){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
 
-        Map<Object, Object> category = categoryService.getCategory();
+        List<Category> categoryList = categoryService.getCategory();
+
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("All Category");
-        returnResponse.setReturnJson(category);
+        returnResponse.setReturnJson(categoryList);
 
         return new ResponseEntity<>(returnResponse,status);
     }
