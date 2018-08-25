@@ -2,7 +2,8 @@ package com.example.gonggu.controller.category;
 
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.dto.APIResponse;
-import com.example.gonggu.dto.category.CategoryAcceptJson;
+import com.example.gonggu.dto.category.CategoryCreateJson;
+import com.example.gonggu.dto.category.CategoryPatchJson;
 import com.example.gonggu.service.category.CategoryService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,17 +29,15 @@ public class CategoryController {
     //생성된 카테고리 보여주기
     @GetMapping("/")
     public ResponseEntity<APIResponse<List<Category>>> apiGetCategory(){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
 
+        APIResponse response = new APIResponse();
+        HttpStatus status = HttpStatus.OK;
         List<Category> categoryList = categoryService.getCategory();
 
+        response.setStatus(status);
+        response.setMessage("All Category");
 
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("All Category");
-        returnResponse.setReturnJson(categoryList);
-
-        return new ResponseEntity<>(returnResponse,status);
+        return new ResponseEntity<>(response ,status);
     }
 
     //카테고리 생성
@@ -47,7 +46,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "category", value = "생성할카테고리", required = false, dataType = "string", paramType = "path", defaultValue = "")
     })
     public ResponseEntity<APIResponse> apiCreateCategory(
-            @RequestBody CategoryAcceptJson acceptJson
+            @RequestBody CategoryCreateJson acceptJson
     ) {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
@@ -64,7 +63,7 @@ public class CategoryController {
     //카테고리 수정
     @PatchMapping("/")
     public ResponseEntity<APIResponse> apiUpdateCategory(
-            @RequestBody CategoryAcceptJson acceptJson
+            @RequestBody CategoryPatchJson acceptJson
     ) {
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -77,24 +76,23 @@ public class CategoryController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
-//    //카테고리 삭제
-//    @DeleteMapping("id/{categoryId}")
-//    public ResponseEntity<APIResponse> apiDeleteCategory(
-//            @PathVariable Long categoryId
-//    ) {
-//        APIResponse returnResponse = new APIResponse();
-//        HttpStatus status = HttpStatus.ACCEPTED;
-//
-//        if(!categoryService.deletecategory(categoryId)){
-//            status = HttpStatus.NOT_ACCEPTABLE;
-//            returnResponse.setMessage("Check Category Id");
-//        }
-//
-//        else{
-//            returnResponse.setStatus(status);
-//            returnResponse.setMessage("Delete Category is Done");
-//        }
-//
-//        return new ResponseEntity<APIResponse>(returnResponse, status);
-//    }
+    //카테고리 삭제
+    @DeleteMapping("{category}")
+    public ResponseEntity<APIResponse> apiDeleteCategory(
+            @PathVariable String category
+    ) {
+        APIResponse returnResponse = new APIResponse();
+        HttpStatus status = HttpStatus.ACCEPTED;
+
+        if(!categoryService.deletecategory(category)){
+            status = HttpStatus.NOT_ACCEPTABLE;
+            returnResponse.setMessage("Check Category Id");
+        } else{
+            status = HttpStatus.OK;
+            returnResponse.setMessage("Delete Category is Done");
+        }
+
+        returnResponse.setStatus(status);
+        return new ResponseEntity<APIResponse>(returnResponse, status);
+    }
 }
