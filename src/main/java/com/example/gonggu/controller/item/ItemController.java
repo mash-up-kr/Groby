@@ -28,7 +28,7 @@ public class ItemController {
     public ResponseEntity<APIResponse<ItemInfoJson>> apiGetItem(
             @PathVariable String itemId
     ){
-        APIResponse<ItemInfoJson> returnResponse = new APIResponse<>();
+        APIResponse<ItemInfoJson> returnResponse = new APIResponse<ItemInfoJson>();
         HttpStatus status = HttpStatus.OK;
 
         returnResponse.setReturnJson(itemService.getItemDetail(itemId));
