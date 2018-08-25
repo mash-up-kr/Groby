@@ -16,6 +16,7 @@ public class ItemTab4 {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tabFourId;
 
+    @Column(length = 2000)
     private String contents;       // 총대의 메시지
     private Date arrivedTime;      // 도착예정시간
 }

@@ -1,4 +1,4 @@
-package com.example.gonggu.controller.view;
+package com.example.gonggu.dto.view;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +12,14 @@ import java.util.Date;
 public class ItemCard {
     private String thumnailURL;
     private String itemId;
-    private int progress;
     private String likeNum;
-    private Date endDate;
     private String title;
+    private int amountLimit;
+    private int participantNum;
+    private int progress;
     private int nowTab;
+    private int participantPercent;
+    private Date endDate;
+    private Date dueDate;
 
 }

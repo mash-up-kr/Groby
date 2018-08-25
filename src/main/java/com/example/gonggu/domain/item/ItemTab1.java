@@ -17,6 +17,8 @@ public class ItemTab1 {
     private Long tabOneId;
 
     private Date endDate;        // 좋아요 받는 마지막 날
+    @Column(length = 2000)
     private String contents;     // 총대의 메시지
+    @Column(length = 200)
     private String location;     // 대략적 위치
 }

@@ -1,6 +1,8 @@
 package com.example.gonggu.controller.view;
 
-import com.example.gonggu.controller.APIResponse;
+import com.example.gonggu.dto.APIResponse;
+import com.example.gonggu.dto.view.HomeCardList;
+import com.example.gonggu.dto.view.ItemCard;
 import com.example.gonggu.service.view.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,34 +30,35 @@ public class MainController {
     APIResponse returnResponse;
 
     @GetMapping("/home")
-    public ResponseEntity<APIResponse> apiGetHome(){
+    public ResponseEntity<APIResponse<HomeCardList>> apiGetHome(){
         HttpStatus status = HttpStatus.OK;
-        Map<String,Object> returnJson = new HashMap<>();
+        HomeCardList result = new HomeCardList();
+//        List<ItemCard> returnJson = new ArrayList<>();
 
         // 최신글 + 핫아이템
-        returnJson.put("popular",mainService.getPopularBoard());
-        returnJson.put("recent",mainService.getRecentBoard(5));
+        result.setPopularItemList(mainService.getPopularBoard());
+        result.setRecentItemList(mainService.getRecentBoard(5));
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("home view Info \n recent view + a hot item");
-        returnResponse.setReturnJson(returnJson);
+        returnResponse.setReturnJson(result);
 
         return new ResponseEntity<>(returnResponse, status);
     }
 
     @GetMapping("/home/allitem")
-    public ResponseEntity<APIResponse> apiGetHomeMore(){
+    public ResponseEntity<APIResponse<List<ItemCard>>> apiGetHomeMore(){
         HttpStatus status = HttpStatus.OK;
-        Map<String,Object> returnJson = new HashMap<>();
-        returnJson.put("recentAll",mainService.getRecentBoard(0));
+        List<ItemCard> returnJson = mainService.getRecentBoard(0);
         returnResponse.setStatus(status);
+        returnResponse.setMessage("return All item By recent");
         returnResponse.setReturnJson(returnJson);
 
         return new ResponseEntity<>(returnResponse,status);
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<APIResponse> apiGetCategoryItem(
+    public ResponseEntity<APIResponse<List<ItemCard>>> apiGetCategoryItem(
             @PathVariable String categoryId
     ){
         HttpStatus status = HttpStatus.OK;
