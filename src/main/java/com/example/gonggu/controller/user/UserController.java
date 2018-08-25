@@ -2,6 +2,7 @@ package com.example.gonggu.controller.user;
 
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.domain.user.User;
+import com.example.gonggu.dto.user.*;
 import com.example.gonggu.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user/*")
@@ -24,148 +27,177 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    @Resource
-    APIResponse returnResponse;
+//    @Resource
+//    APIResponse returnResponse;
 
     // 유저 아이디를 통해서 유저 정보 리턴
     @GetMapping(value = "/email/{userEmail}")
-    public ResponseEntity<APIResponse> apiGetUserByEmail(
+    public ResponseEntity<APIResponse<UserInfo>> apiGetUserByEmail(
             @PathVariable String userEmail
     ){
-        APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
+//        APIResponse<User> response = APIResponse.<User>builder()
+        APIResponse<UserInfo> response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("get user is done");
+        response.setReturnJson(
+                userService.getUserBy(
+                        new HashMap<String,Object>(){{
+                            put("getUserBy" , "Email");
+                            put("userEmail" , userEmail);
+                        }})
+        );
 
-        User user = userService.getUserBy(new HashMap<String,Object>(){{
-            put("getUserBy" , "Email");
-            put("userEmail" , userEmail);
-        }});
-
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("get user is done");
-        returnResponse.setAcceptJson(null);
-        returnResponse.setReturnJson(user);
-
-        return new ResponseEntity<>(returnResponse, status);
+        return new ResponseEntity<>(response, status);
     }
 
     // 유저 넘버 (PK) 를 통해서 유저 정보 리턴
     @GetMapping(value = "/usernum/{userNum}")
-    public ResponseEntity<APIResponse> apiGetUserByUserNum(
+    public ResponseEntity<APIResponse<UserInfo>> apiGetUserByUserNum(
             @PathVariable String userNum
     ){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.CREATED;
 
-        User user = userService.getUserBy(new HashMap<String,Object>(){{
-            put("getUserBy" , "userId");
-            put("userId",Long.valueOf(userNum));
-        }});
+        HttpStatus status = HttpStatus.OK;
+//        User user = userService.getUserBy(new HashMap<String,Object>(){{
+//            put("getUserBy" , "userId");
+//            put("userId",Long.valueOf(userNum));
+//        }});
 
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("Create user is done");
-        returnResponse.setAcceptJson(null);
-        returnResponse.setReturnJson(user);
+        APIResponse<UserInfo> response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("Create user is done");
+        response.setReturnJson(
+                userService.getUserBy(new HashMap<String,Object>(){{
+                    put("getUserBy" , "userId");
+                    put("userId",Long.valueOf(userNum));
+                }})
+        );
 
-        return new ResponseEntity<>(returnResponse, status);
+        return new ResponseEntity<>( response , status);
     }
 
     //    /user/checkemail?userEail=abc@naver.com
+    // return 값 명시해줘야 한다.
     @GetMapping("/checkemail")
     public ResponseEntity<APIResponse> apiCheckEmail(
             @RequestParam String userEmail
     ){
-        APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.OK;
+        String message;
         // 이메일 체크
         // 인증이 되는 경우 이메일을 보내준다.
         // 인증번호를 보내준다.
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+
         if(userService.checkEmail(userEmail)){
             status = HttpStatus.OK;
-            returnResponse.setMessage(userService.sendMail(userEmail));
+            message = userService.sendMail(userEmail);
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("이메일이 중복 되었습니다.");
+            message = "이메일이 중복 되었습니다.";
         }
 
-        returnResponse.setStatus(status);
-        returnResponse.setAcceptJson(null);
-        returnResponse.setReturnJson(null);
-
-        return new ResponseEntity<>(returnResponse, status);
+        return new ResponseEntity<>( response , status);
     }
 
     // Signup 관련 , 유저를 생성
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateUser(
-        @RequestBody UserAcceptJson acceptJson
+        @RequestBody UserSignupJson acceptJson
     ){
-        APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.CREATED;
-
         userService.createUser(acceptJson);
 
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("create user is done");
-        returnResponse.setAcceptJson(acceptJson);
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("create user is done");
+        response.setAcceptJson(acceptJson);
 
-        return new ResponseEntity<>(returnResponse, status);
+        return new ResponseEntity<>( response , status);
     }
 
     // 유저 로그인
     @PostMapping("/login")
     public ResponseEntity<APIResponse> apiLoginUser(
-            @RequestBody UserAcceptJson acceptJson
+            @RequestBody UserLoginJson acceptJson
     ){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status;
+        HttpStatus status = HttpStatus.OK;
 
+
+
+        String message;
         if(userService.loginUser(acceptJson)){
             status = HttpStatus.OK;
-            returnResponse.setMessage("Login is done");
+            message = "Login is done";
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Login is failed");
+            message = "Login is failed";
         }
 
-        returnResponse.setStatus(status);
-        returnResponse.setAcceptJson(acceptJson);
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage(message);
+        response.setAcceptJson(acceptJson);
 
-        returnResponse.setReturnJson(null);
-        // 만약 이 부분이 없다면 어떻게 되는걸까??
-        return new ResponseEntity<>(returnResponse, status);
+        return new ResponseEntity<>( response , status);
+
     }
 
     // 유저아이디를 통해서 유저의 정보를 수정
     @PatchMapping("/")
     public ResponseEntity<APIResponse> apiChangeUser(
-        @RequestBody UserAcceptJson acceptJson
+        @RequestBody UserPatchJson acceptJson
     ){
-        APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
         userService.userUpdate(acceptJson);
 
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("Change user is done");
-        returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<>(returnResponse, status);
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("User Update is Done");
+        response.setAcceptJson(acceptJson);
+
+        return new ResponseEntity<>( response , status);
+
+    }
+
+    @PatchMapping("/userPw")
+    public ResponseEntity<APIResponse> apiChangeUserPw(
+            @RequestBody UserPwJson acceptJson
+        ){
+        HttpStatus status = HttpStatus.OK;
+        userService.userSetPassword(acceptJson);
+
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("User password is Changed");
+        response.setAcceptJson(acceptJson);
+
+        return new ResponseEntity<>( response , status);
     }
 
     // 유저 아이디를 통해서 유저를 삭제
+    // for backend developer
     @DeleteMapping("/id/{userEmail}")
     public ResponseEntity<APIResponse> apiDeleteUserById(
         @PathVariable String userId
     ){
-        APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
-
+        String message;
         if(!userService.deleteUser(userId)){
             status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Check User Email");
+            message = "Check User Email";
         }else{
-            returnResponse.setStatus(status);
-            returnResponse.setMessage("Delete user is Done");
+            status = HttpStatus.NOT_ACCEPTABLE;
+            message = "Delete user is Done";
         }
 
-        return new ResponseEntity<>(returnResponse, status);
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("Delete User is Done");
+        response.setMessage(message);
+
+        return new ResponseEntity<>( response , status);
+
     }
 }

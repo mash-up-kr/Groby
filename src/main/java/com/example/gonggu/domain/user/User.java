@@ -33,7 +33,8 @@ public class User {
     @Column(length = 50)
     private String accountHolder;
 
-    private Boolean isDeleted;
+    // 유저 default 설정
+    private Boolean isDeleted = false;
 
     private String userToken;
 
