@@ -47,11 +47,11 @@ public class MainController {
     }
 
     @GetMapping("/home/allitem")
-    public ResponseEntity<APIResponse> apiGetHomeMore(){
+    public ResponseEntity<APIResponse<List<ItemCard>>> apiGetHomeMore(){
         HttpStatus status = HttpStatus.OK;
-        Map<String,Object> returnJson = new HashMap<>();
-        returnJson.put("recentAll",mainService.getRecentBoard(0));
+        List<ItemCard> returnJson = mainService.getRecentBoard(0);
         returnResponse.setStatus(status);
+        returnResponse.setMessage("return All item By recent");
         returnResponse.setReturnJson(returnJson);
 
         return new ResponseEntity<>(returnResponse,status);
