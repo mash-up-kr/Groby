@@ -10,18 +10,16 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ItemInfo {
+public class ItemPatchJson {
     private Long itemId;
     private Long writerId;
+    private Boolean editTab;
     private String category;
     private String itemTitle;
-    private Integer nowTab;
-    private Integer numOfLike;
-    private Integer numOfParticipant;
-    private Integer participantPercent; //Tab2일 경우 공구 참여 퍼센트
+    private Integer targetTab;
 
-    private List<ItemImgPath> imgPathList;
-    private Boolean isDeleted;
+    private String[] imgPathList;
+    private Integer itemAmountLimit;
 
     private ItemTab1Json tab1;
     private ItemTab2Json tab2;
