@@ -1,25 +1,15 @@
 package com.example.gonggu.item;
 
-import com.example.gonggu.controller.item.ItemAcceptJson;
-import com.example.gonggu.domain.category.Category;
-import com.example.gonggu.domain.item.Item;
-import com.example.gonggu.domain.item.ItemTab1;
-import com.example.gonggu.domain.item.ListOfLikeForItem;
-import com.example.gonggu.domain.user.User;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import com.example.gonggu.service.item.ItemService;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.transaction.Transactional;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
