@@ -6,6 +6,7 @@ import com.example.gonggu.dto.item.*;
 import com.example.gonggu.service.item.ItemInfoJson;
 import com.example.gonggu.service.item.ItemService;
 import com.example.gonggu.service.user.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -154,8 +155,9 @@ public class ItemController {
     }
 
     // t2 참여 유저 목록 수정
+    @ApiOperation(value = "apiChangeUserPermission" , notes = "status > \n Tab2[ 0:default / 1:승인 / 2:보류 / 3:취소 ] \n/ Tab5[ 11:배부완료 / 12:배부안됨 ]" )
     @PatchMapping("/{itemId}/userlist")
-    public ResponseEntity<APIResponse> apiChangeUserList(
+    public ResponseEntity<APIResponse> apiChangeUserPermission(
             @PathVariable String itemId,
             @RequestBody ParticipantListUserPermission acceptJson
     ){
@@ -185,5 +187,5 @@ public class ItemController {
         return new ResponseEntity<>(returnResponse,status);
 
     }
-    
+
 }
