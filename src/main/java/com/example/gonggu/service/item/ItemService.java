@@ -1,6 +1,6 @@
 package com.example.gonggu.service.item;
 
-import com.example.gonggu.controller.item.JoinAcceptJson;
+import com.example.gonggu.controller.item.ItemJoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
@@ -9,6 +9,7 @@ import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemImgPathRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
+import com.example.gonggu.persistence.item.ListOfParticipantForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class ItemService {
     private UserRepository userRepository;
     @Autowired
     private ItemImgPathRepository itemImgRepo;
+    @Autowired
+    private ListOfParticipantForItemRepo participantListRepo;
 
     // like 관련 service
     // acceptJson
@@ -375,10 +378,10 @@ public class ItemService {
      * return
      *   boolean
      * */
-    public boolean insertParticipantUser(JoinAcceptJson acceptJson){
+    public boolean insertParticipantUser(String itemId,ItemJoinAcceptJson acceptJson){
         boolean result = true;
 
-        Item parentItem = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
         ListOfParticipantForItem join = new ListOfParticipantForItem();
         join.setUserName(acceptJson.getUserName());
         join.setAccountBank(acceptJson.getAccountBank());
@@ -393,5 +396,16 @@ public class ItemService {
         itemRepository.save(parentItem);
 
         return result;
+    }
+
+    public List<ListOfParticipantForItem> getParticipantUser(String itemId){
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
+        return parentItem.getParticipantForItemList();
+    }
+
+    public void changeUserPermission(ParticipantListUserPermission acceptJson){
+        ListOfParticipantForItem item = participantListRepo.findOne(Long.parseLong(acceptJson.getListItemId()));
+        item.setUserPermission(acceptJson.getPermission());
+        participantListRepo.save(item);
     }
 }
