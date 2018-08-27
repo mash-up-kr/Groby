@@ -1,6 +1,10 @@
 package com.example.gonggu.controller.item;
 
 import com.example.gonggu.dto.APIResponse;
+import com.example.gonggu.dto.item.ItemCreateJson;
+import com.example.gonggu.dto.item.ItemInfo;
+import com.example.gonggu.dto.item.ItemLikeJson;
+import com.example.gonggu.dto.item.ItemPatchJson;
 import com.example.gonggu.service.item.ItemInfoJson;
 import com.example.gonggu.service.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +29,10 @@ public class ItemController {
 
     // item id 를 통해서 아이템을 찾는다.
     @GetMapping("/{itemId}")
-    public ResponseEntity<APIResponse<ItemInfoJson>> apiGetItem(
+    public ResponseEntity<APIResponse<ItemInfo>> apiGetItem(
             @PathVariable String itemId
     ){
-        APIResponse<ItemInfoJson> returnResponse = new APIResponse<ItemInfoJson>();
+        APIResponse<ItemInfo> returnResponse = new APIResponse<ItemInfo>();
         HttpStatus status = HttpStatus.OK;
 
         returnResponse.setReturnJson(itemService.getItemDetail(itemId));
@@ -38,34 +42,34 @@ public class ItemController {
         return new ResponseEntity<>(returnResponse,status);
     }
 
-    // 아이템을 수정
-    @PatchMapping("/{itemId}")
-    public ResponseEntity<APIResponse> apiChangeItem(
-            @PathVariable String itemId,
-            @RequestBody ItemAcceptJson acceptJson
-    ){
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status;
-
-        // function
-        if(itemService.updateItem(itemId,acceptJson)){
-            status = HttpStatus.ACCEPTED;
-            returnResponse.setMessage("Item Changed");
-        }else{
-            status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Change Item is failed");
-        }
-
-        returnResponse.setStatus(status);
-        returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<>(returnResponse,status);
-
-    }
+//    // 아이템을 수정
+//    @PatchMapping("/{itemId}")
+//    public ResponseEntity<APIResponse> apiChangeItem(
+//            @PathVariable String itemId,
+//            @RequestBody ItemAcceptJson acceptJson
+//    ){
+//        APIResponse returnResponse = new APIResponse();
+//        HttpStatus status;
+//
+//        // function
+//        if(itemService.updateItem(itemId,acceptJson)){
+//            status = HttpStatus.ACCEPTED;
+//            returnResponse.setMessage("Item Changed");
+//        }else{
+//            status = HttpStatus.NOT_ACCEPTABLE;
+//            returnResponse.setMessage("Change Item is failed");
+//        }
+//
+//        returnResponse.setStatus(status);
+//        returnResponse.setAcceptJson(acceptJson);
+//        return new ResponseEntity<>(returnResponse,status);
+//
+//    }
 
     // 아이템과 탭을 생성
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateItem(
-            @RequestBody ItemAcceptJson acceptJson
+            @RequestBody ItemCreateJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status;
@@ -85,14 +89,14 @@ public class ItemController {
 
     // 탭 수정
     // 다음 단계로 넘어가는 작업들이 여기서 진행이 된다.
-    @PatchMapping("/{itemId}/tab")
+    @PatchMapping("/tab")
     public ResponseEntity<APIResponse> apiUpdateTab(
-            @PathVariable String itemId,
-            @RequestBody ItemAcceptJson acceptJson
+//            @PathVariable String itemId,
+            @RequestBody ItemPatchJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status;
-        acceptJson.setA_itemId(itemId);
+//        acceptJson.setA_itemId(itemId);
 
         // update tab
         if(itemService.patchItemTab(acceptJson)){
@@ -126,14 +130,12 @@ public class ItemController {
     // t1 like
     // acceptJson
     //      A_itemId , UserLikeEmail 필수
-    @PostMapping("/{itemId}/like")
+    @PostMapping("/like")
     public ResponseEntity<APIResponse> apiAddLike(
-            @PathVariable String itemId,
-            @RequestBody ItemAcceptJson acceptJson
+            @RequestBody ItemLikeJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
         HttpStatus status = HttpStatus.ACCEPTED;
-        acceptJson.setA_itemId(itemId);
 
         if(itemService.toggleLike(acceptJson))
             returnResponse.setMessage("Add Like");
