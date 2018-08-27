@@ -5,7 +5,6 @@ import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
-import com.example.gonggu.service.item.RecentItemList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

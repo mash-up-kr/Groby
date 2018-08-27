@@ -1,14 +1,15 @@
 package com.example.gonggu.service.item;
 
-import com.example.gonggu.controller.item.ItemAcceptJson;
-import com.example.gonggu.controller.item.JoinAcceptJson;
+import com.example.gonggu.controller.item.ItemJoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
+import com.example.gonggu.dto.item.*;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemImgPathRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
+import com.example.gonggu.persistence.item.ListOfParticipantForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +32,8 @@ public class ItemService {
     private UserRepository userRepository;
     @Autowired
     private ItemImgPathRepository itemImgRepo;
+    @Autowired
+    private ListOfParticipantForItemRepo participantListRepo;
 
     // like 관련 service
     // acceptJson
@@ -40,8 +42,8 @@ public class ItemService {
     //      true : like 추가
     //      false : like 제거
     @Transactional
-    public boolean toggleLike(ItemAcceptJson acceptJson){
-        Item item = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
+    public boolean toggleLike(ItemLikeJson acceptJson){
+        Item item = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
         boolean result = true;
         Integer likeNum = item.getNumOfLike();
         for(ListOfLikeForItem temp :item.getLikeForItemList())
@@ -71,7 +73,8 @@ public class ItemService {
     *      true : create item success
     *      false : create item fail
     *  */
-    public Boolean createItem(ItemAcceptJson acceptJson){
+//    public Boolean createItem(ItemAcceptJson acceptJson){
+    public Boolean createItem(ItemCreateJson acceptJson){
         Boolean result = true;
         Item item = new Item();
         ItemTab1 itemTab1 = new ItemTab1();
@@ -83,25 +86,25 @@ public class ItemService {
         List<ItemImgPath> imgPathList = new ArrayList<>();
 
         // 필수적인 내용을 다 넣어서 보낸 경우 저장
-        if((acceptJson.getA_TabNumber() != null) && (acceptJson.getItemCategory() != null) && (acceptJson.getItemTitle() != null)
-                && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getA_imgPathList() != null)
-                && (acceptJson.getOneContents() != null) && (acceptJson.getOneLocation() != null) && (acceptJson.getOneEndDate() != null)) {
+        if((acceptJson.getItemCategory() != null) && (acceptJson.getItemTitle() != null)
+                && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getImgPathList() != null)
+                && (acceptJson.getTab1().getContents() != null) && (acceptJson.getTab1().getEndDate() != null) && (acceptJson.getTab1().getLocation() != null)) {
             // 공구 item에 대한 기본 설정
-            item.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
+            item.setNowTab(1);
             Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
             item.setCategory(getCategory);
             item.setTitle(acceptJson.getItemTitle());
-            User getUser = userRepository.getOne(Long.parseLong(acceptJson.getA_userId()));
+            User getUser = userRepository.getOne(Long.parseLong(acceptJson.getUserId()));
             item.setUser(getUser);
             item.setAmountLimit(Integer.valueOf(acceptJson.getItemAmountLimit())); // item의 최소공구수량 설정
             item.setNumOfLike(0);
             item.setNumOfOrder(0);
             item.setIsDeleted(false);
 
-            item.setThumnail(acceptJson.getA_imgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
+            item.setThumnail(acceptJson.getImgPathList()[0]); // 제일 처음에 있는 사진으로 대표이미지 설정
 
             // 이미지 추가하기
-            for (String img : acceptJson.getA_imgPathList()) {
+            for (String img : acceptJson.getImgPathList()) {
                 itemImgPath = new ItemImgPath();
                 itemImgPath.setTab(1);
                 itemImgPath.setImg_path(img);
@@ -110,11 +113,11 @@ public class ItemService {
             item.setImgPaths(imgPathList); // 이미지리스트 추가하기
 
             // 공구 item tab1 설정
-            itemTab1.setContents(acceptJson.getOneContents());
-            itemTab1.setLocation(acceptJson.getOneLocation());
+            itemTab1.setContents(acceptJson.getTab1().getContents());
+            itemTab1.setLocation(acceptJson.getTab1().getLocation());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
             try {
-                Date insertDate = sdf.parse(acceptJson.getOneEndDate());
+                Date insertDate = sdf.parse(acceptJson.getTab1().getEndDate());
                 itemTab1.setEndDate(insertDate);
             } catch (ParseException e) {
                 result = false;
@@ -162,10 +165,9 @@ public class ItemService {
     * return
     *   itemInfoJson
     * */
-    public ItemInfoJson getItemDetail(String itemId) {
-        ItemInfoJson infoJson = new ItemInfoJson();
+    public ItemInfo getItemDetail(String itemId) {
+        ItemInfo infoJson = new ItemInfo();
         Item item = itemRepository.findOne(Long.parseLong(itemId));
-
 
         if(!item.getIsDeleted()) { // 삭제되지 않은 경우
             infoJson.setItemId(item.getItemId());
@@ -174,57 +176,41 @@ public class ItemService {
             infoJson.setCategory(item.getCategory().getCategory());
             infoJson.setNowTab(item.getNowTab());
             infoJson.setNumOfLike(item.getNumOfLike());
-            switch (item.getNowTab()) { // 현재 탭이 어디인지에 따라 전달내용 넣
+            switch (item.getNowTab()) {
                 case 5:
-                    infoJson.setFiveContents(item.getItemTab5().getContents());
-                    infoJson.setFiveLocationDetail(item.getItemTab5().getLocationDetail());
+                    ItemTab5Json infoTab5 = new ItemTab5Json();
+                    infoTab5.setContents(item.getItemTab5().getContents());
+                    infoTab5.setLocationDetail(item.getItemTab5().getLocationDetail());
+                    infoJson.setTab5(infoTab5);
                 case 4:
-                    infoJson.setFourContents(item.getItemTab4().getContents());
-                    infoJson.setFourArrivedTime(item.getItemTab4().getArrivedTime().toString());
+                    ItemTab4Json infoTab4 = new ItemTab4Json();
+                    infoTab4.setContents(item.getItemTab4().getContents());
+                    infoTab4.setArrivedTime(item.getItemTab4().getArrivedTime().toString());
+                    infoJson.setTab4(infoTab4);
                 case 3:
-                    infoJson.setThreeContents(item.getItemTab3().getContents());
+                    ItemTab3Json infoTab3 = new ItemTab3Json();
+                    infoTab3.setContents(item.getItemTab3().getContents());
+                    infoJson.setTab3(infoTab3);
                 case 2:
-                    infoJson.setTwoContents(item.getItemTab2().getContents());
-                    infoJson.setTwoEndDate(item.getItemTab2().getEndDate().toString());
+                    ItemTab2Json infoTab2 = new ItemTab2Json();
+                    infoTab2.setContents(item.getItemTab2().getContents());
+                    infoTab2.setEndDate(item.getItemTab2().getEndDate().toString());
+                    infoTab2.setOptionString(item.getItemTab2().getOptionString());
+                    infoJson.setNumOfParticipant(item.getNumOfOrder());
                     Integer percentage = (item.getNumOfOrder()/item.getAmountLimit())*100;
-                    infoJson.setPartcipantPercent(percentage); // 참여율 계산하여 전달
+                    infoJson.setParticipantPercent(percentage);
+                    infoJson.setTab2(infoTab2);
                 default:
-                    infoJson.setOneContents(item.getItemTab1().getContents());
-                    infoJson.setOneEndDate(item.getItemTab1().getEndDate().toString());
-                    infoJson.setOneLocation(item.getItemTab1().getLocation());
+                    ItemTab1Json infoTab1 = new ItemTab1Json();
+                    infoTab1.setContents(item.getItemTab1().getContents());
+                    infoTab1.setEndDate(item.getItemTab1().getEndDate().toString());
+                    infoTab1.setLocation(item.getItemTab1().getLocation());
             }
-
-            infoJson.setImgList(item.getImgPaths());
+            infoJson.setImgPathList(item.getImgPaths());
         }
         else infoJson.setIsDeleted(item.getIsDeleted()); // item이 삭제된 경우 삭제되었다는 값만 전달
 
         return infoJson;
-    }
-
-    /*
-    * 공구 item의 내용을 수정할때의 service
-    * parameter
-    *   itemId, info (item_id, 변동된 tab의 내용 필수)
-    * return
-    *   true : item update success
-    *   false : item update fail
-    * */
-    public Boolean updateItem(String itemId, ItemAcceptJson info) {
-        Boolean result = true;
-        Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId()));
-
-        if(info.getItemTitle() != null) parentsItem.setTitle(info.getItemTitle());
-        if(info.getItemAmountLimit() != null) parentsItem.setAmountLimit(Integer.valueOf(info.getItemAmountLimit()));
-        if(Integer.valueOf(info.getA_TabNumber()) != 1) // 탭1일 아닐 경우 수정
-            if(info.getItemNumOfOrder() != null) parentsItem.setNumOfOrder(Integer.valueOf(info.getItemNumOfOrder()));
-        if(info.getItemCategory() != null) { // 카테고리 수정
-            Category getCategory = categoryRepository.findByCategory(info.getItemCategory());
-            parentsItem.setCategory(getCategory);
-        }
-
-        itemRepository.save(parentsItem);
-
-        return result;
     }
 
     /*
@@ -236,21 +222,27 @@ public class ItemService {
      *   false : item update fail
      * */
     @Transactional
-    public Boolean patchItemTab(ItemAcceptJson acceptJson){
+    public Boolean patchItemTab(ItemPatchJson acceptJson){
         Boolean result = true;
-        Item parentsItem = itemRepository.getOne(Long.parseLong(acceptJson.getA_itemId()));
-        this.changeTabImgs(Integer.valueOf(acceptJson.getA_TabNumber()) , acceptJson.getA_imgPathList() ,parentsItem);
+        Item parentsItem = itemRepository.getOne(acceptJson.getItemId());
+        this.changeTabImgs(Integer.valueOf(acceptJson.getTargetTab()) , acceptJson.getImgPathList() ,parentsItem);
 
-        switch (acceptJson.getA_TabNumber()){
+        switch (acceptJson.getTargetTab().toString()){
             case "1" :
                 ItemTab1 tab1 = parentsItem.getItemTab1();
-                if(acceptJson.getA_editTab()) {
-                    if(acceptJson.getOneContents() != null) tab1.setContents(acceptJson.getOneContents());
-                    if(acceptJson.getOneLocation() != null) tab1.setLocation(acceptJson.getOneLocation());
-                    if(acceptJson.getOneEndDate() != null) {
+                if(acceptJson.getEditTab()) {
+                    if(acceptJson.getItemTitle() != null) parentsItem.setTitle(acceptJson.getItemTitle());
+                    if(acceptJson.getItemAmountLimit() != null) parentsItem.setAmountLimit(acceptJson.getItemAmountLimit());
+                    if(acceptJson.getCategory() != null) {
+                        Category getCategory = categoryRepository.findByCategory(acceptJson.getCategory());
+                        parentsItem.setCategory(getCategory);
+                    }
+                    if(acceptJson.getTab1().getContents() != null) tab1.setContents(acceptJson.getTab1().getContents());
+                    if(acceptJson.getTab1().getLocation() != null) tab1.setLocation(acceptJson.getTab1().getLocation());
+                    if(acceptJson.getTab1().getEndDate() != null) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                         try {
-                            Date newEndDate = sdf.parse(acceptJson.getOneEndDate());
+                            Date newEndDate = sdf.parse(acceptJson.getTab1().getEndDate());
                             tab1.setEndDate(newEndDate);
                         } catch (ParseException e) {
                             result = false;
@@ -263,12 +255,12 @@ public class ItemService {
             case "2" :
                 // optionString contents img_path
                 ItemTab2 tab2 = parentsItem.getItemTab2();
-                if(acceptJson.getTwoContents() != null) tab2.setContents(acceptJson.getTwoContents());
-                if(acceptJson.getTwoOptionString() != null) tab2.setOptionString(acceptJson.getTwoOptionString());
-                if(acceptJson.getTwoEndDate() != null) {
+                if(acceptJson.getTab2().getContents() != null) tab2.setContents(acceptJson.getTab2().getContents());
+                if(acceptJson.getTab2().getOptionString() != null) tab2.setOptionString(acceptJson.getTab2().getOptionString());
+                if(acceptJson.getTab2().getEndDate() != null) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     try {
-                        Date twoEndDate = format.parse(acceptJson.getTwoEndDate());
+                        Date twoEndDate = format.parse(acceptJson.getTab2().getEndDate());
                         tab2.setEndDate(twoEndDate);
                     } catch (ParseException e) {
                         result = false;
@@ -279,32 +271,32 @@ public class ItemService {
                 break;
             case "3" :
                 ItemTab3 tab3 = parentsItem.getItemTab3();
-                if(acceptJson.getThreeContents() != null) tab3.setContents(acceptJson.getThreeContents());
+                if(acceptJson.getTab3().getContents() != null) tab3.setContents(acceptJson.getTab3().getContents());
             case "4" :
                 ItemTab4 tab4 = parentsItem.getItemTab4();
-                if(acceptJson.getFourArrivedTime() != null) {
+                if(acceptJson.getTab4().getArrivedTime() != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                     try {
-                        Date newArriveDate = sdf.parse(acceptJson.getFourArrivedTime());
+                        Date newArriveDate = sdf.parse(acceptJson.getTab4().getArrivedTime());
                         tab4.setArrivedTime(newArriveDate);
                     } catch (ParseException e) {
                         result = false;
                         e.printStackTrace();
                     }
                 }
-                if(acceptJson.getFourContents() != null) tab4.setContents(acceptJson.getFourContents());
+                if(acceptJson.getTab4().getContents() != null) tab4.setContents(acceptJson.getTab4().getContents());
                 parentsItem.setItemTab4(tab4);
                 break;
             case "5" :
                 ItemTab5 tab5 = parentsItem.getItemTab5();
-                if(acceptJson.getFiveLocationDetail() != null) tab5.setLocationDetail(acceptJson.getFiveLocationDetail());
-                if(acceptJson.getFiveContents() != null) tab5.setContents(acceptJson.getFiveContents());
+                if(acceptJson.getTab5().getLocationDetail() != null) tab5.setLocationDetail(acceptJson.getTab5().getLocationDetail());
+                if(acceptJson.getTab5().getContents() != null) tab5.setContents(acceptJson.getTab5().getContents());
                 parentsItem.setItemTab5(tab5);
                 break;
         }
 
-        if(!acceptJson.getA_editTab()) {
-            parentsItem.setNowTab(Integer.valueOf(acceptJson.getA_TabNumber()));
+        if(!acceptJson.getEditTab()) {
+            parentsItem.setNowTab(Integer.valueOf(acceptJson.getTargetTab()));
         }
         itemRepository.save(parentsItem);
         return result;
@@ -360,10 +352,10 @@ public class ItemService {
      * return
      *   boolean
      * */
-    public boolean insertParticipantUser(JoinAcceptJson acceptJson){
+    public boolean insertParticipantUser(String itemId,ItemJoinAcceptJson acceptJson){
         boolean result = true;
 
-        Item parentItem = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
         ListOfParticipantForItem join = new ListOfParticipantForItem();
         join.setUserName(acceptJson.getUserName());
         join.setAccountBank(acceptJson.getAccountBank());
@@ -378,5 +370,16 @@ public class ItemService {
         itemRepository.save(parentItem);
 
         return result;
+    }
+
+    public List<ListOfParticipantForItem> getParticipantUser(String itemId){
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
+        return parentItem.getParticipantForItemList();
+    }
+
+    public void changeUserPermission(ParticipantListUserPermission acceptJson){
+        ListOfParticipantForItem item = participantListRepo.findOne(Long.parseLong(acceptJson.getListItemId()));
+        item.setUserPermission(acceptJson.getPermission());
+        participantListRepo.save(item);
     }
 }

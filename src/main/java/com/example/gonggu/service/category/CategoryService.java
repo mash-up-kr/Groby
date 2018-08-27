@@ -22,12 +22,6 @@ public class CategoryService {
         categoryRepo.save(cate);
     }
 
-    //카테고리 조회
-//    public Map<Object, Object> getCategory() {
-//        Map<Object, Object> results = new HashMap<>();
-//        categoryRepo.findAll().forEach( category -> results.put(category.getCategotyId(), category.getCategory()) );
-//        return results;
-//    }
     public List<Category> getCategory() {
         List<Category> results = new ArrayList<>();
         categoryRepo.findAll().forEach( category ->{
@@ -35,9 +29,6 @@ public class CategoryService {
                 });
         return results;
     }
-
-    //results.put(category.getCategotyId(), category.getCategory())
-
 
     //카테고리 변경
     public void updatecategory(CategoryPatchJson acceptJson){
