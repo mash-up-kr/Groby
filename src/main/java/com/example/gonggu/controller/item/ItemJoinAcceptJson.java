@@ -7,8 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class JoinAcceptJson {
-    private String itemId;
+public class ItemJoinAcceptJson {
     private String userName;
     private String accountNum;
     private String accountBank;

@@ -1,6 +1,6 @@
 package com.example.gonggu.service.item;
 
-import com.example.gonggu.controller.item.JoinAcceptJson;
+import com.example.gonggu.controller.item.ItemJoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
@@ -9,6 +9,7 @@ import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemImgPathRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
+import com.example.gonggu.persistence.item.ListOfParticipantForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class ItemService {
     private UserRepository userRepository;
     @Autowired
     private ItemImgPathRepository itemImgRepo;
+    @Autowired
+    private ListOfParticipantForItemRepo participantListRepo;
 
     // like 관련 service
     // acceptJson
@@ -211,32 +214,6 @@ public class ItemService {
     }
 
     /*
-    * 공구 item의 내용을 수정할때의 service
-    * parameter
-    *   itemId, info (item_id, 변동된 tab의 내용 필수)
-    * return
-    *   true : item update success
-    *   false : item update fail
-    * */
-//    public Boolean updateItem(String itemId, ItemAcceptJson info) {
-//        Boolean result = true;
-//        Item parentsItem = itemRepository.getOne(Long.parseLong(info.getA_itemId()));
-//
-//        if(info.getItemTitle() != null) parentsItem.setTitle(info.getItemTitle());
-//        if(info.getItemAmountLimit() != null) parentsItem.setAmountLimit(Integer.valueOf(info.getItemAmountLimit()));
-//        if(Integer.valueOf(info.getA_TabNumber()) != 1) // 탭1일 아닐 경우 수정
-//            if(info.getItemNumOfOrder() != null) parentsItem.setNumOfOrder(Integer.valueOf(info.getItemNumOfOrder()));
-//        if(info.getItemCategory() != null) { // 카테고리 수정
-//            Category getCategory = categoryRepository.findByCategory(info.getItemCategory());
-//            parentsItem.setCategory(getCategory);
-//        }
-//
-//        itemRepository.save(parentsItem);
-//
-//        return result;
-//    }
-
-    /*
      * 공구 tab의 내용을 수정할때의 service
      * acceptJson
      *   itemId, a_editTab, 변동된 tab의 내용
@@ -375,10 +352,10 @@ public class ItemService {
      * return
      *   boolean
      * */
-    public boolean insertParticipantUser(JoinAcceptJson acceptJson){
+    public boolean insertParticipantUser(String itemId,ItemJoinAcceptJson acceptJson){
         boolean result = true;
 
-        Item parentItem = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
         ListOfParticipantForItem join = new ListOfParticipantForItem();
         join.setUserName(acceptJson.getUserName());
         join.setAccountBank(acceptJson.getAccountBank());
@@ -393,5 +370,16 @@ public class ItemService {
         itemRepository.save(parentItem);
 
         return result;
+    }
+
+    public List<ListOfParticipantForItem> getParticipantUser(String itemId){
+        Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
+        return parentItem.getParticipantForItemList();
+    }
+
+    public void changeUserPermission(ParticipantListUserPermission acceptJson){
+        ListOfParticipantForItem item = participantListRepo.findOne(Long.parseLong(acceptJson.getListItemId()));
+        item.setUserPermission(acceptJson.getPermission());
+        participantListRepo.save(item);
     }
 }
