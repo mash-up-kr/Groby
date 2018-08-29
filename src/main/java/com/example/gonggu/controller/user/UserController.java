@@ -1,8 +1,10 @@
 package com.example.gonggu.controller.user;
 
+import com.example.gonggu.domain.user.Notification;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.dto.user.*;
+import com.example.gonggu.service.user.NotiService;
 import com.example.gonggu.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +30,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
-//    @Resource
-//    APIResponse returnResponse;
+    @Autowired
+    NotiService notiService;
 
     // 유저 아이디를 통해서 유저 정보 리턴
     @GetMapping(value = "/email/{userEmail}")
@@ -199,5 +202,30 @@ public class UserController {
 
         return new ResponseEntity<>( response , status);
 
+    }
+
+    @GetMapping("/{userId}/notifications")
+    public ResponseEntity<APIResponse<List<Notification>>> apiUserNotifications(
+            @PathVariable String userId
+    ){
+        HttpStatus status = HttpStatus.OK;
+
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+        response.setReturnJson(notiService.notiList(userId));
+
+        return new ResponseEntity<>(response,status);
+    }
+
+    @DeleteMapping("/{userId}/notification")
+    public ResponseEntity<APIResponse> apiDelNoti(
+            @PathVariable String userId
+    ){
+        HttpStatus status = HttpStatus.OK;
+
+        APIResponse response = new APIResponse<>();
+        response.setStatus(status);
+
+        return new ResponseEntity<>(response,status);
     }
 }
