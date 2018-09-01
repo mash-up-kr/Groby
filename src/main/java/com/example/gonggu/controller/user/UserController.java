@@ -2,7 +2,6 @@ package com.example.gonggu.controller.user;
 
 import com.example.gonggu.domain.user.Notification;
 import com.example.gonggu.dto.APIResponse;
-import com.example.gonggu.domain.user.User;
 import com.example.gonggu.dto.user.*;
 import com.example.gonggu.service.user.NotiService;
 import com.example.gonggu.service.user.UserService;
@@ -11,9 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
@@ -217,14 +213,15 @@ public class UserController {
         return new ResponseEntity<>(response,status);
     }
 
-    @DeleteMapping("/{userId}/notification")
+    @DeleteMapping("/notification/{notiId}")
     public ResponseEntity<APIResponse> apiDelNoti(
-            @PathVariable String userId
+            @PathVariable(name = "notiId") String notiId
     ){
         HttpStatus status = HttpStatus.OK;
 
         APIResponse response = new APIResponse<>();
         response.setStatus(status);
+        notiService.delNoti(Long.parseLong(notiId));
 
         return new ResponseEntity<>(response,status);
     }
