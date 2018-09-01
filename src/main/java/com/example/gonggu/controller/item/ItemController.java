@@ -155,7 +155,7 @@ public class ItemController {
     }
 
     // t2 참여 유저 목록 수정
-    @ApiOperation(value = "apiChangeUserPermission" , notes = "status > \n Tab2[ 0:default / 1:승인 / 2:보류 / 3:취소 ] \n/ Tab5[ 11:배부완료 / 12:배부안됨 ]" )
+    @ApiOperation(value = "apiChangeUserPermission" , notes = "status > Tab2[ 0:default / 1:승인 / 2:보류 / 3:취소 ] / Tab5[ 11:배부완료 / 12:배부안됨 ]" )
     @PatchMapping("/{itemId}/userlist")
     public ResponseEntity<APIResponse> apiChangeUserPermission(
             @PathVariable String itemId,
