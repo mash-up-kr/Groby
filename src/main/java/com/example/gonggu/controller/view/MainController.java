@@ -4,6 +4,7 @@ import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.view.HomeCardList;
 import com.example.gonggu.dto.view.ItemCard;
 import com.example.gonggu.service.view.MainService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class MainController {
     @Resource
     APIResponse returnResponse;
 
+    @ApiOperation(value = "apiGetHome",notes = "메인화면에 인기글, 최신글 보여주기")
     @GetMapping("/home")
     public ResponseEntity<APIResponse<HomeCardList>> apiGetHome(){
         HttpStatus status = HttpStatus.OK;
@@ -46,6 +48,7 @@ public class MainController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
+    @ApiOperation(value = "apiGetHomeMore",notes = "메인화면에서 최신글 더보기 클릭시 전체 아이템 정보 최신순으로 보여주기")
     @GetMapping("/home/allitem")
     public ResponseEntity<APIResponse<List<ItemCard>>> apiGetHomeMore(){
         HttpStatus status = HttpStatus.OK;
@@ -57,6 +60,7 @@ public class MainController {
         return new ResponseEntity<>(returnResponse,status);
     }
 
+    @ApiOperation(value = "apiGetCategoryItem",notes = "카테고리별 아이템 정보 보여주기")
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<APIResponse<List<ItemCard>>> apiGetCategoryItem(
             @PathVariable String categoryId
