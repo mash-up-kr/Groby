@@ -26,6 +26,7 @@ public class ItemController {
     ItemService itemService;
 
     // item id 를 통해서 아이템을 찾는다.
+    @ApiOperation(value = "apiGetItem",notes = "아이템 넘버를 통해 아이템 정보 가져오기")
     @GetMapping("/{itemId}")
     public ResponseEntity<APIResponse<ItemInfo>> apiGetItem(
             @PathVariable String itemId
@@ -41,6 +42,7 @@ public class ItemController {
     }
 
     // 아이템과 탭을 생성
+    @ApiOperation(value = "apiCreateItem",notes = "아이템 생성")
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateItem(
             @RequestBody ItemCreateJson acceptJson
@@ -63,6 +65,7 @@ public class ItemController {
 
     // 탭 수정
     // 다음 단계로 넘어가는 작업들이 여기서 진행이 된다.
+    @ApiOperation(value = "apiUpdateTab",notes = "editTab:false -> 다음 단계로 넘어갈 경우 / editTab:true -> 해당 단계의 내용 수정 // 수정하거나 추가하는 Tab들의 json 필수적으로 채워야함 ")
     @PatchMapping("/tab")
     public ResponseEntity<APIResponse> apiUpdateTab(
             @RequestBody ItemPatchJson acceptJson
@@ -85,6 +88,7 @@ public class ItemController {
     }
 
     // delete
+    @ApiOperation(value = "apiDeleteItem",notes = "아이템 삭제")
     @DeleteMapping("/{itemId}")
     public ResponseEntity<APIResponse> apiDeleteItem(
             @PathVariable String itemId
@@ -100,6 +104,7 @@ public class ItemController {
     }
 
     // t1 like
+    @ApiOperation(value = "apiToggleLike",notes = "아이템 사용자가 눌렀을 경우 -> 자동으로 좋아요/취소 토글 가능")
     @PostMapping("/like")
     public ResponseEntity<APIResponse> apiToggleLike(
             @RequestBody ItemLikeJson acceptJson
@@ -119,6 +124,7 @@ public class ItemController {
     }
 
     // t2 참여 유저 목록
+    @ApiOperation(value = "apiGetUserList",notes = "tab 2 참여하는 유저 목록")
     @GetMapping("/{itemId}/userlist")
     public ResponseEntity<APIResponse<List<ListOfParticipantForItem>>> apiGetUserList(
             @PathVariable String itemId
@@ -134,6 +140,7 @@ public class ItemController {
     }
 
     // t2 유저의 참여
+    @ApiOperation(value = "apiJoinUserList",notes = "tab 2 사용자 참여하기")
     @PostMapping("/{itemId}/userlist")
     public ResponseEntity<APIResponse> apiJoinUserList(
             @PathVariable String itemId,
@@ -170,6 +177,7 @@ public class ItemController {
     }
 
     // t2 사용자의 옵션 확인
+    @ApiOperation(value = "apiGetOptionString",notes = "tab 2 옵션값 처리")
     @GetMapping("/{itemId}/optionstring")
     public ResponseEntity<APIResponse> apiGetOptionString(
             @PathVariable String itemId
