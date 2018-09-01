@@ -5,12 +5,14 @@ import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.dto.item.*;
+import com.example.gonggu.dto.user.NotiContents;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemImgPathRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.item.ListOfParticipantForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
+import com.example.gonggu.service.user.NotiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,9 @@ public class ItemService {
     private ItemImgPathRepository itemImgRepo;
     @Autowired
     private ListOfParticipantForItemRepo participantListRepo;
+
+    @Autowired
+    private NotiService notiService;
 
     // like 관련 service
     // acceptJson
@@ -215,6 +220,7 @@ public class ItemService {
 
     /*
      * 공구 tab의 내용을 수정할때의 service
+     * editTab == false -> 아이템이 다음 프로세스로 진행
      * acceptJson
      *   itemId, a_editTab, 변동된 tab의 내용
      * return
@@ -226,6 +232,8 @@ public class ItemService {
         Boolean result = true;
         Item parentsItem = itemRepository.getOne(acceptJson.getItemId());
         this.changeTabImgs(Integer.valueOf(acceptJson.getTargetTab()) , acceptJson.getImgPathList() ,parentsItem);
+
+//        NotiContents notiContents = new NotiContents();
 
         switch (acceptJson.getTargetTab().toString()){
             case "1" :
@@ -272,6 +280,7 @@ public class ItemService {
             case "3" :
                 ItemTab3 tab3 = parentsItem.getItemTab3();
                 if(acceptJson.getTab3().getContents() != null) tab3.setContents(acceptJson.getTab3().getContents());
+
             case "4" :
                 ItemTab4 tab4 = parentsItem.getItemTab4();
                 if(acceptJson.getTab4().getArrivedTime() != null) {
@@ -297,6 +306,23 @@ public class ItemService {
 
         if(!acceptJson.getEditTab()) {
             parentsItem.setNowTab(Integer.valueOf(acceptJson.getTargetTab()));
+
+            if(acceptJson.getTargetTab() >=3){
+                parentsItem.getParticipantForItemList().forEach(list->{
+                    NotiContents tempNoti = new NotiContents(
+                            acceptJson.getTargetTab(), userRepository.findByUserName(list.getUserName()),
+                            parentsItem.getItemId(), parentsItem.getTitle()
+                    );
+                    notiService.sendNoti(tempNoti);
+                });
+            }else if(acceptJson.getTargetTab() == 2 ){
+                parentsItem.getLikeForItemList().forEach(likeInfo->{
+                    NotiContents tempNoti = new NotiContents(
+                            2, userRepository.findByUserEmail(likeInfo.getUserEmail()), parentsItem.getItemId(), parentsItem.getTitle()
+                    );
+                    notiService.sendNoti(tempNoti);
+                });
+            }
         }
         itemRepository.save(parentsItem);
         return result;
@@ -372,11 +398,25 @@ public class ItemService {
         return result;
     }
 
+    /*
+    * 현재 참여한 유저의 리스트를 확인
+    * parameter
+    *   itemId
+    * return
+    *   List user
+    * */
     public List<ListOfParticipantForItem> getParticipantUser(String itemId){
         Item parentItem = itemRepository.getOne(Long.parseLong(itemId));
         return parentItem.getParticipantForItemList();
     }
 
+    /*
+     * 참여한 유저의 상태를 변경
+     * parameter
+     *   acceptJson
+     * return
+     *   void
+     * */
     public void changeUserPermission(ParticipantListUserPermission acceptJson){
         ListOfParticipantForItem item = participantListRepo.findOne(Long.parseLong(acceptJson.getListItemId()));
         item.setUserPermission(acceptJson.getPermission());

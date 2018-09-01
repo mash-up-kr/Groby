@@ -46,4 +46,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<ListOfParticipantForUser> participants;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<Notification> notifications;
 }

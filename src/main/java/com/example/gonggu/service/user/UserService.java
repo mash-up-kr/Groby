@@ -2,6 +2,7 @@ package com.example.gonggu.service.user;
 
 import com.example.gonggu.dto.user.*;
 import com.example.gonggu.domain.user.User;
+import com.example.gonggu.persistence.user.NotificationRepository;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -9,6 +10,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 
 @Service
