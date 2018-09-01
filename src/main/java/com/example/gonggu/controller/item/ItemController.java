@@ -104,7 +104,7 @@ public class ItemController {
 
     // t1 like
     @PostMapping("/like")
-    public ResponseEntity<APIResponse> apiAddLike(
+    public ResponseEntity<APIResponse> apiToggleLike(
             @RequestBody ItemLikeJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
