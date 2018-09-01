@@ -3,9 +3,7 @@ package com.example.gonggu.controller.item;
 import com.example.gonggu.domain.item.ListOfParticipantForItem;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.item.*;
-import com.example.gonggu.service.item.ItemInfoJson;
 import com.example.gonggu.service.item.ItemService;
-import com.example.gonggu.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/item/*")

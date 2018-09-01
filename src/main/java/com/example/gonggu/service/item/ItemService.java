@@ -1,6 +1,6 @@
 package com.example.gonggu.service.item;
 
-import com.example.gonggu.controller.item.ItemJoinAcceptJson;
+import com.example.gonggu.dto.item.ItemJoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
