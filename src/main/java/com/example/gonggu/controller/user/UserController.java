@@ -5,11 +5,13 @@ import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.user.*;
 import com.example.gonggu.service.user.NotiService;
 import com.example.gonggu.service.user.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class UserController {
     NotiService notiService;
 
     // 유저 아이디를 통해서 유저 정보 리턴
+    @ApiOperation(value = "apiGetUserByEmail",notes = "유저 아이디(이메일)를 통해서 유저 정보 리턴")
     @GetMapping(value = "/email/{userEmail}")
     public ResponseEntity<APIResponse<UserInfo>> apiGetUserByEmail(
             @PathVariable String userEmail
@@ -51,6 +54,7 @@ public class UserController {
     }
 
     // 유저 넘버 (PK) 를 통해서 유저 정보 리턴
+    @ApiOperation(value = "apiGetUserByUserNum",notes = "유저 넘버 (PK) 를 통해서 유저 정보 리턴")
     @GetMapping(value = "/usernum/{userNum}")
     public ResponseEntity<APIResponse<UserInfo>> apiGetUserByUserNum(
             @PathVariable String userNum
@@ -77,6 +81,7 @@ public class UserController {
 
     //    /user/checkemail?userEail=abc@naver.com
     // return 값 명시해줘야 한다.
+    @ApiOperation(value = "apiCheckEmail",notes = "회원가입시 이메일 인증")
     @GetMapping("/checkemail")
     public ResponseEntity<APIResponse> apiCheckEmail(
             @RequestParam String userEmail
@@ -101,6 +106,7 @@ public class UserController {
     }
 
     // Signup 관련 , 유저를 생성
+    @ApiOperation(value = "apiCreateUser",notes = "유저 회원가입")
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateUser(
         @RequestBody UserSignupJson acceptJson
@@ -117,24 +123,35 @@ public class UserController {
     }
 
     // 유저 로그인
+    @ApiOperation(value = "apiLoginUser",notes = "유저 로그인")
     @PostMapping("/login")
-    public ResponseEntity<APIResponse> apiLoginUser(
+//    public ResponseEntity<APIResponse> apiLoginUser(
+    public ResponseEntity<APIResponse<UserInfo>> apiLoginUser(
             @RequestBody UserLoginJson acceptJson
     ){
         HttpStatus status = HttpStatus.OK;
-
+        APIResponse response = new APIResponse<>();
 
 
         String message;
-        if(userService.loginUser(acceptJson)){
+//        if(userService.loginUser(acceptJson)){
+//            status = HttpStatus.OK;
+//            message = "Login is done";
+//        }else{
+//            status = HttpStatus.NOT_ACCEPTABLE;
+//            message = "Login is failed";
+//        }
+
+        if(userService.loginUser(acceptJson) != null){
             status = HttpStatus.OK;
             message = "Login is done";
+            response.setReturnJson(userService.loginUser(acceptJson));
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
             message = "Login is failed";
         }
 
-        APIResponse response = new APIResponse<>();
+
         response.setStatus(status);
         response.setMessage(message);
         response.setAcceptJson(acceptJson);
@@ -144,6 +161,7 @@ public class UserController {
     }
 
     // 유저아이디를 통해서 유저의 정보를 수정
+    @ApiOperation(value = "apiChangeUser",notes = "유저 아이디(이메일)를 통해서 유저의 정보를 수정")
     @PatchMapping("/")
     public ResponseEntity<APIResponse> apiChangeUser(
         @RequestBody UserPatchJson acceptJson
@@ -160,6 +178,7 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "apiChangeUserPw",notes = "비밀번호 변경")
     @PatchMapping("/userPw")
     public ResponseEntity<APIResponse> apiChangeUserPw(
             @RequestBody UserPwJson acceptJson
@@ -177,6 +196,7 @@ public class UserController {
 
     // 유저 아이디를 통해서 유저를 삭제
     // for backend developer
+    @ApiOperation(value = "apiDeleteUserById",notes = "유저 아이디(이메일)를 통해서 유저를 삭제")
     @DeleteMapping("/id/{userEmail}")
     public ResponseEntity<APIResponse> apiDeleteUserById(
         @PathVariable String userId
@@ -200,6 +220,7 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "apiUserNotifications",notes = "사용자 알림서비스")
     @GetMapping("/{userId}/notifications")
     public ResponseEntity<APIResponse<List<Notification>>> apiUserNotifications(
             @PathVariable String userId
@@ -213,6 +234,7 @@ public class UserController {
         return new ResponseEntity<>(response,status);
     }
 
+    @ApiOperation(value = "apiDelNoti",notes = "사용자 알림서비스 삭제")
     @DeleteMapping("/notification/{notiId}")
     public ResponseEntity<APIResponse> apiDelNoti(
             @PathVariable(name = "notiId") String notiId

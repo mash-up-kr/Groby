@@ -17,4 +17,10 @@ public class ItemTab3 {
 
     @Column(length = 2000)
     private String contents;
+
+    @Column(length = 3000)
+    private String optionArray;
+    @Column(length = 500)
+    private String optionCountArray;
+    private int totalPrice;
 }

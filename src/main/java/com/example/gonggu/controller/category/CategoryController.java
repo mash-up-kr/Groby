@@ -7,6 +7,7 @@ import com.example.gonggu.dto.category.CategoryPatchJson;
 import com.example.gonggu.service.category.CategoryService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     //생성된 카테고리 보여주기
+    @ApiOperation(value = "apiGetCategory",notes = "카테고리 목록 보여주기")
     @GetMapping("/")
     public ResponseEntity<APIResponse<List<Category>>> apiGetCategory(){
 
@@ -36,11 +38,13 @@ public class CategoryController {
 
         response.setStatus(status);
         response.setMessage("All Category");
+        response.setReturnJson(categoryList);
 
         return new ResponseEntity<>(response ,status);
     }
 
     //카테고리 생성
+    @ApiOperation(value = "apiCreateCategory",notes = "새로운 카테고리 생성하기")
     @PostMapping("/")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "category", value = "생성할카테고리", required = false, dataType = "string", paramType = "path", defaultValue = "")
@@ -61,6 +65,7 @@ public class CategoryController {
     }
 
     //카테고리 수정
+    @ApiOperation(value = "apiUpdateCategory",notes = "카테고리 이름 바꾸기")
     @PatchMapping("/")
     public ResponseEntity<APIResponse> apiUpdateCategory(
             @RequestBody CategoryPatchJson acceptJson
@@ -77,6 +82,7 @@ public class CategoryController {
     }
 
     //카테고리 삭제
+    @ApiOperation(value = "apiDeleteCategory",notes = "카테고리 삭제하기")
     @DeleteMapping("{category}")
     public ResponseEntity<APIResponse> apiDeleteCategory(
             @PathVariable String category

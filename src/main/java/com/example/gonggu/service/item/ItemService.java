@@ -1,6 +1,6 @@
 package com.example.gonggu.service.item;
 
-import com.example.gonggu.controller.item.ItemJoinAcceptJson;
+import com.example.gonggu.dto.item.ItemJoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
 import com.example.gonggu.domain.user.User;
@@ -13,6 +13,7 @@ import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.item.ListOfParticipantForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import com.example.gonggu.service.user.NotiService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -248,6 +249,7 @@ public class ItemService {
                     if(acceptJson.getTab1().getContents() != null) tab1.setContents(acceptJson.getTab1().getContents());
                     if(acceptJson.getTab1().getLocation() != null) tab1.setLocation(acceptJson.getTab1().getLocation());
                     if(acceptJson.getTab1().getEndDate() != null) {
+                        // Refactoring!  sdf 상단으로 빼기
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                         try {
                             Date newEndDate = sdf.parse(acceptJson.getTab1().getEndDate());
@@ -280,6 +282,32 @@ public class ItemService {
             case "3" :
                 ItemTab3 tab3 = parentsItem.getItemTab3();
                 if(acceptJson.getTab3().getContents() != null) tab3.setContents(acceptJson.getTab3().getContents());
+                if(!acceptJson.getEditTab()){
+                    List optionList = this.returnOptionArrayStr(parentsItem.getItemTab2().getOptionString());
+                    int[] countArray = new int[optionList.size()];
+                    int totalPrice = 0;
+                    StringBuilder sb = new StringBuilder();
+                    tab3.setOptionArray(
+                            Arrays.toString(optionList.toArray())
+                            .replace("[","").replace("]","")
+                    );
+
+                    // 각 유저에 대해서 함수를 반복함
+                    parentsItem.getParticipantForItemList().forEach(list->{
+//                        totalPrice += ;
+                        sb.append(this.getOptionCountArray(list.getOptionString(),optionList,countArray));
+                        sb.append("/");
+                    });
+                    tab3.setOptionCountArray(Arrays.toString(countArray).replace("[","").replace("]",""));
+
+                    //
+                    String[] priceArr = sb.toString().split("/");
+                    for(int i=0;i<priceArr.length;i++)
+                        totalPrice += Integer.parseInt(priceArr[i]);
+
+                    tab3.setTotalPrice(totalPrice);
+
+                }
 
             case "4" :
                 ItemTab4 tab4 = parentsItem.getItemTab4();
@@ -353,6 +381,92 @@ public class ItemService {
         }
 
         target.setImgPaths(list);
+    }
+
+    /*
+    * optionString 변환
+    * */
+    public List returnOptionArrayStr(String optionString){
+        String[] optionsWrapper =optionString.split("/");
+        List<String> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        String[] firstOptionAndPrice;
+        String[] secondOptionAndPrice;
+        String result;
+        switch (optionsWrapper.length){
+            case 1:
+                String[] optionAndPrice = optionString.split(">")[1].split(",");
+                for(String str : optionAndPrice){
+                    list.add(str.split(":")[0]);
+                }
+                break;
+            case 2:
+                firstOptionAndPrice = optionsWrapper[0].split(">")[1].split(",");
+                List<String> secondList = Arrays.asList(optionsWrapper[1].split(">")[1].split(","));
+                Collections.reverse(secondList);
+                secondOptionAndPrice = secondList.toArray(new String[secondList.size()]);
+
+                for(int f = 0;f<firstOptionAndPrice.length;f++){
+                    String parentStr = firstOptionAndPrice[f].split(":")[0];
+                    for(int s=0;s<secondOptionAndPrice.length;s++){
+                        sb.append(parentStr);
+                        sb.append(" ");
+                        sb.append(secondOptionAndPrice[s].split(":")[0]);
+                        list.add(f*secondOptionAndPrice.length,sb.toString());
+                        sb.delete(0,sb.length());
+                    }
+                }
+
+                break;
+            case 3:
+                firstOptionAndPrice = optionsWrapper[0].split(">")[1].split(",");
+
+                List<String> optionList = Arrays.asList(optionsWrapper[1].split(">")[1].split(","));
+                Collections.reverse(optionList);
+                secondOptionAndPrice = optionList.toArray(new String[optionList.size()]);
+
+                optionList = Arrays.asList(optionsWrapper[2].split(">")[1].split(","));
+                Collections.reverse(optionList);
+                String[] thirdOptionAndPrice = optionList.toArray(new String[optionList.size()]);
+
+                for(int f = 0;f<firstOptionAndPrice.length;f++){
+                    String firstStr = firstOptionAndPrice[f].split(":")[0];
+                    for(int s=0;s<secondOptionAndPrice.length;s++){
+                        String secondStr = secondOptionAndPrice[s].split(":")[0];
+                        for(int t=0;t<thirdOptionAndPrice.length;t++){
+                            sb.append(firstStr); sb.append(" ");
+                            sb.append(secondStr); sb.append(" ");
+                            sb.append(thirdOptionAndPrice[t].split(":")[0]);
+                            list.add(f*secondOptionAndPrice.length*thirdOptionAndPrice.length + s*thirdOptionAndPrice.length , sb.toString().trim());
+                            sb.delete(0,sb.length());
+                        }
+                    }
+
+                }
+                break;
+            default:
+                result = "check option String Length";
+                break;
+        }
+
+        return list;
+//        return Arrays.toString(list.toArray()).replace("[","").replace("]","");
+    }
+    /*
+    * 사용자 optionString 기반으로 optionCountArray 변환
+    * */
+    public int getOptionCountArray(String personalOption , List<String> optionList , int[] countArray){
+        String opt[] = personalOption.split(">")[0].split("/");
+        for(int person = 0;person<opt.length;person++){
+            for(int i=0;i<optionList.size();i++){
+                if(optionList.get(i).equals(opt[person].split(":")[0])){
+                    countArray[i] += Integer.parseInt(opt[person].split(":")[1]);
+                    continue;
+                }
+            }
+        }
+
+        return Integer.parseInt(personalOption.split(">")[1]);
     }
 
     /*
