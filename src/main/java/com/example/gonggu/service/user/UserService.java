@@ -96,7 +96,7 @@ public class UserService {
         User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
         UserInfo result = new UserInfo();
 //        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
-        if (checkUser.getUserPw() == acceptJson.getUserPw()){
+        if (checkUser.getUserPw().equals(acceptJson.getUserPw())){
             result.setDenied(false);
             result.setUserId(checkUser.getUserId());
             result.setAccountBank(checkUser.getAccountBank());

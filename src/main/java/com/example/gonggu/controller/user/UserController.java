@@ -141,12 +141,11 @@ public class UserController {
 //            status = HttpStatus.NOT_ACCEPTABLE;
 //            message = "Login is failed";
 //        }
-
-        if(userService.loginUser(acceptJson).getDenied()){
+        if(!userService.loginUser(acceptJson).getDenied()) {
             status = HttpStatus.OK;
             message = "Login is done";
             response.setReturnJson(userService.loginUser(acceptJson));
-        }else{
+        } else {
             status = HttpStatus.NOT_ACCEPTABLE;
             message = "Login is failed";
         }
