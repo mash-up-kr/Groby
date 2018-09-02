@@ -47,7 +47,8 @@ public class UserService {
     public void createUser(UserSignupJson acceptJson) {
         User user = new User();
         user.setUserEmail(acceptJson.getUserEmail());
-        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+//        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+        user.setUserPw(acceptJson.getUserPw());
         user.setUserName(acceptJson.getUserName());
         user.setUserToken(acceptJson.getUserToken());
 
@@ -74,19 +75,41 @@ public class UserService {
 
     public void userSetPassword(UserPwJson acceptJson){
         User user = userRepository.findByUserEmail(acceptJson.getUserEmail());
-        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+//        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+        user.setUserPw(acceptJson.getUserPw());
 
         userRepository.save(user);
     }
 
 
-    public boolean loginUser(UserLoginJson acceptJson) {
+//    public boolean loginUser(UserLoginJson acceptJson) {
+//        User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
+//
+////        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
+//        if (checkUser.getUserPw() == acceptJson.getUserPw())
+//            return true;
+//        else
+//            return false;
+//    }
+
+    public UserInfo loginUser(UserLoginJson acceptJson) {
         User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
 
-        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
-            return true;
-        else
-            return false;
+//        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
+        if (checkUser.getUserPw() == acceptJson.getUserPw()){
+            UserInfo result = new UserInfo();
+            result.setUserId(checkUser.getUserId());
+            result.setAccountBank(checkUser.getAccountBank());
+            result.setAccountHolder(checkUser.getAccountHolder());
+            result.setAccountNum(checkUser.getAccountNum());
+            result.setIsDeleted(checkUser.getIsDeleted());
+            result.setUserEmail(checkUser.getUserEmail());
+            result.setUserName(checkUser.getUserName());
+            return result;
+        }
+        else {
+            return null;
+        }
     }
 
 

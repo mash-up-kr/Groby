@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -124,23 +125,33 @@ public class UserController {
     // 유저 로그인
     @ApiOperation(value = "apiLoginUser",notes = "유저 로그인")
     @PostMapping("/login")
-    public ResponseEntity<APIResponse> apiLoginUser(
+//    public ResponseEntity<APIResponse> apiLoginUser(
+    public ResponseEntity<APIResponse<UserInfo>> apiLoginUser(
             @RequestBody UserLoginJson acceptJson
     ){
         HttpStatus status = HttpStatus.OK;
-
+        APIResponse response = new APIResponse<>();
 
 
         String message;
-        if(userService.loginUser(acceptJson)){
+//        if(userService.loginUser(acceptJson)){
+//            status = HttpStatus.OK;
+//            message = "Login is done";
+//        }else{
+//            status = HttpStatus.NOT_ACCEPTABLE;
+//            message = "Login is failed";
+//        }
+
+        if(userService.loginUser(acceptJson) != null){
             status = HttpStatus.OK;
             message = "Login is done";
+            response.setReturnJson(userService.loginUser(acceptJson));
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
             message = "Login is failed";
         }
 
-        APIResponse response = new APIResponse<>();
+
         response.setStatus(status);
         response.setMessage(message);
         response.setAcceptJson(acceptJson);
