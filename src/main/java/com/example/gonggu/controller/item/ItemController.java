@@ -65,7 +65,7 @@ public class ItemController {
 
     // 탭 수정
     // 다음 단계로 넘어가는 작업들이 여기서 진행이 된다.
-    @ApiOperation(value = "apiUpdateTab",notes = "editTab:false -> 다음 단계로 넘어갈 경우 / editTab:true -> 해당 단계의 내용 수정 // 수정하거나 추가하는 Tab들의 json 필수적으로 채워야함 ")
+    @ApiOperation(value = "apiUpdateTab",notes = "editTab:false -> 다음 단계로 넘어갈 경우 / editTab:true -> 해당 단계의 내용 수정 // 수정하거나 추가하는 Tab들의 json 필수적으로 채워야함 // optionString EX ) 사이즈>L:100,M:0,S:-100/색상>빨:1000,파:1000,흰:1000/배송>산간:100,서울:0,집근처:-100")
     @PatchMapping("/tab")
     public ResponseEntity<APIResponse> apiUpdateTab(
             @RequestBody ItemPatchJson acceptJson
@@ -140,7 +140,7 @@ public class ItemController {
     }
 
     // t2 유저의 참여
-    @ApiOperation(value = "apiJoinUserList",notes = "tab 2 사용자 참여하기")
+    @ApiOperation(value = "apiJoinUserList",notes = "tab 2 사용자 참여하기 // 옵션:수량/...>총금액 EX) L 빨:2/S 파:2>200")
     @PostMapping("/{itemId}/userlist")
     public ResponseEntity<APIResponse> apiJoinUserList(
             @PathVariable String itemId,
