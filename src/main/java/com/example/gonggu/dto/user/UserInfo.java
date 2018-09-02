@@ -14,5 +14,7 @@ public class UserInfo {
     private String accountHolder;
     private Boolean isDeleted;
 
+    private Boolean denied;
+
 
 }

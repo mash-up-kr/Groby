@@ -94,10 +94,10 @@ public class UserService {
 
     public UserInfo loginUser(UserLoginJson acceptJson) {
         User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
-
+        UserInfo result = new UserInfo();
 //        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
         if (checkUser.getUserPw() == acceptJson.getUserPw()){
-            UserInfo result = new UserInfo();
+            result.setDenied(false);
             result.setUserId(checkUser.getUserId());
             result.setAccountBank(checkUser.getAccountBank());
             result.setAccountHolder(checkUser.getAccountHolder());
@@ -108,7 +108,8 @@ public class UserService {
             return result;
         }
         else {
-            return null;
+            result.setDenied(true);
+            return result;
         }
     }
 
