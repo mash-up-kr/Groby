@@ -1,10 +1,13 @@
 package com.example.gonggu.controller.user;
 
+import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.domain.user.Notification;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.user.*;
+import com.example.gonggu.dto.view.ItemCard;
 import com.example.gonggu.service.user.NotiService;
 import com.example.gonggu.service.user.UserService;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -186,7 +189,7 @@ public class UserController {
 
     // 유저 아이디를 통해서 유저를 삭제
     // for backend developer
-    @ApiOperation(value = "apiDeleteUserById",notes = "유저 key값을 통해서 유저를 삭제")
+    @ApiOperation(value = "apiDeleteUserById",notes = "유저 넘버(PK)를 통해서 유저를 삭제")
     @DeleteMapping("/id/{userId}")
     public ResponseEntity<APIResponse> apiDeleteUserById(
         @PathVariable String userId
@@ -209,6 +212,23 @@ public class UserController {
         return new ResponseEntity<>( response , status);
 
     }
+
+    @ApiOperation(value = "apiGetParticipantInfo" , notes = "작성한 혹은 참여한 아이템의 목록 / 마지막 owner => 작성한 목록 t / 참여한 목록 f ")
+    @GetMapping("/{userId}/participantlist/{owner}")
+    public ResponseEntity<APIResponse<List<ItemCard>>> apiGetParticipantInfo(
+            @PathVariable(name = "userId") String userId,
+            @PathVariable(name = "owner") String owner
+    ){
+        HttpStatus status = HttpStatus.OK;
+        APIResponse response = new APIResponse();
+        response.setStatus(status);
+        response.setReturnJson(
+                userService.getUserParticipantList(owner.equals("t")?true : false , userId)
+        );
+
+        return new ResponseEntity<>(response,status);
+    }
+
 
     @ApiOperation(value = "apiUserNotifications",notes = "사용자 알림서비스")
     @GetMapping("/{userId}/notifications")

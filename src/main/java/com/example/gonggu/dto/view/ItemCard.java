@@ -12,14 +12,14 @@ import java.util.Date;
 public class ItemCard {
     private String thumnailURL;
     private String itemId;
-    private String likeNum;
     private String title;
-    private int amountLimit;
-    private int participantNum;
-    private int progress;
     private int nowTab;
-    private int participantPercent;
-    private Date endDate;
+    private String likeNum;             // T1
+    private int progress;               // T2
+    private int amountLimit;            // T2
+    private int participantNum;         // T2
+    private int participantPercent;     // T2
     private Date dueDate;
+//    private Date endDate;
 
 }

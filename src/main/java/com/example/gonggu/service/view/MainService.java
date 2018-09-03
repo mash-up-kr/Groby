@@ -108,7 +108,7 @@ public class MainService {
             ItemCard card = new ItemCard();
             card.setTitle(it.getTitle());
             card.setNowTab(it.getNowTab());
-            card.setEndDate(it.getItemTab1().getEndDate());
+            card.setDueDate(it.getItemTab1().getEndDate());
             card.setItemId(it.getItemId().toString());
             card.setThumnailURL(it.getThumnail());
             if(it.getNowTab() == 1)
