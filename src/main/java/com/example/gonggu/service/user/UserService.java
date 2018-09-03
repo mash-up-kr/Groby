@@ -1,7 +1,11 @@
 package com.example.gonggu.service.user;
 
+import com.example.gonggu.domain.item.Item;
+import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.dto.user.*;
 import com.example.gonggu.domain.user.User;
+import com.example.gonggu.dto.view.ItemCard;
+import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.user.NotificationRepository;
 import com.example.gonggu.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,6 +24,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ItemRepository itemRepo;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
@@ -149,11 +157,37 @@ public class UserService {
         return key;
     }
 
-    //info Map<String,Object>
-    //return 타입 map<String,String>
-    //학교 이매일 인증
-    // User <- 토큰을 저장 User.getEmailAuth
-    // /checkEmail/{id}/{EmailAuth}
-    // User.getEmailAuth == parameter EmailAuth 일치?
+    public List<ItemCard> getUserParticipantList(boolean owner, String userId){
+        User usr = userRepository.getOne(Long.parseLong(userId));
+        List<ItemCard> returnList = new ArrayList<>();
+        usr.getParticipants().forEach(participant->{  if(participant.getOwner() == owner){
+            ItemCard temp = new ItemCard();
+            Item tempSource = itemRepo.getOne(participant.getItemId());
+            temp.setThumnailURL(tempSource.getThumnail());
+            temp.setNowTab(tempSource.getNowTab());
+            temp.setItemId(tempSource.getItemId().toString());
+            temp.setTitle(tempSource.getTitle());
+            switch (tempSource.getNowTab()) {
+                case 1:  // Tab1인 경우
+                    temp.setDueDate(tempSource.getItemTab1().getEndDate());
+                    temp.setLikeNum(tempSource.getNumOfLike().toString());
+                    break;
+                case 2:  // Tab2인 경우
+                    temp.setDueDate(tempSource.getItemTab2().getEndDate());
+                    temp.setAmountLimit(tempSource.getAmountLimit());                 // 공구주문까지 최소수량
+                    temp.setParticipantNum(tempSource.getNumOfOrder());               // 지금까지 구매된 수량
+                    Integer percentage = (tempSource.getNumOfOrder()/tempSource.getAmountLimit())*100;
+                    temp.setParticipantPercent(percentage);                              // 진행률
+                    break;
+                default:
+                    break;
+            }
+
+            returnList.add(temp);
+            }
+        });
+
+        return returnList;
+    }
 
 }
