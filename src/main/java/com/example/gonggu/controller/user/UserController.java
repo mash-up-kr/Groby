@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -134,13 +133,6 @@ public class UserController {
 
 
         String message;
-//        if(userService.loginUser(acceptJson)){
-//            status = HttpStatus.OK;
-//            message = "Login is done";
-//        }else{
-//            status = HttpStatus.NOT_ACCEPTABLE;
-//            message = "Login is failed";
-//        }
         if(!userService.loginUser(acceptJson).getDenied()) {
             status = HttpStatus.OK;
             message = "Login is done";
@@ -149,7 +141,6 @@ public class UserController {
             status = HttpStatus.NOT_ACCEPTABLE;
             message = "Login is failed";
         }
-
 
         response.setStatus(status);
         response.setMessage(message);
@@ -195,8 +186,8 @@ public class UserController {
 
     // 유저 아이디를 통해서 유저를 삭제
     // for backend developer
-    @ApiOperation(value = "apiDeleteUserById",notes = "유저 아이디(이메일)를 통해서 유저를 삭제")
-    @DeleteMapping("/id/{userEmail}")
+    @ApiOperation(value = "apiDeleteUserById",notes = "유저 key값을 통해서 유저를 삭제")
+    @DeleteMapping("/id/{userId}")
     public ResponseEntity<APIResponse> apiDeleteUserById(
         @PathVariable String userId
     ){
