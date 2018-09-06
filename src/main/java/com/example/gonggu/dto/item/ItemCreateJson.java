@@ -8,10 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ItemCreateJson {
-    private String itemCategory;
+    private String itemCategoryId;
     private String itemTitle;
     private String itemAmountLimit;
-    private String userEmail;
+//    private String userEmail;
     private String userId;
     private String[] imgPathList;
 

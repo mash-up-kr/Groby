@@ -42,7 +42,7 @@ public class ItemController {
     }
 
     // 아이템과 탭을 생성
-    @ApiOperation(value = "apiCreateItem",notes = "아이템 생성")
+    @ApiOperation(value = "apiCreateItem",notes = "아이템 생성 , Date : 0000-00-00")
     @PostMapping("/")
     public ResponseEntity<APIResponse> apiCreateItem(
             @RequestBody ItemCreateJson acceptJson

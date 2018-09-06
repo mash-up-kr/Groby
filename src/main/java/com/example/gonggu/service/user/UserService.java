@@ -149,8 +149,8 @@ public class UserService {
 
         msg.setFrom("mashupdutchmarket@gmail.com");
         msg.setTo(userEmail);
-        msg.setSubject("Dutch Market 인증번호");
-        msg.setText("Dutch Market 에서 인증 메일을 보냅니다. \n\""+key+ "\" 를 앱에서 입력해주세요 \n By Groby");
+        msg.setSubject("Groby 인증번호");
+        msg.setText("Groby 에서 인증 메일을 보냅니다. \n\""+key+ "\" 를 앱에서 입력해주세요 \n By Groby");
 
         this.sender.send(msg);
 

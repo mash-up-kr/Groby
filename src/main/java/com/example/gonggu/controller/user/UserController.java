@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,12 +82,12 @@ public class UserController {
         return new ResponseEntity<>( response , status);
     }
 
-    //    /user/checkemail?userEail=abc@naver.com
     // return 값 명시해줘야 한다.
     @ApiOperation(value = "apiCheckEmail",notes = "회원가입시 이메일 인증")
-    @GetMapping("/checkemail")
+//    @GetMapping("/checkemail/{userEmail}")
+    @GetMapping("/{userEmail}/check")
     public ResponseEntity<APIResponse> apiCheckEmail(
-            @RequestParam String userEmail
+            @PathVariable String userEmail
     ){
         HttpStatus status = HttpStatus.OK;
         String message;
@@ -96,7 +97,14 @@ public class UserController {
         APIResponse response = new APIResponse<>();
         response.setStatus(status);
 
-        if(userService.checkEmail(userEmail)){
+        System.out.println(URLDecoder.decode(userEmail));
+        try {
+            System.out.println(URLDecoder.decode(userEmail,"utf-8"));
+        }catch (Exception e ){
+            System.out.println(e);
+        }
+
+        if(userService.checkEmail(URLDecoder.decode(userEmail))){
             status = HttpStatus.OK;
             message = userService.sendMail(userEmail);
         }else{
@@ -104,6 +112,7 @@ public class UserController {
             message = "이메일이 중복 되었습니다.";
         }
 
+        response.setMessage(message);
         return new ResponseEntity<>( response , status);
     }
 

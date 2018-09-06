@@ -37,7 +37,7 @@ public class UserRepositoryTests {
 
     @Test
     public void testEmail(){
-        usrService.sendMail("sopthfg@gmail.com");
+        System.out.println(userRepository.findByUserEmail("sadafsdf@gmail.com") == null);
     }
 
 }

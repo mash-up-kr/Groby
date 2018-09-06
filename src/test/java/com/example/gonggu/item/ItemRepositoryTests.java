@@ -140,7 +140,7 @@ public class ItemRepositoryTests {
 
         itemAcceptJson.setA_TabNumber("1");
         itemAcceptJson.setItemTitle("들어가라아아ㅏ앗");
-        itemAcceptJson.setItemCategory("화장품");
+        itemAcceptJson.setItemCategoryId("화장품");
         itemAcceptJson.setOneContents("블라블라 아이템 집어넣귀이ㅣㅇ");
         itemAcceptJson.setOneEndDate("2018.04.30 11:11:11");
         itemAcceptJson.setOneImgPath("http://sddfdsd");

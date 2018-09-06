@@ -13,7 +13,6 @@ import com.example.gonggu.persistence.item.ListOfLikeForItemRepo;
 import com.example.gonggu.persistence.item.ListOfParticipantForItemRepo;
 import com.example.gonggu.persistence.user.UserRepository;
 import com.example.gonggu.service.user.NotiService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +72,7 @@ public class ItemService {
     /*
     * 공구 item 생성관련 Service
     * acceptJson
-    *      A_TabNumber, Category, ItemTitle, ItemUserEmail, ItemAmountLimit, a_imgPathList
+    *      A_TabNumber, Category, ItemTitle, ItemAmountLimit, a_imgPathList
     *      OneContents, OneLocation, OneEndDate, ""OneImgPath"" <- 이미지 여러개 들어오는 것 처리해야함
     * return
     *      true : create item success
@@ -92,12 +91,12 @@ public class ItemService {
         List<ItemImgPath> imgPathList = new ArrayList<>();
 
         // 필수적인 내용을 다 넣어서 보낸 경우 저장
-        if((acceptJson.getItemCategory() != null) && (acceptJson.getItemTitle() != null)
+        if((acceptJson.getItemCategoryId() != null) && (acceptJson.getItemTitle() != null)
                 && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getImgPathList() != null)
                 && (acceptJson.getTab1().getContents() != null) && (acceptJson.getTab1().getEndDate() != null) && (acceptJson.getTab1().getLocation() != null)) {
             // 공구 item에 대한 기본 설정
             item.setNowTab(1);
-            Category getCategory = categoryRepository.findByCategory(acceptJson.getItemCategory());
+            Category getCategory = categoryRepository.findOne(Long.parseLong(acceptJson.getItemCategoryId()));
             item.setCategory(getCategory);
             item.setTitle(acceptJson.getItemTitle());
             User getUser = userRepository.getOne(Long.parseLong(acceptJson.getUserId()));
