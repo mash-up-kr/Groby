@@ -86,7 +86,7 @@ public class UserController {
     @ApiOperation(value = "apiCheckEmail",notes = "회원가입시 이메일 인증")
 //    @GetMapping("/checkemail/{userEmail}")
     @GetMapping("/{userEmail}/check")
-    public ResponseEntity<APIResponse> apiCheckEmail(
+    public ResponseEntity<APIResponse<UserCheckEmail>> apiCheckEmail(
             @PathVariable String userEmail
     ){
         HttpStatus status = HttpStatus.OK;
@@ -95,7 +95,7 @@ public class UserController {
         // 인증이 되는 경우 이메일을 보내준다.
         // 인증번호를 보내준다.
         APIResponse response = new APIResponse<>();
-
+        UserCheckEmail userCheckEmail = new UserCheckEmail();
 
         System.out.println(URLDecoder.decode(userEmail));
         try {
@@ -106,7 +106,8 @@ public class UserController {
 
         if(userService.checkEmail(URLDecoder.decode(userEmail))){
             status = HttpStatus.OK;
-            message = userService.sendMail(userEmail);
+            message = "이메일 인증 전송 성공";
+            userCheckEmail.setAuthenticationNumber(userService.sendMail(userEmail));
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
             message = "이메일이 중복 되었습니다.";
@@ -114,6 +115,7 @@ public class UserController {
 
         response.setStatus(status);
         response.setMessage(message);
+        response.setReturnJson(userCheckEmail);
         return new ResponseEntity<>( response , status);
     }
 
