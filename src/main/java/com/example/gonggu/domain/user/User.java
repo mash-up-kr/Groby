@@ -25,6 +25,8 @@ public class User {
     private String userPw;
     @Column(length = 50)
     private String userName;
+    @Column(length = 20)
+    private String phoneNum;
 
     @Column(length = 50)
     private String accountNum;
