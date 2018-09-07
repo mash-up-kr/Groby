@@ -95,7 +95,7 @@ public class UserController {
         // 인증이 되는 경우 이메일을 보내준다.
         // 인증번호를 보내준다.
         APIResponse response = new APIResponse<>();
-        response.setStatus(status);
+
 
         System.out.println(URLDecoder.decode(userEmail));
         try {
@@ -112,6 +112,7 @@ public class UserController {
             message = "이메일이 중복 되었습니다.";
         }
 
+        response.setStatus(status);
         response.setMessage(message);
         return new ResponseEntity<>( response , status);
     }
