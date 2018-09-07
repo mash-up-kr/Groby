@@ -77,6 +77,7 @@ public class UserService {
         user.setAccountBank(acceptJson.getAccountBank());
         user.setAccountHolder(acceptJson.getAccountHolder());
         user.setAccountNum(acceptJson.getAccountNum());
+        user.setPhoneNum(acceptJson.getPhoneNumber());
 
         userRepository.save(user);
     }
@@ -113,6 +114,7 @@ public class UserService {
             result.setIsDeleted(checkUser.getIsDeleted());
             result.setUserEmail(checkUser.getUserEmail());
             result.setUserName(checkUser.getUserName());
+            result.setPhoneNumber(checkUser.getPhoneNum());
             return result;
         }
         else {

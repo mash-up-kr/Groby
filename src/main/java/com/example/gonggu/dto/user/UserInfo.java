@@ -15,6 +15,6 @@ public class UserInfo {
     private Boolean isDeleted;
 
     private Boolean denied;
-
+    private String phoneNumber;
 
 }

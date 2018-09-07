@@ -13,4 +13,5 @@ public class UserPatchJson {
     private String accountNum;
     private String accountBank;
     private String accountHolder;
+    private String phoneNumber;
 }
