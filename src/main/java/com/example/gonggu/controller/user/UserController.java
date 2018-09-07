@@ -122,7 +122,8 @@ public class UserController {
     public ResponseEntity<APIResponse> apiCreateUser(
         @RequestBody UserSignupJson acceptJson
     ){
-        HttpStatus status = HttpStatus.CREATED;
+//        HttpStatus status = HttpStatus.CREATED;
+        HttpStatus status = HttpStatus.OK;
         userService.createUser(acceptJson);
 
         APIResponse response = new APIResponse<>();
@@ -168,7 +169,8 @@ public class UserController {
     public ResponseEntity<APIResponse> apiChangeUser(
         @RequestBody UserPatchJson acceptJson
     ){
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
         userService.userUpdate(acceptJson);
 
         APIResponse response = new APIResponse<>();
@@ -203,13 +205,15 @@ public class UserController {
     public ResponseEntity<APIResponse> apiDeleteUserById(
         @PathVariable String userId
     ){
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
         String message;
         if(!userService.deleteUser(userId)){
             status = HttpStatus.NOT_ACCEPTABLE;
             message = "Check User Email";
         }else{
-            status = HttpStatus.NOT_ACCEPTABLE;
+//            status = HttpStatus.NOT_ACCEPTABLE;
+            status = HttpStatus.OK;
             message = "Delete user is Done";
         }
 

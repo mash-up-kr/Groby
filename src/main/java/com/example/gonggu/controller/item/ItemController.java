@@ -51,7 +51,8 @@ public class ItemController {
         HttpStatus status;
 
         if(itemService.createItem(acceptJson)){
-            status = HttpStatus.CREATED;
+//            status = HttpStatus.CREATED;
+            status = HttpStatus.OK;
             returnResponse.setMessage("Create Item");
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
@@ -75,7 +76,8 @@ public class ItemController {
 
         // update tab
         if(itemService.patchItemTab(acceptJson)){
-            status = HttpStatus.ACCEPTED;
+//            status = HttpStatus.ACCEPTED;
+            status = HttpStatus.OK;
             returnResponse.setMessage("Update Tab Is Done");
         }else{
             status = HttpStatus.NOT_ACCEPTABLE;
@@ -94,7 +96,8 @@ public class ItemController {
             @PathVariable String itemId
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
 
         itemService.deleteItem(itemId);
 
@@ -110,13 +113,15 @@ public class ItemController {
             @RequestBody ItemLikeJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
 
         if(itemService.toggleLike(acceptJson))
             returnResponse.setMessage("Add Like");
-        else
+        else {
+            status = HttpStatus.NOT_ACCEPTABLE;
             returnResponse.setMessage("Remove Like");
-
+        }
 
         returnResponse.setStatus(status);
         returnResponse.setAcceptJson(acceptJson);
@@ -130,7 +135,7 @@ public class ItemController {
             @PathVariable String itemId
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.CREATED;
+        HttpStatus status = HttpStatus.OK;
 
         returnResponse.setStatus(status);
         returnResponse.setMessage("Get User List");
@@ -147,12 +152,15 @@ public class ItemController {
             @RequestBody ItemJoinAcceptJson acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.CREATED;
+//        HttpStatus status = HttpStatus.CREATED;
+        HttpStatus status = HttpStatus.OK;
 
         if(itemService.insertParticipantUser(itemId,acceptJson))
             returnResponse.setMessage("Join User List Is Done");
-        else
+        else {
+            status = HttpStatus.NOT_ACCEPTABLE;
             returnResponse.setMessage("Join User List Is Failed");
+        }
 
         returnResponse.setStatus(status);
         return new ResponseEntity<>(returnResponse,status);
@@ -166,7 +174,8 @@ public class ItemController {
             @RequestBody ParticipantListUserPermission acceptJson
     ){
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
 
         itemService.changeUserPermission(acceptJson);
 

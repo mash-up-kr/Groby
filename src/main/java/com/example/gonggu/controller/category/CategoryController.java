@@ -71,7 +71,8 @@ public class CategoryController {
             @RequestBody CategoryPatchJson acceptJson
     ) {
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
 
         categoryService.updatecategory(acceptJson);
 
@@ -88,7 +89,8 @@ public class CategoryController {
             @PathVariable String category
     ) {
         APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.ACCEPTED;
+        HttpStatus status = HttpStatus.OK;
 
         if(!categoryService.deletecategory(category)){
             status = HttpStatus.NOT_ACCEPTABLE;
