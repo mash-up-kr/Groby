@@ -175,8 +175,8 @@ public class ItemService {
         Item item = itemRepository.findOne(Long.parseLong(itemId));
 
         if(!item.getIsDeleted()) { // 삭제되지 않은 경우
-            infoJson.setItemId(item.getItemId());
-            infoJson.setWriterId(item.getUser().getUserId());
+            infoJson.setItemId(item.getItemId().toString());
+            infoJson.setWriterId(item.getUser().getUserId().toString());
             infoJson.setItemTitle(item.getTitle());
             infoJson.setCategory(item.getCategory().getCategory());
             infoJson.setNowTab(item.getNowTab());
@@ -230,7 +230,7 @@ public class ItemService {
     @Transactional
     public Boolean patchItemTab(ItemPatchJson acceptJson){
         Boolean result = true;
-        Item parentsItem = itemRepository.getOne(acceptJson.getItemId());
+        Item parentsItem = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
         this.changeTabImgs(Integer.valueOf(acceptJson.getTargetTab()) , acceptJson.getImgPathList() ,parentsItem);
 
 //        NotiContents notiContents = new NotiContents();

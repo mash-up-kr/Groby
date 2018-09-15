@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @ToString
 public class ItemInfo {
-    private Long itemId;
-    private Long writerId;
+    private String itemId;
+    private String writerId;
     private String category;
     private String itemTitle;
     private Integer nowTab;

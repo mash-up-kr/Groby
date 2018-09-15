@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class CategoryPatchJson {
     private String category;
-    private long categoryId;
+    private String categoryId;
 
 }

@@ -73,11 +73,11 @@ public class MainService {
 
             switch (itemCard.getNowTab()) {
                 case 1:  // Tab1인 경우
-                    itemCard.setDueDate(items.get(i).getItemTab1().getEndDate());
+                    itemCard.setDueDate(items.get(i).getItemTab1().getEndDate().toString());
                     itemCard.setLikeNum(items.get(i).getNumOfLike().toString());
                     break;
                 case 2:  // Tab2인 경우
-                    itemCard.setDueDate(items.get(i).getItemTab2().getEndDate());
+                    itemCard.setDueDate(items.get(i).getItemTab2().getEndDate().toString());
                     itemCard.setAmountLimit(items.get(i).getAmountLimit());                 // 공구주문까지 최소수량
                     itemCard.setParticipantNum(items.get(i).getNumOfOrder());               // 지금까지 구매된 수량
                     Integer percentage = (items.get(i).getNumOfOrder()/items.get(i).getAmountLimit())*100;
@@ -108,7 +108,7 @@ public class MainService {
             ItemCard card = new ItemCard();
             card.setTitle(it.getTitle());
             card.setNowTab(it.getNowTab());
-            card.setDueDate(it.getItemTab1().getEndDate());
+            card.setDueDate(it.getItemTab1().getEndDate().toString());
             card.setItemId(it.getItemId().toString());
             card.setThumnailURL(it.getThumnail());
             if(it.getNowTab() == 1)

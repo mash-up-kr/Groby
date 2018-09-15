@@ -32,7 +32,7 @@ public class CategoryService {
 
     //카테고리 변경
     public void updatecategory(CategoryPatchJson acceptJson){
-        Category category = categoryRepo.findOne(acceptJson.getCategoryId());
+        Category category = categoryRepo.findOne(Long.parseLong(acceptJson.getCategoryId()));
         category.setCategory(acceptJson.getCategory());
         categoryRepo.save(category);
     }

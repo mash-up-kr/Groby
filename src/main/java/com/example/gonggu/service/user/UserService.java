@@ -41,7 +41,7 @@ public class UserService {
             user = userRepository.findOne(Long.parseLong(acceptMap.get("userId").toString()));
         }
         UserInfo result = new UserInfo();
-        result.setUserId(user.getUserId());
+        result.setUserId(user.getUserId().toString());
         result.setAccountBank(user.getAccountBank());
         result.setAccountHolder(user.getAccountHolder());
         result.setAccountNum(user.getAccountNum());
@@ -107,7 +107,7 @@ public class UserService {
 //        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
         if (checkUser.getUserPw().equals(acceptJson.getUserPw())){
             result.setDenied(false);
-            result.setUserId(checkUser.getUserId());
+            result.setUserId(checkUser.getUserId().toString());
             result.setAccountBank(checkUser.getAccountBank());
             result.setAccountHolder(checkUser.getAccountHolder());
             result.setAccountNum(checkUser.getAccountNum());
@@ -171,11 +171,11 @@ public class UserService {
             temp.setTitle(tempSource.getTitle());
             switch (tempSource.getNowTab()) {
                 case 1:  // Tab1인 경우
-                    temp.setDueDate(tempSource.getItemTab1().getEndDate());
+                    temp.setDueDate(tempSource.getItemTab1().getEndDate().toString());
                     temp.setLikeNum(tempSource.getNumOfLike().toString());
                     break;
                 case 2:  // Tab2인 경우
-                    temp.setDueDate(tempSource.getItemTab2().getEndDate());
+                    temp.setDueDate(tempSource.getItemTab2().getEndDate().toString());
                     temp.setAmountLimit(tempSource.getAmountLimit());                 // 공구주문까지 최소수량
                     temp.setParticipantNum(tempSource.getNumOfOrder());               // 지금까지 구매된 수량
                     Integer percentage = (tempSource.getNumOfOrder()/tempSource.getAmountLimit())*100;

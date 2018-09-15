@@ -19,7 +19,8 @@ public class ItemCard {
     private int amountLimit;            // T2
     private int participantNum;         // T2
     private int participantPercent;     // T2
-    private Date dueDate;
+    private String dueDate;
+//    private Date dueDate;
 //    private Date endDate;
 
 }
