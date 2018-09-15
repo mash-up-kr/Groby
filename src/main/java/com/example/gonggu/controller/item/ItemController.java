@@ -4,11 +4,14 @@ import com.example.gonggu.domain.item.ListOfParticipantForItem;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.item.*;
 import com.example.gonggu.service.item.ItemService;
+import com.example.gonggu.service.item.S3Service;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
+    @Autowired
+    S3Service s3Service;
+
     // item id 를 통해서 아이템을 찾는다.
     @ApiOperation(value = "apiGetItem",notes = "아이템 넘버를 통해 아이템 정보 가져오기")
     @GetMapping("/{itemId}")
@@ -40,6 +46,26 @@ public class ItemController {
 
         return new ResponseEntity<>(returnResponse,status);
     }
+
+    /*
+    아이템의 각 탭에 해당하는 사진을 저장하는 API
+     */
+    @ApiOperation(value = "apiStorageImg", notes = "아이템에 해당하는 이미지를 저장")
+    @PostMapping(value = "/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<APIResponse<List<String>>> uploadFile(
+            @RequestPart(value = "file") MultipartFile[] file
+    ) {
+        APIResponse<List<String>> returnResponse = new APIResponse<List<String>>();
+        HttpStatus status = HttpStatus.OK;
+
+        returnResponse.setReturnJson(s3Service.uploadFile(file));
+        returnResponse.setStatus(status);
+        returnResponse.setMessage("Item Information");
+
+        return new ResponseEntity<>(returnResponse,status);
+    }
+
+
 
     // 아이템과 탭을 생성
     @ApiOperation(value = "apiCreateItem",notes = "아이템 생성 , Date : 0000-00-00")
