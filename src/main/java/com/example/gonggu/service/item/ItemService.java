@@ -93,7 +93,7 @@ public class ItemService {
         // 필수적인 내용을 다 넣어서 보낸 경우 저장
         if((acceptJson.getItemCategoryId() != null) && (acceptJson.getItemTitle() != null)
                 && (acceptJson.getItemAmountLimit() != null) && (acceptJson.getImgPathList() != null)
-                && (acceptJson.getTab1().getContents() != null) && (acceptJson.getTab1().getEndDate() != null) && (acceptJson.getTab1().getLocation() != null)) {
+                && (acceptJson.getTabOne().getContents() != null) && (acceptJson.getTabOne().getEndDate() != null) && (acceptJson.getTabOne().getLocation() != null)) {
             // 공구 item에 대한 기본 설정
             item.setNowTab(1);
             Category getCategory = categoryRepository.findOne(Long.parseLong(acceptJson.getItemCategoryId()));
@@ -118,11 +118,11 @@ public class ItemService {
             item.setImgPaths(imgPathList); // 이미지리스트 추가하기
 
             // 공구 item tab1 설정
-            itemTab1.setContents(acceptJson.getTab1().getContents());
-            itemTab1.setLocation(acceptJson.getTab1().getLocation());
+            itemTab1.setContents(acceptJson.getTabOne().getContents());
+            itemTab1.setLocation(acceptJson.getTabOne().getLocation());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
             try {
-                Date insertDate = sdf.parse(acceptJson.getTab1().getEndDate());
+                Date insertDate = sdf.parse(acceptJson.getTabOne().getEndDate());
                 itemTab1.setEndDate(insertDate);
             } catch (ParseException e) {
                 result = false;
@@ -186,16 +186,16 @@ public class ItemService {
                     ItemTab5Json infoTab5 = new ItemTab5Json();
                     infoTab5.setContents(item.getItemTab5().getContents());
                     infoTab5.setLocationDetail(item.getItemTab5().getLocationDetail());
-                    infoJson.setTab5(infoTab5);
+                    infoJson.setTabFive(infoTab5);
                 case 4:
                     ItemTab4Json infoTab4 = new ItemTab4Json();
                     infoTab4.setContents(item.getItemTab4().getContents());
                     infoTab4.setArrivedTime(item.getItemTab4().getArrivedTime().toString());
-                    infoJson.setTab4(infoTab4);
+                    infoJson.setTabFour(infoTab4);
                 case 3:
                     ItemTab3Json infoTab3 = new ItemTab3Json();
                     infoTab3.setContents(item.getItemTab3().getContents());
-                    infoJson.setTab3(infoTab3);
+                    infoJson.setTabThree(infoTab3);
                 case 2:
                     ItemTab2Json infoTab2 = new ItemTab2Json();
                     infoTab2.setContents(item.getItemTab2().getContents());
@@ -204,7 +204,7 @@ public class ItemService {
                     infoJson.setNumOfParticipant(item.getNumOfOrder());
                     Integer percentage = (item.getNumOfOrder()/item.getAmountLimit())*100;
                     infoJson.setParticipantPercent(percentage);
-                    infoJson.setTab2(infoTab2);
+                    infoJson.setTabTwo(infoTab2);
                 default:
                     ItemTab1Json infoTab1 = new ItemTab1Json();
                     infoTab1.setContents(item.getItemTab1().getContents());
@@ -245,13 +245,13 @@ public class ItemService {
                         Category getCategory = categoryRepository.findByCategory(acceptJson.getCategory());
                         parentsItem.setCategory(getCategory);
                     }
-                    if(acceptJson.getTab1().getContents() != null) tab1.setContents(acceptJson.getTab1().getContents());
-                    if(acceptJson.getTab1().getLocation() != null) tab1.setLocation(acceptJson.getTab1().getLocation());
-                    if(acceptJson.getTab1().getEndDate() != null) {
+                    if(acceptJson.getTabOne().getContents() != null) tab1.setContents(acceptJson.getTabOne().getContents());
+                    if(acceptJson.getTabOne().getLocation() != null) tab1.setLocation(acceptJson.getTabOne().getLocation());
+                    if(acceptJson.getTabOne().getEndDate() != null) {
                         // Refactoring!  sdf 상단으로 빼기
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                         try {
-                            Date newEndDate = sdf.parse(acceptJson.getTab1().getEndDate());
+                            Date newEndDate = sdf.parse(acceptJson.getTabOne().getEndDate());
                             tab1.setEndDate(newEndDate);
                         } catch (ParseException e) {
                             result = false;
@@ -264,12 +264,12 @@ public class ItemService {
             case "2" :
                 // optionString contents img_path
                 ItemTab2 tab2 = parentsItem.getItemTab2();
-                if(acceptJson.getTab2().getContents() != null) tab2.setContents(acceptJson.getTab2().getContents());
-                if(acceptJson.getTab2().getOptionString() != null) tab2.setOptionString(acceptJson.getTab2().getOptionString());
-                if(acceptJson.getTab2().getEndDate() != null) {
+                if(acceptJson.getTabTwo().getContents() != null) tab2.setContents(acceptJson.getTabTwo().getContents());
+                if(acceptJson.getTabTwo().getOptionString() != null) tab2.setOptionString(acceptJson.getTabTwo().getOptionString());
+                if(acceptJson.getTabTwo().getEndDate() != null) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     try {
-                        Date twoEndDate = format.parse(acceptJson.getTab2().getEndDate());
+                        Date twoEndDate = format.parse(acceptJson.getTabTwo().getEndDate());
                         tab2.setEndDate(twoEndDate);
                     } catch (ParseException e) {
                         result = false;
@@ -280,7 +280,7 @@ public class ItemService {
                 break;
             case "3" :
                 ItemTab3 tab3 = parentsItem.getItemTab3();
-                if(acceptJson.getTab3().getContents() != null) tab3.setContents(acceptJson.getTab3().getContents());
+                if(acceptJson.getTabThree().getContents() != null) tab3.setContents(acceptJson.getTabThree().getContents());
                 if(!acceptJson.getEditTab()){
                     List optionList = this.returnOptionArrayStr(parentsItem.getItemTab2().getOptionString());
                     int[] countArray = new int[optionList.size()];
@@ -310,23 +310,23 @@ public class ItemService {
 
             case "4" :
                 ItemTab4 tab4 = parentsItem.getItemTab4();
-                if(acceptJson.getTab4().getArrivedTime() != null) {
+                if(acceptJson.getTabFour().getArrivedTime() != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // tab1에서 년월일만 입력받아서 이렇게 설정함
                     try {
-                        Date newArriveDate = sdf.parse(acceptJson.getTab4().getArrivedTime());
+                        Date newArriveDate = sdf.parse(acceptJson.getTabFour().getArrivedTime());
                         tab4.setArrivedTime(newArriveDate);
                     } catch (ParseException e) {
                         result = false;
                         e.printStackTrace();
                     }
                 }
-                if(acceptJson.getTab4().getContents() != null) tab4.setContents(acceptJson.getTab4().getContents());
+                if(acceptJson.getTabFour().getContents() != null) tab4.setContents(acceptJson.getTabFour().getContents());
                 parentsItem.setItemTab4(tab4);
                 break;
             case "5" :
                 ItemTab5 tab5 = parentsItem.getItemTab5();
-                if(acceptJson.getTab5().getLocationDetail() != null) tab5.setLocationDetail(acceptJson.getTab5().getLocationDetail());
-                if(acceptJson.getTab5().getContents() != null) tab5.setContents(acceptJson.getTab5().getContents());
+                if(acceptJson.getTabFive().getLocationDetail() != null) tab5.setLocationDetail(acceptJson.getTabFive().getLocationDetail());
+                if(acceptJson.getTabFive().getContents() != null) tab5.setContents(acceptJson.getTabFive().getContents());
                 parentsItem.setItemTab5(tab5);
                 break;
         }

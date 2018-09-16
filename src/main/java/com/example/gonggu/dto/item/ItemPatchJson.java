@@ -21,9 +21,9 @@ public class ItemPatchJson {
     private String[] imgPathList;
     private Integer itemAmountLimit;
 
-    private ItemTab1Json tab1;
-    private ItemTab2Json tab2;
-    private ItemTab3Json tab3;
-    private ItemTab4Json tab4;
-    private ItemTab5Json tab5;
+    private ItemTab1Json tabOne;
+    private ItemTab2Json tabTwo;
+    private ItemTab3Json tabThree;
+    private ItemTab4Json tabFour;
+    private ItemTab5Json tabFive;
 }

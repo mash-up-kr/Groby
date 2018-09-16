@@ -15,5 +15,5 @@ public class ItemCreateJson {
     private String userId;
     private String[] imgPathList;
 
-    private ItemTab1Json tab1;
+    private ItemTab1Json tabOne;
 }
