@@ -62,8 +62,9 @@ public class S3Service {
         String fileUrl = "";
         List<String> returnPaths = new ArrayList<>();
 
-        // itemId에 해당하는 이미지 존재 여부 해서 S3버킷에 있는 사진을 지워야하지 않을까?
+        // itemId와 tab단계에 해당하는 이미지 존재 여부 해서 S3버킷에 있는 사진을 지워야하지 않을까?
 
+        // 3개의
         // 파일 저장
         try {
             for (MultipartFile fileOne : multipartFile){
