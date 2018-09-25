@@ -140,11 +140,10 @@ public class ItemService {
 
             // 공구 owner
             ListOfParticipantForUser ownersItemInfo = new ListOfParticipantForUser();
-            List<ListOfParticipantForUser> participantsListUser = getUser.getParticipants();
             List<ListOfParticipantForUser> participantsListItem = new ArrayList<>();
 
             ownersItemInfo.setOwner(true);
-            participantsListUser.add(ownersItemInfo);
+            getUser.getParticipants().add(ownersItemInfo);
             participantsListItem.add(ownersItemInfo);
             item.setListOfParticipantForUser(participantsListItem);
 
@@ -519,6 +518,19 @@ public class ItemService {
         List<ListOfParticipantForItem> list = parentItem.getParticipantForItemList();
         list.add(join);
         parentItem.setParticipantForItemList(list);
+
+        // 공구 참여 리스트
+        ListOfParticipantForUser tempParticipantForUser = new ListOfParticipantForUser();
+        tempParticipantForUser.setOwner(false);
+        User tempUser = userRepository.findByUserName(acceptJson.getUserName());
+        tempUser.getParticipants().add(tempParticipantForUser);
+
+
+        List<ListOfParticipantForUser> participantListForUser = parentItem.getListOfParticipantForUser();
+        participantListForUser.add(tempParticipantForUser);
+        parentItem.setListOfParticipantForUser(participantListForUser);
+//        parentItem.getListOfParticipantForUser().add(tempParticipantForUser);
+
         itemRepository.save(parentItem);
 
         return result;
