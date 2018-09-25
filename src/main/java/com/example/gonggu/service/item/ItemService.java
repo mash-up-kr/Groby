@@ -210,6 +210,7 @@ public class ItemService {
                     infoTab1.setContents(item.getItemTab1().getContents());
                     infoTab1.setEndDate(item.getItemTab1().getEndDate().toString());
                     infoTab1.setLocation(item.getItemTab1().getLocation());
+                    infoJson.setTabOne(infoTab1);
             }
             infoJson.setImgPathList(item.getImgPaths());
         }
