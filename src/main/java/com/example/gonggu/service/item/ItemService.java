@@ -1,5 +1,6 @@
 package com.example.gonggu.service.item;
 
+import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.dto.item.ItemJoinAcceptJson;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.*;
@@ -135,6 +136,15 @@ public class ItemService {
             item.setItemTab3(itemTab3);
             item.setItemTab4(itemTab4);
             item.setItemTab5(itemTab5);
+
+
+            // 공구 owner
+            ListOfParticipantForUser ownersItemInfo = new ListOfParticipantForUser();
+            List<ListOfParticipantForUser> participantsList = getUser.getParticipants();
+
+            ownersItemInfo.setItemId(item.getItemId());
+            ownersItemInfo.setOwner(true);
+            participantsList.add(ownersItemInfo);
 
             itemRepository.save(item);
         }
