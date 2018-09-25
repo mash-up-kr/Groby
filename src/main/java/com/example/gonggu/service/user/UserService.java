@@ -162,11 +162,10 @@ public class UserService {
     public List<ItemCard> getUserParticipantList(boolean owner, String userId){
         User usr = userRepository.getOne(Long.parseLong(userId));
         List<ItemCard> returnList = new ArrayList<>();
-        ListOfParticipantForUser user = usr.getParticipants().get(0);
-        System.out.println(user.getOwner());
+
         usr.getParticipants().forEach(participant->{  if(participant.getOwner() == owner){
             ItemCard temp = new ItemCard();
-            Item tempSource = itemRepo.getOne(participant.getItemId());
+            Item tempSource = itemRepo.findByListOfParticipantForUser(participant);
             temp.setThumnailURL(tempSource.getThumnail());
             temp.setNowTab(tempSource.getNowTab());
             temp.setItemId(tempSource.getItemId().toString());

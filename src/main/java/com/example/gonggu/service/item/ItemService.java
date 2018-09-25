@@ -140,11 +140,13 @@ public class ItemService {
 
             // 공구 owner
             ListOfParticipantForUser ownersItemInfo = new ListOfParticipantForUser();
-            List<ListOfParticipantForUser> participantsList = getUser.getParticipants();
+            List<ListOfParticipantForUser> participantsListUser = getUser.getParticipants();
+            List<ListOfParticipantForUser> participantsListItem = new ArrayList<>();
 
-            ownersItemInfo.setItemId(item.getItemId());
             ownersItemInfo.setOwner(true);
-            participantsList.add(ownersItemInfo);
+            participantsListUser.add(ownersItemInfo);
+            participantsListItem.add(ownersItemInfo);
+            item.setListOfParticipantForUser(participantsListItem);
 
             itemRepository.save(item);
         }
