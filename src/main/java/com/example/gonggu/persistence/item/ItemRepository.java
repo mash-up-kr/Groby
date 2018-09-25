@@ -2,6 +2,7 @@ package com.example.gonggu.persistence.item;
 
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
+import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,7 @@ public interface ItemRepository extends JpaRepository<Item,Long> {
 
 //    @Query("select i ,t1 from item i , tab1 t1 fetch ")
 //    public List<Object[]> getItemWithTab();
+
+    // 공구 owner 검색
+    public Item findByListOfParticipantForUser(ListOfParticipantForUser participantUser);
 }

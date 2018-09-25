@@ -1,6 +1,7 @@
 package com.example.gonggu.domain.item;
 
 import com.example.gonggu.domain.category.Category;
+import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.domain.user.User;
 import lombok.Data;
 import lombok.Getter;
@@ -78,4 +79,7 @@ public class Item {
     @JoinColumn(name = "item_id")
     private List<ItemImgPath> imgPaths;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "item_id")
+    private List<ListOfParticipantForUser> listOfParticipantForUser;
 }
