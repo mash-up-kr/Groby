@@ -231,7 +231,7 @@ public class UserController {
 
     @ApiOperation(value = "apiGetParticipantInfo" , notes = "작성한 혹은 참여한 아이템의 목록 / 마지막 owner => 작성한 목록 t / 참여한 목록 f ")
     @GetMapping("/{userId}/participantlist/{owner}")
-    public ResponseEntity<APIResponse<List<ItemCard>>> apiGetParticipantInfo(
+    public ResponseEntity<APIResponse<ReItemListDto>> apiGetParticipantInfo(
             @PathVariable(name = "userId") String userId,
             @PathVariable(name = "owner") String owner
     ){
@@ -239,7 +239,9 @@ public class UserController {
         APIResponse response = new APIResponse();
         response.setStatus(status);
         response.setReturnJson(
-                userService.getUserParticipantList(owner.equals("t")?true : false , userId)
+                ReItemListDto.builder()
+                        .itemCardList(userService.getUserParticipantList(owner.equals("t")?true : false , userId))
+                        .build()
         );
 
         return new ResponseEntity<>(response,status);
