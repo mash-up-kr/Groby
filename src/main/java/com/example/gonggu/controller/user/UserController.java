@@ -240,7 +240,7 @@ public class UserController {
         response.setStatus(status);
         response.setReturnJson(
                 ReItemListDto.builder()
-                        .itemCardList(userService.getUserParticipantList(owner.equals("t")?true : false , userId))
+                        .ItemList(userService.getUserParticipantList(owner.equals("t")?true : false , userId))
                         .build()
         );
 
