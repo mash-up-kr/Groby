@@ -3,6 +3,8 @@ package com.example.gonggu.controller.view;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.view.HomeCardList;
 import com.example.gonggu.dto.view.ItemCard;
+import com.example.gonggu.exception.BadRequestException;
+import com.example.gonggu.exception.NotFoundException;
 import com.example.gonggu.service.view.MainService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,12 +14,4 @@ public class GrobyExceptionHandler {
                 ,e.getErrorModel().getHttpStatus()
         );
     }
-
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorModel> badRequestExHandler(BaseException e){
-        return new ResponseEntity<>(
-                e.getErrorModel()
-                ,e.getErrorModel().getHttpStatus()
-        );
-    }
 }
