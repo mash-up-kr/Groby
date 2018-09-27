@@ -1,16 +1,10 @@
 package com.example.gonggu.domain.category;
 
-import com.example.gonggu.domain.item.Item;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
 public class Category {
     @Id
