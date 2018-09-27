@@ -114,7 +114,7 @@ public class MainService {
             if(it.getNowTab() == 1)
                 card.setLikeNum(it.getNumOfLike().toString());
             else
-                card.setProgress((it.getNumOfOrder()/it.getAmountLimit())*100);
+                card.setParticipantPercent((it.getNumOfOrder()/it.getAmountLimit())*100);
 
             list.add(card);
         });
