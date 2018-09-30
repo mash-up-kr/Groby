@@ -57,8 +57,8 @@ public class UserService {
     public void createUser(UserSignupJson acceptJson) {
         User user = new User();
         user.setUserEmail(acceptJson.getUserEmail());
-//        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
-        user.setUserPw(acceptJson.getUserPw());
+        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+//        user.setUserPw(acceptJson.getUserPw());
         user.setUserName(acceptJson.getUserName());
         user.setUserToken(acceptJson.getUserToken());
 
@@ -81,6 +81,7 @@ public class UserService {
         if(acceptJson.getAccountHolder() != null) user.setAccountHolder(acceptJson.getAccountHolder());
         if(acceptJson.getAccountNum() != null) user.setAccountNum(acceptJson.getAccountNum());
         if(acceptJson.getPhoneNumber() != null) user.setPhoneNum(acceptJson.getPhoneNumber());
+        if(acceptJson.getUserToken() != null) user.setUserToken(acceptJson.getUserToken());
 
         userRepository.save(user);
     }
@@ -94,22 +95,26 @@ public class UserService {
     }
 
 
-//    public boolean loginUser(UserLoginJson acceptJson) {
-//        User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
-//
-////        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
-//        if (checkUser.getUserPw() == acceptJson.getUserPw())
-//            return true;
-//        else
-//            return false;
-//    }
-
-    public Boolean loginUser(UserLoginJson acceptJson) {
+    public UserInfo loginUser(UserLoginJson acceptJson) {
         User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
         if (checkUser == null) throw new NotFoundException("유저가 존재하지 않습니다.");
 
-        if (checkUser.getUserPw().equals(acceptJson.getUserPw())) return true;
-        else return false;
+        UserInfo result = null;
+
+        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw())) {
+            result = new UserInfo();
+            result.setUserId(checkUser.getUserId().toString());
+            result.setUserName(checkUser.getUserName());
+            result.setUserEmail(checkUser.getUserEmail());
+            result.setAccountBank(checkUser.getAccountBank());
+            result.setAccountHolder(checkUser.getAccountHolder());
+            result.setAccountNum(checkUser.getAccountNum());
+            result.setIsDeleted(checkUser.getIsDeleted());
+            result.setPhoneNumber(checkUser.getPhoneNum());
+        }
+
+        return result;
+
     }
 
 

@@ -16,6 +16,5 @@ public class UserSignupJson {
     private String userPw;
     @NotNull
     private String userName;
-    @NotNull
     private String userToken;
 }

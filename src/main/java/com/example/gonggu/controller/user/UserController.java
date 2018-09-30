@@ -127,15 +127,24 @@ public class UserController {
     // 유저 로그인
     @ApiOperation(value = "apiLoginUser",notes = "유저 로그인")
     @PostMapping("/login")
-    public void apiLoginUser(
+    public ResponseEntity<APIResponse<UserInfo>> apiLoginUser(
             @Valid @RequestBody UserLoginJson acceptJson ,
             BindingResult bindingResult
     ){
-
         if(bindingResult.hasErrors()) throw new BadRequestException("로그인을 위한 필수 파라미터가 잘못 되었습니다.");
 
-        if(!userService.loginUser(acceptJson))
+        UserInfo result = userService.loginUser(acceptJson);
+
+        if(result == null)
             throw new BadRequestException("유저의 아이디 혹은 비밀번호가 잘못 되었습니다.");
+
+        HttpStatus status = HttpStatus.OK;
+        APIResponse<UserInfo> response = new APIResponse<>();
+        response.setStatus(status);
+        response.setMessage("get user is done");
+        response.setReturnJson(result);
+
+        return new ResponseEntity<>(response , status);
 
     }
 

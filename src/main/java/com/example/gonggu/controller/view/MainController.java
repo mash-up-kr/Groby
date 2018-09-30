@@ -78,34 +78,4 @@ public class MainController {
         return new ResponseEntity<>(returnResponse, status);
     }
 
-//    @PostMapping(value = "/base" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
-//    public String baseEncode(
-//            @RequestPart(value = "file") MultipartFile img
-//            ){
-//        Base64.Encoder enco = Base64.getEncoder();
-//        FileInputStream inputStream = null;
-//        ByteArrayOutputStream byteOutStream = null;
-//        String result = null;
-//
-//        try {
-//            inputStream = new FileInputStream( img );
-//            byteOutStream = new ByteArrayOutputStream();
-//
-//            int len = 0;
-//            byte[] buf = new byte[1024];
-//
-//            while( (len = inputStream.read( buf )) != -1 ) {
-//                byteOutStream.write(buf, 0, len);
-//            }
-//            result = enco.encode(buf).toString();
-//
-//        }catch (Exception e){
-//            System.out.println(e.getStackTrace());
-//        }
-//
-//
-//        return result;
-//    }
-
-
 }

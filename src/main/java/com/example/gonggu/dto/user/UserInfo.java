@@ -1,5 +1,6 @@
 package com.example.gonggu.dto.user;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,6 @@ public class UserInfo {
     private String accountBank;
     private String accountHolder;
     private Boolean isDeleted;
-
-    private Boolean denied;
     private String phoneNumber;
 
 }
