@@ -1,19 +1,20 @@
 package com.example.gonggu.controller.user;
 
-import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.domain.user.Notification;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.user.*;
-import com.example.gonggu.dto.view.ItemCard;
+import com.example.gonggu.exception.AlreadyExistsException;
+import com.example.gonggu.exception.BadRequestException;
 import com.example.gonggu.service.user.NotiService;
 import com.example.gonggu.service.user.UserService;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +41,8 @@ public class UserController {
     public ResponseEntity<APIResponse<UserInfo>> apiGetUserByEmail(
             @PathVariable String userEmail
     ){
+
         HttpStatus status = HttpStatus.OK;
-//        APIResponse<User> response = APIResponse.<User>builder()
         APIResponse<UserInfo> response = new APIResponse<>();
         response.setStatus(status);
         response.setMessage("get user is done");
@@ -64,11 +65,6 @@ public class UserController {
     ){
 
         HttpStatus status = HttpStatus.OK;
-//        User user = userService.getUserBy(new HashMap<String,Object>(){{
-//            put("getUserBy" , "userId");
-//            put("userId",Long.valueOf(userNum));
-//        }});
-
         APIResponse<UserInfo> response = new APIResponse<>();
         response.setStatus(status);
         response.setMessage("Create user is done");
@@ -82,13 +78,12 @@ public class UserController {
         return new ResponseEntity<>( response , status);
     }
 
-    // return 값 명시해줘야 한다.
-    @ApiOperation(value = "apiCheckEmail",notes = "회원가입시 이메일 인증")
-//    @GetMapping("/checkemail/{userEmail}")
+    @ApiOperation(value = "apiCheckEmail",notes = "회원가입시 이메일 인증 / 중복시 에러")
     @GetMapping("/{userEmail}/check")
     public ResponseEntity<APIResponse<UserCheckEmail>> apiCheckEmail(
             @PathVariable String userEmail
     ){
+
         HttpStatus status = HttpStatus.OK;
         String message;
         // 이메일 체크
@@ -97,7 +92,7 @@ public class UserController {
         APIResponse response = new APIResponse<>();
         UserCheckEmail userCheckEmail = new UserCheckEmail();
 
-        System.out.println(URLDecoder.decode(userEmail));
+//        System.out.println(URLDecoder.decode(userEmail));
         try {
             System.out.println(URLDecoder.decode(userEmail,"utf-8"));
         }catch (Exception e ){
@@ -108,10 +103,9 @@ public class UserController {
             status = HttpStatus.OK;
             message = "이메일 인증 전송 성공";
             userCheckEmail.setAuthenticationNumber(userService.sendMail(userEmail));
-        }else{
-            status = HttpStatus.NOT_ACCEPTABLE;
-            message = "이메일이 중복 되었습니다.";
-        }
+        }else
+            throw new AlreadyExistsException("중복된 이메일 입니다.");
+
 
         response.setStatus(status);
         response.setMessage(message);
@@ -122,111 +116,60 @@ public class UserController {
     // Signup 관련 , 유저를 생성
     @ApiOperation(value = "apiCreateUser",notes = "유저 회원가입")
     @PostMapping("/")
-    public ResponseEntity<APIResponse> apiCreateUser(
-        @RequestBody UserSignupJson acceptJson
+    public void apiCreateUser(
+        @Valid @RequestBody UserSignupJson acceptJson,
+        BindingResult bindingResult
     ){
-//        HttpStatus status = HttpStatus.CREATED;
-        HttpStatus status = HttpStatus.OK;
+        if(bindingResult.hasErrors()) throw new BadRequestException("필수 파라미터를 채워주세요");
         userService.createUser(acceptJson);
-
-        APIResponse response = new APIResponse<>();
-        response.setStatus(status);
-        response.setMessage("create user is done");
-        response.setAcceptJson(acceptJson);
-
-        return new ResponseEntity<>( response , status);
     }
 
     // 유저 로그인
     @ApiOperation(value = "apiLoginUser",notes = "유저 로그인")
     @PostMapping("/login")
-//    public ResponseEntity<APIResponse> apiLoginUser(
-    public ResponseEntity<APIResponse<UserInfo>> apiLoginUser(
-            @RequestBody UserLoginJson acceptJson
+    public void apiLoginUser(
+            @Valid @RequestBody UserLoginJson acceptJson ,
+            BindingResult bindingResult
     ){
-        HttpStatus status = HttpStatus.OK;
-        APIResponse response = new APIResponse<>();
 
+        if(bindingResult.hasErrors()) throw new BadRequestException("로그인을 위한 필수 파라미터가 잘못 되었습니다.");
 
-        String message;
-        if(!userService.loginUser(acceptJson).getDenied()) {
-            status = HttpStatus.OK;
-            message = "Login is done";
-            response.setReturnJson(userService.loginUser(acceptJson));
-        } else {
-            status = HttpStatus.NOT_ACCEPTABLE;
-            message = "Login is failed";
-        }
-
-        response.setStatus(status);
-        response.setMessage(message);
-        response.setAcceptJson(acceptJson);
-
-        return new ResponseEntity<>( response , status);
+        if(!userService.loginUser(acceptJson))
+            throw new BadRequestException("유저의 아이디 혹은 비밀번호가 잘못 되었습니다.");
 
     }
 
     // 유저아이디를 통해서 유저의 정보를 수정
-    @ApiOperation(value = "apiChangeUser",notes = "유저 아이디(이메일)를 통해서 유저의 정보를 수정")
+    @ApiOperation(value = "apiChangeUser",notes = "유저 아이디(이메일)를 통해서 유저의 정보를 수정 / 바뀌는 부분만 작성할 것")
     @PatchMapping("/")
-    public ResponseEntity<APIResponse> apiChangeUser(
-        @RequestBody UserPatchJson acceptJson
+    public void apiChangeUser(
+        @Valid @RequestBody UserPatchJson acceptJson ,
+        BindingResult bindingResult
     ){
-//        HttpStatus status = HttpStatus.ACCEPTED;
-        HttpStatus status = HttpStatus.OK;
+        if(bindingResult.hasErrors()) throw new BadRequestException("유저 이메일은 필수입니다.");
         userService.userUpdate(acceptJson);
-
-        APIResponse response = new APIResponse<>();
-        response.setStatus(status);
-        response.setMessage("User Update is Done");
-        response.setAcceptJson(acceptJson);
-
-        return new ResponseEntity<>( response , status);
-
     }
 
     @ApiOperation(value = "apiChangeUserPw",notes = "비밀번호 변경")
     @PatchMapping("/userPw")
-    public ResponseEntity<APIResponse> apiChangeUserPw(
-            @RequestBody UserPwJson acceptJson
+    public void apiChangeUserPw(
+            @Valid @RequestBody UserPwJson acceptJson ,
+            BindingResult bindingResult
         ){
-        HttpStatus status = HttpStatus.OK;
+        if(bindingResult.hasErrors()) throw new BadRequestException();
+
         userService.userSetPassword(acceptJson);
 
-        APIResponse response = new APIResponse<>();
-        response.setStatus(status);
-        response.setMessage("User password is Changed");
-        response.setAcceptJson(acceptJson);
-
-        return new ResponseEntity<>( response , status);
     }
 
     // 유저 아이디를 통해서 유저를 삭제
     // for backend developer
-    @ApiOperation(value = "apiDeleteUserById",notes = "유저 넘버(PK)를 통해서 유저를 삭제")
+    @ApiOperation(value = "apiDeleteUserById",notes = "유저 넘버(PK)를 통해서 유저를 삭제 / isDeleted => True")
     @DeleteMapping("/id/{userId}")
-    public ResponseEntity<APIResponse> apiDeleteUserById(
+    public void apiDeleteUserById(
         @PathVariable String userId
     ){
-//        HttpStatus status = HttpStatus.ACCEPTED;
-        HttpStatus status = HttpStatus.OK;
-        String message;
-        if(!userService.deleteUser(userId)){
-            status = HttpStatus.NOT_ACCEPTABLE;
-            message = "Check User Email";
-        }else{
-//            status = HttpStatus.NOT_ACCEPTABLE;
-            status = HttpStatus.OK;
-            message = "Delete user is Done";
-        }
-
-        APIResponse response = new APIResponse<>();
-        response.setStatus(status);
-        response.setMessage("Delete User is Done");
-        response.setMessage(message);
-
-        return new ResponseEntity<>( response , status);
-
+        userService.serviceDeleteUser(userId);
     }
 
     @ApiOperation(value = "apiGetParticipantInfo" , notes = "작성한 혹은 참여한 아이템의 목록 / 마지막 owner => 작성한 목록 t / 참여한 목록 f ")
@@ -264,15 +207,10 @@ public class UserController {
 
     @ApiOperation(value = "apiDelNoti",notes = "사용자 알림서비스 삭제")
     @DeleteMapping("/notification/{notiId}")
-    public ResponseEntity<APIResponse> apiDelNoti(
+    public void apiDelNoti(
             @PathVariable(name = "notiId") String notiId
     ){
-        HttpStatus status = HttpStatus.OK;
-
-        APIResponse response = new APIResponse<>();
-        response.setStatus(status);
-        notiService.delNoti(Long.parseLong(notiId));
-
-        return new ResponseEntity<>(response,status);
+        notiService.delNoti(notiId);
     }
+
 }
