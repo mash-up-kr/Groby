@@ -5,9 +5,11 @@ import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.dto.user.*;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.dto.view.ItemCard;
+import com.example.gonggu.exception.NotFoundException;
 import com.example.gonggu.persistence.item.ItemRepository;
 import com.example.gonggu.persistence.user.NotificationRepository;
 import com.example.gonggu.persistence.user.UserRepository;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -72,19 +74,20 @@ public class UserService {
 
     public void userUpdate(UserPatchJson acceptJson) {
         User user = userRepository.findByUserEmail(acceptJson.getUserEmail());
+        if(user == null) throw new NotFoundException("유저가 존재하지 않습니다.");
 
-        user.setUserName(acceptJson.getUserName());
-        user.setAccountBank(acceptJson.getAccountBank());
-        user.setAccountHolder(acceptJson.getAccountHolder());
-        user.setAccountNum(acceptJson.getAccountNum());
-        user.setPhoneNum(acceptJson.getPhoneNumber());
+        if(acceptJson.getUserName() != null) user.setUserName(acceptJson.getUserName());
+        if(acceptJson.getAccountBank() != null) user.setAccountBank(acceptJson.getAccountBank());
+        if(acceptJson.getAccountHolder() != null) user.setAccountHolder(acceptJson.getAccountHolder());
+        if(acceptJson.getAccountNum() != null) user.setAccountNum(acceptJson.getAccountNum());
+        if(acceptJson.getPhoneNumber() != null) user.setPhoneNum(acceptJson.getPhoneNumber());
 
         userRepository.save(user);
     }
 
     public void userSetPassword(UserPwJson acceptJson){
         User user = userRepository.findByUserEmail(acceptJson.getUserEmail());
-//        user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
+        if(user == null) throw new NotFoundException("유저가 존재하지 않습니다.");
         user.setUserPw(acceptJson.getUserPw());
 
         userRepository.save(user);
@@ -101,28 +104,23 @@ public class UserService {
 //            return false;
 //    }
 
-    public UserInfo loginUser(UserLoginJson acceptJson) {
+    public Boolean loginUser(UserLoginJson acceptJson) {
         User checkUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
-        UserInfo result = new UserInfo();
-//        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw()))
-        if (checkUser.getUserPw().equals(acceptJson.getUserPw())){
-            result.setDenied(false);
-            result.setUserId(checkUser.getUserId().toString());
-            result.setAccountBank(checkUser.getAccountBank());
-            result.setAccountHolder(checkUser.getAccountHolder());
-            result.setAccountNum(checkUser.getAccountNum());
-            result.setIsDeleted(checkUser.getIsDeleted());
-            result.setUserEmail(checkUser.getUserEmail());
-            result.setUserName(checkUser.getUserName());
-            result.setPhoneNumber(checkUser.getPhoneNum());
-            return result;
-        }
-        else {
-            result.setDenied(true);
-            return result;
-        }
+        if (checkUser == null) throw new NotFoundException("유저가 존재하지 않습니다.");
+
+        if (checkUser.getUserPw().equals(acceptJson.getUserPw())) return true;
+        else return false;
     }
 
+
+    public void serviceDeleteUser(String userId){
+        User checkUser = userRepository.getOne(Long.valueOf(userId));
+        if (checkUser == null) throw new NotFoundException("유저가 존재하지 않습니다.");
+
+        checkUser.setIsDeleted(true);
+
+        userRepository.save(checkUser);
+    }
 
     // for Developer not for Service
     public boolean deleteUser(String userId) {
