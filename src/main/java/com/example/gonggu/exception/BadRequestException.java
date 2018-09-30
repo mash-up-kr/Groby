@@ -16,4 +16,5 @@ public class BadRequestException extends BaseException{
         super(status,message);
     }
 
+
 }
