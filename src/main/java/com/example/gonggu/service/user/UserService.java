@@ -139,7 +139,7 @@ public class UserService {
         return true;
     }
 
-    public Boolean checkEmail(String userEmail){
+    public boolean checkEmail(String userEmail){
         if(userRepository.findByUserEmail(userEmail) == null){
             return true;
         }else
