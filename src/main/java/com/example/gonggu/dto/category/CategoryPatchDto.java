@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @ToString
-public class CategoryCreateJson {
+public class CategoryPatchDto {
     private String category;
+    private String categoryId;
+
 }

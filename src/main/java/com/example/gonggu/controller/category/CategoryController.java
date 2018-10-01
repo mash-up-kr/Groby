@@ -2,8 +2,8 @@ package com.example.gonggu.controller.category;
 
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.dto.APIResponse;
-import com.example.gonggu.dto.category.CategoryCreateJson;
-import com.example.gonggu.dto.category.CategoryPatchJson;
+import com.example.gonggu.dto.category.CategoryCreateDto;
+import com.example.gonggu.dto.category.CategoryPatchDto;
 import com.example.gonggu.service.category.CategoryService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -44,47 +45,40 @@ public class CategoryController {
     }
 
     //카테고리 생성
+    //TODO POST 요청 실패 ... 확인하기
     @ApiOperation(value = "apiCreateCategory",notes = "새로운 카테고리 생성하기")
     @PostMapping("/")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "category", value = "생성할카테고리", required = false, dataType = "string", paramType = "path", defaultValue = "")
-    })
-    public ResponseEntity<APIResponse> apiCreateCategory(
-            @RequestBody CategoryCreateJson acceptJson
+    public void apiCreateCategory(
+            @Valid @RequestBody CategoryCreateDto acceptJson
     ) {
-        APIResponse returnResponse = new APIResponse();
-        HttpStatus status = HttpStatus.OK;
-
+        System.out.println(acceptJson);
         categoryService.createCategory(acceptJson.getCategory());
-
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("category create is done ");
-        returnResponse.setAcceptJson(acceptJson);
-
-        return new ResponseEntity<>(returnResponse, status);
     }
 
     //카테고리 수정
+    //TODO PATCH 요청 실패 ... 확인하기
     @ApiOperation(value = "apiUpdateCategory",notes = "카테고리 이름 바꾸기")
     @PatchMapping("/")
-    public ResponseEntity<APIResponse> apiUpdateCategory(
-            @RequestBody CategoryPatchJson acceptJson
+    public void apiUpdateCategory(
+            @RequestBody CategoryPatchDto acceptJson
     ) {
-        APIResponse returnResponse = new APIResponse();
-//        HttpStatus status = HttpStatus.ACCEPTED;
-        HttpStatus status = HttpStatus.OK;
+        System.out.println(acceptJson);
 
-        categoryService.updatecategory(acceptJson);
-
-        returnResponse.setStatus(status);
-        returnResponse.setMessage("Change update is done");
-        returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<>(returnResponse, status);
+//        APIResponse returnResponse = new APIResponse();
+////        HttpStatus status = HttpStatus.ACCEPTED;
+//        HttpStatus status = HttpStatus.OK;
+//
+//        categoryService.updatecategory(acceptJson);
+//
+//        returnResponse.setStatus(status);
+//        returnResponse.setMessage("Change update is done");
+//        returnResponse.setAcceptJson(acceptJson);
+//        return new ResponseEntity<>(returnResponse, status);
     }
 
     //카테고리 삭제
     @ApiOperation(value = "apiDeleteCategory",notes = "카테고리 삭제하기")
-    @DeleteMapping("{category}")
+    @DeleteMapping("/{category}")
     public ResponseEntity<APIResponse> apiDeleteCategory(
             @PathVariable String category
     ) {

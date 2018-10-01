@@ -7,12 +7,17 @@ import com.example.gonggu.service.view.MainService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +40,6 @@ public class MainController {
     public ResponseEntity<APIResponse<HomeCardList>> apiGetHome(){
         HttpStatus status = HttpStatus.OK;
         HomeCardList result = new HomeCardList();
-//        List<ItemCard> returnJson = new ArrayList<>();
 
         // 최신글 + 핫아이템
         result.setPopularItemList(mainService.getPopularBoard());
@@ -73,6 +77,5 @@ public class MainController {
 
         return new ResponseEntity<>(returnResponse, status);
     }
-
 
 }

@@ -15,7 +15,7 @@ public class ItemCard {
     private String title;
     private int nowTab;
     private String likeNum;             // T1
-    private int progress;               // T2
+//    private int progress;               // T2
     private int amountLimit;            // T2
     private int participantNum;         // T2
     private int participantPercent;     // T2

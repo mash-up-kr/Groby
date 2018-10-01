@@ -38,7 +38,7 @@ public class NotiService {
         userRepo.save(targetUser);
     }
 
-    public void delNoti(Long notiId){
-        notiRepo.delete(notiId);
+    public void delNoti(String notiId){
+        notiRepo.delete(Long.parseLong(notiId));
     }
 }
