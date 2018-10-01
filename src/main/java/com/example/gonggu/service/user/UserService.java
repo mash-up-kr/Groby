@@ -1,15 +1,12 @@
 package com.example.gonggu.service.user;
 
 import com.example.gonggu.domain.item.Item;
-import com.example.gonggu.domain.user.ListOfParticipantForUser;
 import com.example.gonggu.dto.user.*;
 import com.example.gonggu.domain.user.User;
 import com.example.gonggu.dto.view.ItemCard;
 import com.example.gonggu.exception.NotFoundException;
 import com.example.gonggu.persistence.item.ItemRepository;
-import com.example.gonggu.persistence.user.NotificationRepository;
 import com.example.gonggu.persistence.user.UserRepository;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
