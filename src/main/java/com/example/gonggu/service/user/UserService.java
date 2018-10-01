@@ -55,7 +55,6 @@ public class UserService {
         User user = new User();
         user.setUserEmail(acceptJson.getUserEmail());
         user.setUserPw(bCryptPasswordEncoder.encode(acceptJson.getUserPw()));
-//        user.setUserPw(acceptJson.getUserPw());
         user.setUserName(acceptJson.getUserName());
         user.setUserToken(acceptJson.getUserToken());
 
@@ -98,7 +97,7 @@ public class UserService {
 
         UserInfo result = null;
 
-        if (checkUser.getUserPw() == bCryptPasswordEncoder.encode(acceptJson.getUserPw())) {
+        if (bCryptPasswordEncoder.matches(acceptJson.getUserPw(),checkUser.getUserPw())) {
             result = new UserInfo();
             result.setUserId(checkUser.getUserId().toString());
             result.setUserName(checkUser.getUserName());
