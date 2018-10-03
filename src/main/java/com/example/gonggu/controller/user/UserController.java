@@ -3,6 +3,7 @@ package com.example.gonggu.controller.user;
 import com.example.gonggu.domain.user.Notification;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.user.*;
+import com.example.gonggu.dto.view.ItemCard;
 import com.example.gonggu.exception.AlreadyExistsException;
 import com.example.gonggu.exception.BadRequestException;
 import com.example.gonggu.service.user.NotiService;
@@ -183,7 +184,8 @@ public class UserController {
 
     @ApiOperation(value = "apiGetParticipantInfo" , notes = "작성한 혹은 참여한 아이템의 목록 / 마지막 owner => 작성한 목록 t / 참여한 목록 f ")
     @GetMapping("/{userId}/participantlist/{owner}")
-    public ResponseEntity<APIResponse<ReItemListDto>> apiGetParticipantInfo(
+//    public ResponseEntity<APIResponse<ReItemListDto>> apiGetParticipantInfo(
+    public ResponseEntity<APIResponse<List<ItemCard>>> apiGetParticipantInfo(
             @PathVariable(name = "userId") String userId,
             @PathVariable(name = "owner") String owner
     ){
@@ -192,9 +194,10 @@ public class UserController {
         response.setStatus(status);
         response.setMessage("God Daeyun @_@ ");
         response.setReturnJson(
-                ReItemListDto.builder()
-                        .ItemList(userService.getUserParticipantList(owner.equals("t")?true : false , userId))
-                        .build()
+                userService.getUserParticipantList(owner.equals("t")?true:false, userId)
+//                ReItemListDto.builder()
+//                        .ItemList(userService.getUserParticipantList(owner.equals("t")?true : false , userId))
+//                        .build()
         );
 
         return new ResponseEntity<>(response,status);
