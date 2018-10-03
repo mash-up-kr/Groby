@@ -190,6 +190,7 @@ public class UserController {
         HttpStatus status = HttpStatus.OK;
         APIResponse response = new APIResponse();
         response.setStatus(status);
+        response.setMessage("God Daeyun @_@ ");
         response.setReturnJson(
                 ReItemListDto.builder()
                         .ItemList(userService.getUserParticipantList(owner.equals("t")?true : false , userId))
