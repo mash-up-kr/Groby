@@ -56,12 +56,12 @@ public class ItemController {
     @ApiOperation(value = "apiStorageImg", notes = "아이템에 해당하는 이미지를 저장")
     @PostMapping(value = "/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<APIResponse<List<String>>> uploadFile(
-            @RequestPart(value = "files") MultipartFile[] file
+            @RequestPart(value = "files") MultipartFile[] files
     ) {
         APIResponse<List<String>> returnResponse = new APIResponse<List<String>>();
         HttpStatus status = HttpStatus.OK;
 
-        returnResponse.setReturnJson(s3Service.uploadFile(file));
+        returnResponse.setReturnJson(s3Service.uploadFile(files));
         returnResponse.setStatus(status);
         returnResponse.setMessage("Item Information");
 
