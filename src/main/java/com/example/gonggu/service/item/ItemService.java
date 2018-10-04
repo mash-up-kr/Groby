@@ -48,7 +48,7 @@ public class ItemService {
     //      true : like 추가
     //      false : like 제거
     @Transactional
-    public boolean toggleLike(ItemLikeJson acceptJson){
+    public void toggleLike(ItemLikeJson acceptJson){
         Item item = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
         boolean result = true;
         Integer likeNum = item.getNumOfLike();
@@ -66,8 +66,6 @@ public class ItemService {
             item.setNumOfLike(likeNum + 1);
         }
 
-
-        return result;
     }
 
     /*

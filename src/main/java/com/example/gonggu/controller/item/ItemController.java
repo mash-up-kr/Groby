@@ -3,6 +3,7 @@ package com.example.gonggu.controller.item;
 import com.example.gonggu.domain.item.ListOfParticipantForItem;
 import com.example.gonggu.dto.APIResponse;
 import com.example.gonggu.dto.item.*;
+import com.example.gonggu.exception.BadRequestException;
 import com.example.gonggu.service.item.ItemService;
 import com.example.gonggu.service.item.S3Service;
 import io.swagger.annotations.ApiOperation;
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -135,23 +138,13 @@ public class ItemController {
     // t1 like
     @ApiOperation(value = "apiToggleLike",notes = "아이템 사용자가 눌렀을 경우 -> 자동으로 좋아요/취소 토글 가능")
     @PostMapping("/like")
-    public ResponseEntity<APIResponse> apiToggleLike(
-            @RequestBody ItemLikeJson acceptJson
+    public void apiToggleLike(
+            @Valid @RequestBody ItemLikeJson acceptJson ,
+            BindingResult bindingResult
     ){
-        APIResponse returnResponse = new APIResponse();
-//        HttpStatus status = HttpStatus.ACCEPTED;
-        HttpStatus status = HttpStatus.OK;
+        if(bindingResult.hasErrors()) throw new BadRequestException();
 
-        if(itemService.toggleLike(acceptJson))
-            returnResponse.setMessage("Add Like");
-        else {
-            status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Remove Like");
-        }
-
-        returnResponse.setStatus(status);
-        returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<>(returnResponse,status);
+        itemService.toggleLike(acceptJson);
     }
 
     // t2 참여 유저 목록
