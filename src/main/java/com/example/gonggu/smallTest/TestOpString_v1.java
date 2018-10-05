@@ -1,11 +1,11 @@
-package com.example.gonggu;
+package com.example.gonggu.smallTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Test {
+public class TestOpString_v1 {
     public static void main(String[] args) {
         //1
 //        String hello = "사이즈>L:100,M:0,S:-100";

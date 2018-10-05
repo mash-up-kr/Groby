@@ -13,4 +13,5 @@ public class ItemTab2Json {
     private String contents;
     private String endDate;
     private String optionString;
+    private String price;
 }

@@ -18,12 +18,12 @@ public class CategoryRepositoryTests {
 //    @Autowired
 //    private CategoryService categoryService;
 //
-//    @Test
+//    @TestOpString_v1
 //    public void testInsert(){
 //       categoryService.createCategory("ㅉ");
 //    }
 //
-//    @Test
+//    @TestOpString_v1
 //    public void testUpdate(){
 //
 //        categoryService.categoryUpdate(6L);
