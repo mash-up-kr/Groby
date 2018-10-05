@@ -32,7 +32,7 @@ public class ItemRepositoryTests {
 
 
    //  item테이블에 아이템 값을 입력하는 테스트
-//   @TestOpString_v1
+//   @Test
 //    public void testInsertItem() {
 //       User owner = userRepository.findByUserName("onemoon");
 //       Item newItem = new Item();
@@ -50,7 +50,7 @@ public class ItemRepositoryTests {
 //    }
 
 
-//    @TestOpString_v1
+//    @Test
 //    public void testInsertTab1() {
 //
 //        User user = new User();
@@ -79,7 +79,7 @@ public class ItemRepositoryTests {
 //    }
 //
 //    // item의 특정칼럼 전체를 업데이트테스트
-//    @TestOpString_v1
+//    @Test
 //    public void testUpdateItem() {
 //        List<Item> items = itemRepository.findByOrderByRegDateDesc();
 //
@@ -92,7 +92,7 @@ public class ItemRepositoryTests {
 //
 //
 //    // item의 특정칼럼 삭제
-//    @TestOpString_v1
+//    @Test
 //    public void testDeleteItem() {
 ////       Item item = itemRepository.findOne(8L);
 //
@@ -100,7 +100,7 @@ public class ItemRepositoryTests {
 //    }
 //
 //    // item의 날짜순으로 읽기
-//    @TestOpString_v1
+//    @Test
 //    public void testReadItems() {
 //       List<Item> items = itemRepository.findByOrderByRegDateDesc();
 //
@@ -110,7 +110,7 @@ public class ItemRepositoryTests {
 //    }
 
 //    @Transactional
-//    @TestOpString_v1
+//    @Test
 //    public void testLike(){
 //        Item item = itemRepository.getOne(1L);
 //        ListOfLikeForItem like = new ListOfLikeForItem();
@@ -134,7 +134,7 @@ public class ItemRepositoryTests {
 //        itemRepository.save(item);
 //    }
 
-/*    @TestOpString_v1
+/*    @Test
     public void createItem() {
         ItemAcceptJson itemAcceptJson = new ItemAcceptJson();
 

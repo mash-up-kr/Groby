@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BaseExceptionTestOpStringv1 {
+public class BaseExceptionTest {
     @Test
     public void testex(){
         throw new BadRequestException();

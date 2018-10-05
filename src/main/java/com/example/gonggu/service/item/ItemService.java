@@ -51,10 +51,9 @@ public class ItemService {
     //      true : like 추가
     //      false : like 제거
     @Transactional
-    public Boolean toggleLike(ItemLikeJson acceptJson){
+    public void toggleLike(ItemLikeJson acceptJson){
         Item item = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
-        if(item == null) throw new NotFoundException("존재하지 않는 아이템입니다");
-        Boolean result = true;
+        boolean result = true;
         Integer likeNum = item.getNumOfLike();
         for(ListOfLikeForItem temp :item.getLikeForItemList())
             if(temp.getUserEmail().equals(acceptJson.getUserEmail()) ){
@@ -69,7 +68,7 @@ public class ItemService {
             item.getLikeForItemList().add(newlike);
             item.setNumOfLike(likeNum + 1);
         }
-        return result;
+
     }
 
     /*

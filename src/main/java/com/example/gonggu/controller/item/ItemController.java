@@ -105,23 +105,13 @@ public class ItemController {
     // t1 like
     @ApiOperation(value = "apiToggleLike",notes = "아이템 사용자가 눌렀을 경우 -> 자동으로 좋아요/취소 토글 가능")
     @PostMapping("/like")
-    public ResponseEntity<APIResponse> apiToggleLike(
-            @Valid @RequestBody ItemLikeJson acceptJson
+    public void apiToggleLike(
+            @Valid @RequestBody ItemLikeJson acceptJson ,
+            BindingResult bindingResult
     ){
-        APIResponse returnResponse = new APIResponse();
-//        HttpStatus status = HttpStatus.ACCEPTED;
-        HttpStatus status = HttpStatus.OK;
+        if(bindingResult.hasErrors()) throw new BadRequestException();
 
-        if(itemService.toggleLike(acceptJson))
-            returnResponse.setMessage("Add Like");
-        else {
-            status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Remove Like");
-        }
-
-        returnResponse.setStatus(status);
-        returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<>(returnResponse,status);
+        itemService.toggleLike(acceptJson);
     }
 
     // t2 참여 유저 목록
@@ -142,13 +132,14 @@ public class ItemController {
 
     // t2 유저의 참여
     @ApiOperation(value = "apiJoinUserList",notes = "tab 2 사용자 참여하기 // 옵션:수량/...>총금액 EX) L 빨:2/S 파:2>200")
-    @PostMapping("/userlist")
+    @PostMapping("{itemId}/userlist")
     public void apiJoinUserList(
+            @RequestParam(name = "itemId") String itemId,
             @Valid @RequestBody ItemJoinAcceptJson acceptJson,
             BindingResult bindingResult
     ){
         if(bindingResult.hasErrors()) throw new BadRequestException("필수 파라미터를 채워주세요");
-        itemService.insertParticipantUser(acceptJson);
+        itemService.insertParticipantUser(itemId,acceptJson);
     }
 
     // t2 참여 유저 목록 수정
