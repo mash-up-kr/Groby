@@ -132,13 +132,14 @@ public class ItemController {
 
     // t2 유저의 참여
     @ApiOperation(value = "apiJoinUserList",notes = "tab 2 사용자 참여하기 // 옵션:수량/...>총금액 EX) L 빨:2/S 파:2>200")
-    @PostMapping("/userlist")
+    @PostMapping("{itemId}/userlist")
     public void apiJoinUserList(
+            @RequestParam(name = "itemId") String itemId,
             @Valid @RequestBody ItemJoinAcceptJson acceptJson,
             BindingResult bindingResult
     ){
         if(bindingResult.hasErrors()) throw new BadRequestException("필수 파라미터를 채워주세요");
-        itemService.insertParticipantUser(acceptJson);
+        itemService.insertParticipantUser(itemId,acceptJson);
     }
 
     // t2 참여 유저 목록 수정
