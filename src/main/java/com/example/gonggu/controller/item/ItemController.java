@@ -105,23 +105,18 @@ public class ItemController {
     // t1 like
     @ApiOperation(value = "apiToggleLike",notes = "아이템 사용자가 눌렀을 경우 -> 자동으로 좋아요/취소 토글 가능")
     @PostMapping("/like")
+<<<<<<< HEAD
     public ResponseEntity<APIResponse> apiToggleLike(
             @Valid @RequestBody ItemLikeJson acceptJson
+=======
+    public void apiToggleLike(
+            @Valid @RequestBody ItemLikeJson acceptJson ,
+            BindingResult bindingResult
+>>>>>>> feature/#69_post_response
     ){
-        APIResponse returnResponse = new APIResponse();
-//        HttpStatus status = HttpStatus.ACCEPTED;
-        HttpStatus status = HttpStatus.OK;
+        if(bindingResult.hasErrors()) throw new BadRequestException();
 
-        if(itemService.toggleLike(acceptJson))
-            returnResponse.setMessage("Add Like");
-        else {
-            status = HttpStatus.NOT_ACCEPTABLE;
-            returnResponse.setMessage("Remove Like");
-        }
-
-        returnResponse.setStatus(status);
-        returnResponse.setAcceptJson(acceptJson);
-        return new ResponseEntity<>(returnResponse,status);
+        itemService.toggleLike(acceptJson);
     }
 
     // t2 참여 유저 목록

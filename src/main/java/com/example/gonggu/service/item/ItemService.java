@@ -51,7 +51,11 @@ public class ItemService {
     //      true : like 추가
     //      false : like 제거
     @Transactional
+<<<<<<< HEAD
     public Boolean toggleLike(ItemLikeJson acceptJson){
+=======
+    public void toggleLike(ItemLikeJson acceptJson){
+>>>>>>> feature/#69_post_response
         Item item = itemRepository.getOne(Long.parseLong(acceptJson.getItemId()));
         if(item == null) throw new NotFoundException("존재하지 않는 아이템입니다");
         Boolean result = true;
