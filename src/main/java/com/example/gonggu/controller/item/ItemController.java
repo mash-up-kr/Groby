@@ -139,7 +139,7 @@ public class ItemController {
             BindingResult bindingResult
     ){
         if(bindingResult.hasErrors()) throw new BadRequestException("필수 파라미터를 채워주세요");
-        itemService.insertParticipantUser(itemId,acceptJson);
+        itemService.insertParticipantUser(acceptJson);
     }
 
     // t2 참여 유저 목록 수정
