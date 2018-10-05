@@ -3,6 +3,7 @@ package com.example.gonggu.service.view;
 import com.example.gonggu.dto.view.ItemCard;
 import com.example.gonggu.domain.category.Category;
 import com.example.gonggu.domain.item.Item;
+import com.example.gonggu.exception.NotFoundException;
 import com.example.gonggu.persistence.category.CategoryRepository;
 import com.example.gonggu.persistence.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,6 @@ public class MainService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    // 인기글 보여지는 개수
-    private final int NUMOFPOPULAR = 5;
-
-    // 최신글에 보여지는 개수
-//    private final int NUMOFRECENT = 5;
-
     // 인기글과 관련한 서비스
 
     /*
@@ -33,9 +28,13 @@ public class MainService {
      *  */
     public List<ItemCard> getPopularBoard () {
         List<Item> items = itemRepository.findByOrderByNumOfLikeDesc();
+        if (items == null) throw new NotFoundException("아이템이 존재하지 않습니다");
+        int numOfItem = items.size(); // 아이템이 5개 미만일 경우를 대비
+        if (numOfItem > 5) numOfItem = 5; // 아이템이 5개가 넘어간다면 5개로 설정
+
         List<ItemCard> results = new ArrayList<>();
 
-        for (int i = 0; i < NUMOFPOPULAR; i++) {
+        for (int i = 0; i < numOfItem; i++) {
             ItemCard itemCard = new ItemCard();
 
             itemCard.setItemId(items.get(i).getItemId().toString());
@@ -61,9 +60,11 @@ public class MainService {
      *  */
     public List<ItemCard> getRecentBoard(int howManyItem) {
         List<Item> items = itemRepository.findByOrderByRegDateDesc();
+        if (items == null) throw new NotFoundException("아이템이 존재하지 않습니다");
         List<ItemCard> result = new ArrayList<>();
 
         if(howManyItem == 0 ) howManyItem = items.size(); // 메인화면에서 최신글 더보기를 누른 경우
+        if(howManyItem > items.size()) howManyItem = items.size(); // 아이템이 5개 미만일 경우
 
         for(int i = 0; i<howManyItem; i++) {
             ItemCard itemCard = new ItemCard();
