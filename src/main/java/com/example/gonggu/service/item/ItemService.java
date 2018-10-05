@@ -177,6 +177,7 @@ public class ItemService {
         if(!item.getIsDeleted()) { // 삭제되지 않은 경우
             infoJson.setItemId(item.getItemId().toString());
             infoJson.setWriterId(item.getUser().getUserId().toString());
+            infoJson.setWriterUserName(item.getUser().getUserName());
             infoJson.setItemTitle(item.getTitle());
             infoJson.setCategory(item.getCategory().getCategory());
             infoJson.setNowTab(item.getNowTab());

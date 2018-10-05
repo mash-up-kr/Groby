@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemInfo {
     private String itemId;
     private String writerId;
+    private String writerUserName;
     private String category;
     private String itemTitle;
     private Integer nowTab;
