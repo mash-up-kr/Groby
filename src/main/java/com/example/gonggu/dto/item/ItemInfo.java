@@ -18,6 +18,7 @@ public class ItemInfo {
     private String itemTitle;
     private Integer nowTab;
     private Integer numOfLike;
+    private Integer amountLimit; // 최소인원
     private Integer numOfParticipant;
     private Integer participantPercent; //Tab2일 경우 공구 참여 퍼센트
 

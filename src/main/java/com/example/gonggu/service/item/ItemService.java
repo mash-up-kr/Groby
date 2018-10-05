@@ -67,6 +67,7 @@ public class ItemService {
             newlike.setUserEmail(acceptJson.getUserEmail());
             item.getLikeForItemList().add(newlike);
             item.setNumOfLike(likeNum + 1);
+            likeRepo.save(newlike);
         }
 
     }
@@ -182,6 +183,7 @@ public class ItemService {
             infoJson.setCategory(item.getCategory().getCategory());
             infoJson.setNowTab(item.getNowTab());
             infoJson.setNumOfLike(item.getNumOfLike());
+            infoJson.setAmountLimit(item.getAmountLimit());
             switch (item.getNowTab()) {
                 case 5:
                     ItemTab5Json infoTab5 = new ItemTab5Json();
