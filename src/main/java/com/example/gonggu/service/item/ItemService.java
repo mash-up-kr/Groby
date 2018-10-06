@@ -63,6 +63,18 @@ public class ItemService {
             }
 
         if(result) {
+            // 참여한 글에 추가하기
+            ListOfParticipantForUser tempParticipantForUser = new ListOfParticipantForUser();
+            tempParticipantForUser.setOwner(false);
+            User tempUser = userRepository.findByUserEmail(acceptJson.getUserEmail());
+            if(tempUser == null) throw new NotFoundException("존재하지 않는 사용자입니다");
+            tempUser.getParticipants().add(tempParticipantForUser);
+            List<ListOfParticipantForUser> participantListForUser = item.getListOfParticipantForUser();
+            participantListForUser.add(tempParticipantForUser);
+            item.setListOfParticipantForUser(participantListForUser);
+
+
+
             ListOfLikeForItem newlike = new ListOfLikeForItem();
             newlike.setUserEmail(acceptJson.getUserEmail());
             item.getLikeForItemList().add(newlike);
@@ -268,6 +280,9 @@ public class ItemService {
                         e.printStackTrace();
                     }
                 }
+                if(acceptJson.getTabTwo().getAccountNum() != null) tab2.setAccountNum(acceptJson.getTabTwo().getAccountNum());
+                if(acceptJson.getTabTwo().getAccountBank() != null) tab2.setAccountBank(acceptJson.getTabTwo().getAccountBank());
+                if(acceptJson.getTabTwo().getAccountHolder() != null) tab2.setAccountHolder(acceptJson.getTabTwo().getAccountHolder());
                 parentsItem.setItemTab2(tab2);
                 break;
             case "3" :

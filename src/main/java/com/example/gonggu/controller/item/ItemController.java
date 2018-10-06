@@ -53,7 +53,7 @@ public class ItemController {
     /*
     아이템의 각 탭에 해당하는 사진을 저장하는 API
      */
-    @ApiOperation(value = "apiStorageImg", notes = "아이템에 해당하는 이미지를 저장")
+    @ApiOperation(value = "apiStoreImg", notes = "아이템에 해당하는 이미지를 저장")
     @PostMapping(value = "/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<APIResponse<List<String>>> uploadFile(
             @RequestPart(value = "files") MultipartFile[] files

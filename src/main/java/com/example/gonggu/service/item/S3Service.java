@@ -52,8 +52,11 @@ public class S3Service {
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+//        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+//                .withCannedAcl(CannedAccessControlList.PublicRead));
+        PutObjectRequest objectRequest = new PutObjectRequest(bucketName, fileName, file);
+        objectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+        s3client.putObject(objectRequest);
     }
 
     // 파일 업로드

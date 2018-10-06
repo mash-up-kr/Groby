@@ -21,4 +21,10 @@ public class ItemTab2 {
     private String optionString;        // 옵션값 한줄로 저장
     private int price;                  // 가격
     private Date endDate;               // 공구 종료시점
+    @Column(length = 50)
+    private String accountNum;
+    @Column(length = 50)
+    private String accountBank;
+    @Column(length = 50)
+    private String accountHolder;
 }
